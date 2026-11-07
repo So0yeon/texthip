@@ -463,7 +463,7 @@ function rot(i){return ((i*37)%7-3)*0.5+'deg'}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),1900)}
 function persona(){return S.profile.persona?PERSONAS[S.profile.persona]:null}
 function fmtDate(d){return d||''}
-function tagsHtml(t){return (t||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}
+function tagsHtml(t,click){return (t||[]).map(x=>click?`<button class="tag" data-act="qtag-go" data-v="${esc(x)}">${esc(x)}</button>`:`<span class="tag">${esc(x)}</span>`).join('')}
 function empty(title,desc,btn){return `<div class="empty"><span class="hand">${esc(title)}</span>${esc(desc)}${btn?`<div style="margin-top:8px">${btn}</div>`:''}</div>`}
 function stickerSvg(id){
   const st='stroke="#38342F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"';
@@ -577,7 +577,7 @@ VIEWS.quotes=function(){
    <div class="row" style="margin:4px 0 8px"><button class="btn solid" data-act="quote-new">＋ 문장 적기</button></div>
    <div class="chiprow"><button class="tag ${!ui.qTag?'on':''}" data-act="qtag" data-v="">전체 ${S.quotes.length}</button>${TAGS.map(t=>`<button class="tag ${ui.qTag===t?'on':''}" data-act="qtag" data-v="${t}">${t}</button>`).join('')}</div>
    ${q.length?q.map((x,i)=>`<div class="note ${i%3==1?'kraft':'card'} click ${ui.qSel===x.id?'sel':''}" style="--r:${rot(i)}" data-act="quote-sel" data-id="${x.id}"><span class="tape ${i%2?'l':''}"></span>
-     <div class="qt">${esc(x.text)}</div><div class="cite">『${esc(x.book)}』${x.author?' · '+esc(x.author):''}${x.from?` · <span class="badge">${esc(x.from)}의 수첩에서</span>`:''}</div><div style="margin-top:4px">${tagsHtml(x.tags)}${x.vis==='friends'?'<span class="badge">친구에게 보임</span>':''}</div></div>`).join('')
+     <div class="qt">${esc(x.text)}</div><div class="cite">『${esc(x.book)}』${x.author?' · '+esc(x.author):''}${x.from?` · <span class="badge">${esc(x.from)}의 수첩에서</span>`:''}</div><div style="margin-top:4px">${tagsHtml(x.tags,true)}${x.vis==='friends'?'<span class="badge">친구에게 보임</span>':''}</div></div>`).join('')
     :empty(ui.qTag?'이 태그의 문장이 없어요':'문장이 아직 없어요','읽다가 마음에 든 문장을 적어 보세요.',`<button class="btn" data-act="quote-new">문장 적기</button>`)}`;
   const s=S.quotes.find(x=>x.id===ui.qSel);
   const R=s?`<h2 class="h3" style="margin-top:0">문장 자세히</h2>
@@ -585,7 +585,7 @@ VIEWS.quotes=function(){
      <div class="qt" style="font-size:20px">${nl(s.text)}</div>
      <div class="cite">『${esc(s.book)}』${s.author?' · '+esc(s.author):''}${s.page?' · '+esc(s.page):''}</div>
      <div class="small">발견한 날 ${esc(s.date)} ${s.kind==='summary'?'<span class="badge">요약·데모</span>':''}</div>
-     <div style="margin:6px 0">${tagsHtml(s.tags)}</div>
+     <div style="margin:6px 0">${tagsHtml(s.tags,true)}</div>
      ${s.thought?`<div class="hand" style="font-size:23px;line-height:1.25;border-left:3px solid var(--ink);padding-left:10px;margin-top:8px">${nl(s.thought)}</div>`:'<div class="small">아직 나의 생각이 없어요. 수정해서 한 줄 남겨 보세요.</div>'}
      <div class="small" style="margin-top:6px">공개 범위: <b>${s.vis==='friends'?'친구에게 보이기':'나만 보기'}</b> <button class="linkbtn" data-act="quote-vis" data-id="${s.id}">바꾸기</button></div></div>
     <div class="row" style="margin-top:6px"><button class="btn sm" data-act="quote-edit" data-id="${s.id}">수정</button><button class="btn sm" data-act="quote-card" data-id="${s.id}">문장 카드 미리보기</button><button class="btn sm" data-act="quote-del" data-id="${s.id}">삭제</button></div>
