@@ -134,8 +134,8 @@ a{color:inherit}
 .c1{left:0;top:2px}.c2{left:36%;top:2px}.c3{left:40%;bottom:2px}.c4{left:4px;bottom:2px}
 .mini-spine{position:absolute;right:4px;top:18px;width:30px;height:150px;border:1.5px solid var(--ink);border-radius:2px;writing-mode:vertical-rl;font-family:var(--hand);font-size:15px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:2px 2px 0 rgba(56,52,47,.3)}
 .rings::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(56,52,47,.25);transform:translateX(-50%)}
-.tabs{display:flex;flex-direction:column;gap:6px;padding-top:34px;width:66px;flex:none}
-.tab{border:1.5px solid #6e6454;border-left:0;background:#e9e2d2;padding:10px 4px 10px 6px;border-radius:0 9px 9px 0;font-family:var(--hand);font-size:18px;line-height:1.1;text-align:center;word-break:keep-all;
+.tabs{display:flex;flex-direction:column;gap:6px;padding-top:34px;width:auto;min-width:66px;flex:none}
+.tab{border:1.5px solid #6e6454;border-left:0;background:#e9e2d2;padding:10px 12px 10px 10px;border-radius:0 9px 9px 0;font-family:var(--hand);font-size:18px;line-height:1.1;text-align:center;white-space:nowrap;word-break:keep-all;
   box-shadow:1px 1px 0 rgba(56,52,47,.25);transition:transform .15s,margin .15s;margin-left:-2px;color:var(--ink);width:100%}
 .tab:nth-child(2n){background:#dfd5bf}.tab:nth-child(3n){background:#ece6d8}
 .tab:hover{transform:translateX(3px)}
@@ -1106,10 +1106,10 @@ function render(turn){
   document.documentElement.style.setProperty('--hand',(FONTS[S.settings.font]||FONTS.default).stack);
   if(inFriend){
     $('tabs').innerHTML=FRIEND_TABLIST.map(([k,n])=>`<button class="tab ${ui.fTab===k?'on':''}" data-act="ftab" data-v="${k}" ${ui.fTab===k?'aria-current="page"':''}>${n}</button>`).join('')
-      +`<button class="tab" data-act="friend-exit" style="margin-top:10px;background:var(--kraft)">📚 책장으로</button>`;
+      +`<button class="tab" data-act="friend-exit" style="margin-top:10px;background:var(--kraft)">책장으로</button>`;
   }else{
     $('tabs').innerHTML=TABLIST.map(([k,n])=>`<button class="tab ${ui.view===k?'on':''}" data-act="nav" data-v="${k}" ${ui.view===k?'aria-current="page"':''}>${n}</button>`).join('')
-      +`<button class="tab" data-act="nav" data-v="home" style="margin-top:10px;background:var(--kraft)">📚 책장으로</button>`;
+      +`<button class="tab" data-act="nav" data-v="home" style="margin-top:10px;background:var(--kraft)">책장으로</button>`;
   }
   const [L,R]=inFriend?FRIEND_VIEWS[ui.fTab](inFriend):VIEWS[ui.view]();
   $('pages').innerHTML=`<section class="page L ${ui.page===0?'on':''}" aria-label="앞 페이지">${L}</section><section class="page R ${ui.page===1?'on':''}" aria-label="뒷 페이지">${R}</section>`;
