@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TEXT HIP UNIVERSE · 문학 수첩</title>
+<title>READ ME · 문학 수첩</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Nanum+Myeongjo:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
@@ -137,6 +137,7 @@ button.tag.on{background:var(--ink);color:var(--paper)}
 .bio{font-family:var(--hand);font-size:22px;color:#5a534a;line-height:1.2;margin-top:4px}
 .stk{position:absolute;pointer-events:none;z-index:2}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pimg{display:block;flex:none;object-fit:cover;image-rendering:pixelated;border:1.6px solid var(--ink);border-radius:4px;background:#fbf8f0}
 .persona-stamp{border:2px solid var(--ink);padding:8px 12px;display:flex;gap:10px;align-items:center;cursor:pointer;transform:rotate(-1deg);background:#efe7d4;margin:8px 4px;border-radius:3px}
 .persona-stamp b{font-family:var(--hand);font-size:26px;font-weight:400}
 
@@ -176,6 +177,8 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 .room[hidden],.book[hidden],.pager[hidden]{display:none!important}
 .room .case{padding:0 14px 2px}
 .room .shelf{min-height:184px}
+.live{font-family:var(--body);font-size:12px;color:#7d7a55;vertical-align:middle;margin-left:6px;animation:blink 2s infinite}
+@keyframes blink{50%{opacity:.35}}
 .castlist{max-height:440px;overflow:auto;padding:2px 4px 4px 0;margin:4px 0 6px}
 .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 10px}
 @media (max-width:640px){.room{padding:18px 14px 22px}}
@@ -246,7 +249,7 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 <body>
 <div class="wrap">
   <div class="topline">
-    <button class="logo" data-act="nav" data-v="home" title="홈으로 돌아가기">TEXT HIP UNIVERSE<small>나의 문학 수첩</small></button>
+    <button class="logo" data-act="nav" data-v="home" title="홈으로 돌아가기">READ ME<small>나의 문학 수첩</small></button>
     <div class="notice">프로토타입 · 서버 없이 이 브라우저에만 저장돼요 · 친구와 문장은 예시 데이터입니다</div>
   </div>
   <main class="room" id="room" hidden></main>
@@ -261,7 +264,7 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 <div class="intro" id="intro" hidden>
   <div class="cover">
     <div class="label">
-      <h1>TEXT<br>HIP<br>UNIVERSE</h1>
+      <h1>READ<br>ME</h1>
       <p class="tagline">문학으로 연결되는<br>우리의 디지털 수첩</p>
     </div>
     <p class="pen" style="margin-top:20px;font-size:14.5px">내 문학 페르소나, 모아 둔 문장, 문학 속 인물과 나눈 대화가 한 권의 수첩에 쌓이고, 친구의 수첩이 내 책장에 꽂힙니다.</p>
@@ -275,6 +278,10 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 <script>
 "use strict";
 /* ================= 데이터 ================= */
+/* 페르소나 일러스트: assets/1.png ~ 14.png (PERSONAS 순서) */
+/* 문장별 글씨체: q.font가 있으면 그 손글씨로, 없으면 기본 명조 */
+function qtx(q,multi){const t=multi?nl(q.text):esc(q.text);const f=q.font&&FONTS[q.font];return f?`<span style="font-family:${f.stack};font-size:1.3em;line-height:1.45">${t}</span>`:t}
+function pimg(p,size,rot){return p&&p.img?`<img class="pimg" src="${p.img}" alt="${esc(p.char)} 일러스트" width="${size}" height="${size}" style="width:${size}px;height:${size}px${rot?`;transform:rotate(${rot}deg)`:''}" loading="lazy">`:''}
 const KEY='thu_proto_v2';
 const TOPICS=['위로','용기','관계','자유','성장','고독'];
 const TAGS=['위로','용기','외로움','자유','성장','사랑','관계','고독'];
@@ -355,6 +362,7 @@ const PERSONAS={
   why:'한번 마음을 준 대상에게는 감정을 거두기 어렵고, 사랑과 원망이 뒤섞여도 그 마음을 끝내 놓지 못하는 격렬함이 있습니다.',
   intro:'거친 들판 위 황량한 저택에서 자란 히스클리프가 캐서린을 향한 사랑과 자신을 버린 세상에 대한 복수심 속에 살아가는 이야기입니다. (직접 쓴 소개)'}
 };
+Object.values(PERSONAS).forEach((p,i)=>p.img=`assets/${i+1}.png`);
 const QUIZ=[
  {q:'갑자기 하루가 통째로 비었어요. 나는…',o:[['오래 연락 못 한 사람에게 안부를 보낸다',{LP:2}],['안 가 본 골목으로 무작정 걷는다',{AL:2,HG:1}],['방에 앉아 머릿속을 천천히 정리한다',{HM:2}]]},
  {q:'눈앞에서 부당한 일이 벌어졌어요.',o:[['바로 나서서 따져 묻는다',{HG:2}],['조용하지만 끝까지 내 입장을 지킨다',{CH:2}],['상황부터 살피고 가장 효과적인 말을 고른다',{EB:2,HM:1}]]},
@@ -609,6 +617,8 @@ const FRIEND_MORE={
   comments:[{author:'밤하늘서점',text:'노란우산 님 방명록은 늘 따뜻해요.'}]}
 };
 Object.entries(FRIEND_MORE).forEach(([id,m])=>{const f=FRIENDS.find(x=>x.id===id);for(const k in m)f[k].push(...m[k])});
+/* 시연용: 친구 문장 몇 개는 각자 고른 손글씨로 */
+const DEMO_FONTS=['onhand','oksooni','becomeone','danjeong'];FRIENDS.forEach((f,i)=>f.quotes.forEach((q,j)=>{if((i+j)%2===0)q.font=DEMO_FONTS[(i+j)%DEMO_FONTS.length]}));
 const SEED_FRIENDS=['f1','f2','f3','f4','f5','f6'];
 const SPINE_COL=['#D8CBB5','#e9e1cf','#c8bba2','#b9c0a4','#d9c2b8','#c9cfd6','#e3d3a8','#cdb9c4'];
 
@@ -638,8 +648,10 @@ function load(){
   try{const raw=localStorage.getItem(KEY);if(raw){const s=JSON.parse(raw);if(valid(s)){if(!(s.meta.v>=2)){SEED_FRIENDS.forEach(id=>{if(!s.friends.added.includes(id))s.friends.added.push(id)});s.meta.v=2}return s}}}catch(e){}
   return seed();
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){mem=S}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){mem=S}if(typeof queuePush==='function')queuePush()}
 let S=load();
+setTimeout(()=>{shareRefresh();if(S.meta.seen&&!S.meta.made)onboard()},0);
+setInterval(()=>{if(document.visibilityState==='visible'&&!ui.inFriend&&ui.view==='home')shareRefresh()},8000);
 window.addEventListener('resize',()=>{if(!ui.inFriend&&ui.view==='home'){clearTimeout(render._r);render._r=setTimeout(()=>render(),150)}});
 
 const ui={view:'home',page:0,qTag:null,qSel:null,bStatus:'all',bSel:null,chat:null,fSel:null,inFriend:null,fTab:'intro',test:null,pending:null,recTopic:null,recIdx:Math.floor(Date.now()/86400000)%RECS.length};
@@ -702,14 +714,15 @@ VIEWS.mine=function(){
   const L=`${stk}
    <div class="me-head">${avatar(pr.avatar)}<div><div class="nick">${esc(pr.nick)}</div><div class="bio">${esc(pr.bio)}</div></div></div>
    <div style="margin-top:6px"><h1 class="ptitle">${esc(pr.coverTitle||'나의 문학 수첩')}</h1></div>
-   ${p?`<div class="persona-stamp" data-act="nav" data-v="persona" role="button" tabindex="0"><span style="font-size:26px">✎</span><div><div class="small">나의 문학 페르소나</div><b>${esc(p.alias)}</b><div class="small">${esc(p.name)} · ${p.kw.slice(0,3).map(esc).join(' · ')}</div></div></div>`
+   ${p?`<div class="persona-stamp" data-act="nav" data-v="persona" role="button" tabindex="0">${pimg(p,56)}<div><div class="small">나의 문학 페르소나</div><b>${esc(p.alias)}</b><div class="small">${esc(p.name)} · ${p.kw.slice(0,3).map(esc).join(' · ')}</div></div></div>`
      :`<div class="note card" style="--r:-.4deg;text-align:center;padding:16px 12px"><span class="tape"></span><div class="hand" style="font-size:27px;line-height:1.15">아직 생성된 페르소나가 없어요</div><div class="small" style="margin:6px 0 10px">${QUIZ.length}개의 질문에 답하면 나와 닮은 문학 속 인물을 찾아 드려요.</div><button class="btn solid" data-act="nav" data-v="persona">페르소나 검사하기</button></div>`}
+   ${shareCard()}
    ${recBox()}`;
   const rq=[...S.quotes].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,3);
   const rb=S.books.slice(-3).reverse();
   const rc=S.conversations[S.conversations.length-1];
   const R=`<h2 class="h3">최근 모은 문장 <button class="more" data-act="nav" data-v="quotes">문장 수집함 →</button></h2>
-   ${rq.length?rq.map((q,i)=>`<div class="note click" style="--r:${rot(i)}" data-act="quote-open" data-id="${q.id}"><span class="tape l"></span><div class="qt">${esc(q.text)}</div><div class="cite">『${esc(q.book)}』${q.author?' · '+esc(q.author):''}</div></div>`).join(''):empty('문장이 아직 없어요','마음에 든 문장 하나로 수첩을 시작해 보세요.',`<button class="btn" data-act="quote-new">첫 문장 적기</button>`)}
+   ${rq.length?rq.map((q,i)=>`<div class="note click" style="--r:${rot(i)}" data-act="quote-open" data-id="${q.id}"><span class="tape l"></span><div class="qt">${qtx(q)}</div><div class="cite">『${esc(q.book)}』${q.author?' · '+esc(q.author):''}</div></div>`).join(''):empty('문장이 아직 없어요','마음에 든 문장 하나로 수첩을 시작해 보세요.',`<button class="btn" data-act="quote-new">첫 문장 적기</button>`)}
    <h2 class="h3">독서 기록 <button class="more" data-act="nav" data-v="books">전체 보기 →</button></h2>
    ${rb.length?`<div class="row" style="align-items:flex-end">${rb.map(b=>`<div data-act="book-open" data-id="${b.id}" style="cursor:pointer;width:84px"><div class="coverbook" style="width:78px">${esc(b.title)}</div><div class="small">${esc(b.status)}</div></div>`).join('')}</div>`:empty('아직 기록한 책이 없어요','읽은 책, 읽고 싶은 책을 적어 보세요.',`<button class="btn" data-act="book-new">책 추가</button>`)}
    <h2 class="h3">최근 인물 대화 <button class="more" data-act="nav" data-v="talk">대화 →</button></h2>
@@ -720,39 +733,115 @@ VIEWS.mine=function(){
 /* 홈 — 내 책장 (친구 수첩이 쌓이는 곳) */
 function spineH(id){let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))%997;return h}
 function friendMenu(id){
-  const f=FRIENDS.find(x=>x.id===id);if(!f)return;
-  const pr=PERSONAS[f.persona],a=S.friends.added,i=a.indexOf(id),gb=S.comments.filter(c=>c.fid===id).length,q=f.quotes[f.quotes.length-1];
+  const f=findFriend(id);if(!f)return;
+  const pr=f.persona&&PERSONAS[f.persona],a=S.friends.added,i=a.indexOf(id),gb=f.shared?(f.comments||[]).length:S.comments.filter(c=>c.fid===id).length,q=f.quotes[f.quotes.length-1];
   openModal(`<button class="linkbtn" data-act="close" style="position:absolute;right:16px;top:12px;font-size:22px;text-decoration:none" aria-label="닫기">✕</button>
-   <div class="me-head">${avatar(f.avatar,'')}<div><h3 style="margin:0">${esc(f.nick)}의 수첩</h3><div class="bio">${esc(f.bio)}</div><div class="small">${esc(pr.alias)} · ${pr.kw.slice(0,3).map(esc).join(' · ')}</div></div></div>
-   ${q?`<div class="note card" style="--r:-.3deg;margin:12px 2px"><span class="tape"></span><div class="qt" style="font-size:15.5px">${esc(q.text)}</div><div class="cite">『${esc(q.book)}』</div></div>`:''}
+   <div class="me-head">${avatar(f.avatar,'')}<div><h3 style="margin:0">${esc(f.nick)}의 수첩</h3><div class="bio">${esc(f.bio)}</div><div class="small">${pr?esc(pr.alias)+' · '+pr.kw.slice(0,3).map(esc).join(' · '):'아직 페르소나가 없어요'}</div></div></div>
+   ${q?`<div class="note card" style="--r:-.3deg;margin:12px 2px"><span class="tape"></span><div class="qt" style="font-size:15.5px">${qtx(q)}</div><div class="cite">『${esc(q.book)}』</div></div>`:''}
    <div class="small" style="margin-top:6px">바로 펼쳐 보기</div>
    <div class="chiprow">${[['quotes','문장 '+f.quotes.length],['books','독서 기록 '+f.books.length],['talk','대화 '+f.convs.length],['guestbook','방명록 '+gb]].map(([k,n])=>`<button class="tag" data-act="friend-go" data-id="${id}" data-v="${k}">${n}</button>`).join('')}</div>
    <div class="row" style="margin-top:12px"><button class="btn solid" data-act="friend-go" data-id="${id}">📖 수첩 펼치기</button></div>
-   <div class="row" style="margin-top:12px;justify-content:space-between;align-items:center;border-top:1.4px dashed var(--gray);padding-top:10px">
+   ${f.shared?`<div class="small" style="margin-top:12px;border-top:1.4px dashed var(--gray);padding-top:10px">우리 책장에 함께 꽂힌 수첩이에요 · ${esc(sinceText(f.createdAt))}</div>`
+   :`<div class="row" style="margin-top:12px;justify-content:space-between;align-items:center;border-top:1.4px dashed var(--gray);padding-top:10px">
     <div class="row" style="align-items:center"><span class="small">책장 위치 ${i+1} / ${a.length}</span>
      <button class="btn sm" data-act="friend-move" data-id="${id}" data-v="-1" ${i<=0?'disabled':''} aria-label="앞으로 옮기기">◀ 앞으로</button>
      <button class="btn sm" data-act="friend-move" data-id="${id}" data-v="1" ${i>=a.length-1?'disabled':''} aria-label="뒤로 옮기기">뒤로 ▶</button></div>
-    <button class="btn sm" data-act="friend-del" data-id="${id}">책장에서 빼기</button></div>`);
+    <button class="btn sm" data-act="friend-del" data-id="${id}">책장에서 빼기</button></div>`}`);
 }
 /* 홈 = 책장 (수첩 바깥). 여기서 내 수첩이나 친구 수첩을 골라 펼친다 */
 VIEWS.home=function(){return ['','']};
+function spineBtn(f){const h=spineH(f.id);return `<button class="spine ${ui.justAdded===f.id?'new':''}" style="height:${128+h%34}px;background:${SPINE_COL[h%SPINE_COL.length]}" data-act="friend-menu" data-id="${f.id}" title="${esc(f.nick)}의 수첩"><span>${esc(f.nick)}</span></button>`}
+function shelfRows(items,min){const PER=window.innerWidth<640?5:window.innerWidth<1000?8:11,rows=[];for(let i=0;i<items.length;i+=PER)rows.push(items.slice(i,i+PER));while(rows.length<min)rows.push([]);return `<div class="case">${rows.map(r=>`<div class="shelf">${r.join('')}</div>`).join('')}</div>`}
 function shelfRoom(){
   const pr=S.profile, fr=S.friends.added.map(id=>FRIENDS.find(f=>f.id===id)).filter(Boolean);
-  const items=[`<button class="spine mine" data-act="nav" data-v="mine" title="내 수첩 펼치기"><span>${esc(pr.coverTitle||'나의 문학 수첩')}</span></button>`]
-   .concat(fr.map(f=>{const h=spineH(f.id);return `<button class="spine ${ui.justAdded===f.id?'new':''}" style="height:${128+h%34}px;background:${SPINE_COL[h%SPINE_COL.length]}" data-act="friend-menu" data-id="${f.id}" title="${esc(f.nick)}의 수첩"><span>${esc(f.nick)}</span></button>`}))
-   .concat([`<button class="spine slot" data-act="nav" data-v="friends" title="친구 찾아서 수첩 꽂기"><span>＋ 친구 추가</span></button>`]);
-  const PER=window.innerWidth<640?5:window.innerWidth<1000?8:11,rows=[];
-  for(let i=0;i<items.length;i+=PER)rows.push(items.slice(i,i+PER));
-  while(rows.length<2)rows.push([]);
-  const feed=fr.slice().reverse().map(f=>({f,q:f.quotes[f.quotes.length-1]})).filter(x=>x.q);
+  const me=`<button class="spine mine" data-act="nav" data-v="mine" title="내 수첩 펼치기"><span>${esc(pr.coverTitle||'나의 문학 수첩')}</span></button>`;
+  const shared=SHARED.list, on=S.share&&S.share.on;
+  let ours;
+  if(SHARED.online){
+    const items=(on?[me]:[]).concat(shared.map(spineBtn)).concat(on?[]:[`<button class="spine slot" data-act="share-on" title="내 수첩을 우리 책장에 꽂기"><span>＋ 내 수첩 꽂기</span></button>`]);
+    ours=`<h2 class="h3" style="margin-top:0">우리 책장 <span class="live">● 실시간</span></h2>
+     <div class="sub" style="margin-top:0">지금까지 <b>${shared.length+(on?1:0)}권</b>의 수첩이 차곡차곡 꽂혔어요${on?'':' · 내 수첩도 꽂아 보세요'}</div>
+     ${shelfRows(items,2)}`;
+  }else{
+    ours=`<h2 class="h3" style="margin-top:0">우리 책장</h2>
+     <div class="note" style="margin:6px 2px 14px">${SHARED.loaded?'공유 서버에 연결되지 않았어요. <b>node server.js</b>로 실행하면 모두의 수첩이 여기에 함께 꽂혀요.':'우리 책장을 불러오는 중이에요…'}</div>`;
+  }
+  const friendShelf=`<h2 class="h3">내 친구 수첩 <span class="small">${fr.length}권 · 예시</span></h2>
+   ${shelfRows((SHARED.online&&on?[]:[me]).concat(fr.map(spineBtn)).concat([`<button class="spine slot" data-act="nav" data-v="friends" title="친구 찾아서 수첩 꽂기"><span>＋ 친구 추가</span></button>`]),1)}`;
+  const feed=shared.slice().reverse().concat(fr.slice().reverse()).map(f=>({f,q:f.quotes[f.quotes.length-1]})).filter(x=>x.q).slice(0,12);
   return `<div class="room-head"><h1 class="ptitle">나의 책장</h1>
-    <div class="sub">내 수첩과 친구 수첩 ${fr.length}권이 차곡차곡 꽂혀 있어요. 꺼내 볼 수첩을 눌러 보세요.</div></div>
-   <div class="case">${rows.map(r=>`<div class="shelf">${r.join('')}</div>`).join('')}</div>
-   <div class="small" style="margin:0 4px 18px">맨 앞의 검은 수첩이 내 수첩이에요. 친구를 추가하면 그 친구의 수첩이 책장 끝에 꽂혀요.</div>
-   <h2 class="h3">친구 수첩 새 소식</h2>
-   ${feed.length?`<div class="feed">${feed.map((x,i)=>`<div class="note click" style="--r:${rot(i)}" data-act="friend-go" data-id="${x.f.id}"><div class="row" style="flex-wrap:nowrap">${avatar(x.f.avatar,'sm')}<div><b class="hand" style="font-size:21px">${esc(x.f.nick)}</b> <span class="small">${esc(PERSONAS[x.f.persona].alias)}</span><div class="qt" style="font-size:15.5px">${esc(x.q.text)}</div><div class="cite">『${esc(x.q.book)}』</div></div></div></div>`).join('')}</div>`
-     :empty('책장이 아직 조용해요','친구를 추가하면 친구들이 모은 문장이 여기에 보여요.',`<button class="btn" data-act="nav" data-v="friends">친구 찾기</button>`)}
-   <div class="warn">친구와 그들의 수첩은 <b>프로토타입 예시 데이터</b>예요.</div>`;
+    <div class="sub">꺼내 볼 수첩을 눌러 보세요. 검은 수첩이 내 수첩이에요.</div></div>
+   ${ours}
+   ${friendShelf}
+   <h2 class="h3">책장 새 소식</h2>
+   ${feed.length?`<div class="feed">${feed.map((x,i)=>`<div class="note click" style="--r:${rot(i)}" data-act="friend-go" data-id="${x.f.id}"><div class="row" style="flex-wrap:nowrap">${avatar(x.f.avatar,'sm')}<div><b class="hand" style="font-size:21px">${esc(x.f.nick)}</b> <span class="small">${x.f.persona&&PERSONAS[x.f.persona]?esc(PERSONAS[x.f.persona].alias):''}${x.f.shared?' · 우리 책장':''}</span><div class="qt" style="font-size:15.5px">${qtx(x.q)}</div><div class="cite">『${esc(x.q.book)}』</div></div></div></div>`).join('')}</div>`
+     :empty('책장이 아직 조용해요','수첩에 문장이 쌓이면 여기에 보여요.')}
+   <div class="warn">'내 친구 수첩'은 <b>프로토타입 예시 데이터</b>예요. '우리 책장'에는 실제로 꽂힌 수첩만 보이고, 문장은 <b>친구에게 보이기</b>로 둔 것만 공개돼요.</div>`;
+}
+
+/* ================= 우리 책장 (server.js 공유 서버) ================= */
+const API='/api/notebooks';
+const SHARED={online:false,loaded:false,list:[]};
+function rnd(n){const a=new Uint8Array(n);(window.crypto||{}).getRandomValues?crypto.getRandomValues(a):a.forEach((_,i)=>a[i]=Math.random()*256|0);return [...a].map(b=>b.toString(16).padStart(2,'0')).join('')}
+function shareCred(){if(!S.share||!S.share.id){S.share={id:rnd(8),token:rnd(16),on:false};save()}return S.share}
+function sinceText(t){if(!t)return '';const m=Math.round((Date.now()-t)/60000);return m<1?'방금 꽂혔어요':m<60?m+'분 전에 꽂혔어요':Math.round(m/60)+'시간 전에 꽂혔어요'}
+function toFriend(n){
+  return {id:'s'+n.id,sid:n.id,shared:true,nick:n.nick,bio:n.bio,avatar:(n.avatar|0)%AV.length,persona:PERSONAS[n.persona]?n.persona:null,coverTitle:n.coverTitle,
+   quotes:(n.quotes||[]).map((q,i)=>({...q,id:'s'+n.id+'q'+i,tags:q.tags||[],font:FONTS[q.font]?q.font:''})),books:n.books||[],
+   convs:(n.convs||[]).filter(c=>CHARS[c.charId]),comments:n.comments||[],createdAt:n.createdAt};
+}
+function findFriend(id){return FRIENDS.find(x=>x.id===id)||SHARED.list.find(x=>x.id===id)||null}
+async function api(path,opt){
+  const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),6000);
+  try{const r=await fetch(API+path,{cache:'no-store',...opt,signal:ctl.signal,headers:{'Content-Type':'application/json'}});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||r.status);return j}
+  finally{clearTimeout(t)}
+}
+async function shareRefresh(){
+  try{const j=await api('');const mine=S.share&&S.share.id;SHARED.list=(j.notebooks||[]).filter(n=>n.id!==mine).map(toFriend);SHARED.online=true}
+  catch(e){SHARED.online=false}
+  SHARED.loaded=true;
+  if(!ui.inFriend&&ui.view==='home'&&$('modal').hidden)render();
+}
+function myNotebook(){
+  const pr=S.profile;
+  return {nick:pr.nick,bio:pr.bio,coverTitle:pr.coverTitle,avatar:pr.avatar,persona:pr.persona,
+   quotes:S.quotes.filter(q=>q.vis!=='me').map(q=>({text:q.text,book:q.book,author:q.author,thought:q.thought,tags:q.tags,font:q.font})),
+   books:S.books.map(b=>({title:b.title,author:b.author,status:b.status})),
+   convs:S.conversations.filter(c=>c.vis==='friends').map(c=>({charId:c.charId,note:c.note,lines:c.msgs.slice(-6).map(m=>({who:m.who,text:m.text}))}))};
+}
+async function sharePush(quiet){
+  const c=shareCred();
+  try{await api('/'+c.id,{method:'PUT',body:JSON.stringify({token:c.token,notebook:myNotebook()})});
+    if(!c.on){c.on=true;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+    if(!quiet)toast('우리 책장에 내 수첩을 꽂았어요');shareRefresh();return true}
+  catch(e){if(!quiet)toast(e.message==='shelf_full'?'책장이 가득 찼어요':'서버에 연결하지 못했어요');return false}
+}
+let pushT=null;
+function queuePush(){if(!S.share||!S.share.on||!SHARED.online)return;clearTimeout(pushT);pushT=setTimeout(()=>sharePush(true),1200)}
+async function shareOff(){
+  const c=S.share;if(!c||!c.on)return;
+  try{await api('/'+c.id,{method:'DELETE',body:JSON.stringify({token:c.token})})}catch(e){}
+  c.on=false;save();shareRefresh();toast('우리 책장에서 내 수첩을 뺐어요');render();
+}
+function shareCard(){
+  const on=S.share&&S.share.on;
+  if(!SHARED.loaded)return '';
+  if(!SHARED.online)return `<div class="note" style="--r:.3deg;margin:10px 4px"><b class="hand" style="font-size:21px">우리 책장</b><div class="small">공유 서버에 연결되면 내 수첩을 모두의 책장에 꽂을 수 있어요.</div></div>`;
+  return on?`<div class="note kraft" style="--r:.3deg;margin:10px 4px"><b class="hand" style="font-size:21px">📚 우리 책장에 꽂혀 있어요</b><div class="small">기록하면 자동으로 반영돼요. 문장은 ‘친구에게 보이기’로 둔 것만, 대화는 친구에게 보이기로 바꾼 것만 공개돼요.</div><div class="row" style="margin-top:6px"><button class="btn sm" data-act="nav" data-v="home">책장에서 보기</button><button class="btn sm" data-act="share-off">책장에서 빼기</button></div></div>`
+   :`<div class="note card" style="--r:-.3deg;margin:10px 4px"><span class="tape"></span><b class="hand" style="font-size:22px">내 수첩을 우리 책장에 꽂아 볼까요?</b><div class="small">발표장의 모두가 내 수첩을 펼쳐 볼 수 있어요. 닉네임·페르소나·독서 기록과 ‘친구에게 보이기’ 문장만 공개돼요.</div><div class="row" style="margin-top:6px"><button class="btn solid sm" data-act="share-on">우리 책장에 꽂기</button></div></div>`;
+}
+function onboard(){
+  const pr=S.profile;
+  openModal(`<h3>나만의 수첩 만들기</h3>
+   <p class="small" style="margin:4px 0 8px">이름을 붙이면 빈 수첩이 하나 생겨요. 페르소나를 찾고, 마음에 남은 문장을 적어 채워 보세요.</p>
+   <form data-form="onboard">
+    <label for="ob-n">닉네임<span class="req">*</span></label><input type="text" id="ob-n" name="nick" required maxlength="12" placeholder="예: 밤새읽는선생님" value="${pr.nick==='나의수첩'?'':esc(pr.nick)}">
+    <label for="ob-b">한 줄 소개<span class="opt">선택</span></label><input type="text" id="ob-b" name="bio" maxlength="40" placeholder="예: 아이들과 같이 읽을 책을 찾는 중" value="">
+    <label for="ob-c">수첩 이름<span class="opt">선택</span></label><input type="text" id="ob-c" name="cover" maxlength="20" placeholder="나의 문학 수첩">
+    <label>아바타</label><div class="row">${AV.map((_,i)=>`<label class="avopt ${pr.avatar===i?'on':''}" style="margin:0;cursor:pointer"><input class="sr" type="radio" name="av" value="${i}" ${pr.avatar===i?'checked':''}>${avatar(i,'sm')}</label>`).join('')}</div>
+    ${SHARED.online?`<label style="display:flex;gap:8px;align-items:center;font-family:var(--body);font-size:14.5px;margin-top:12px"><input type="checkbox" name="share" checked style="width:auto"> 만든 수첩을 <b>우리 책장</b>에 바로 꽂기</label>`:''}
+    <div class="row" style="margin-top:14px"><button class="btn solid" type="submit">수첩 만들기</button></div>
+   </form>`);
 }
 
 VIEWS.persona=function(){
@@ -761,7 +850,7 @@ VIEWS.persona=function(){
   if(show){
     L=`<h1 class="ptitle">${pend?'테스트 결과':'나의 문학 페르소나'}</h1>
     <div class="note card" style="--r:-.4deg"><span class="tape"></span>
-      <div class="small">${esc(show.alias)}</div><div class="hand" style="font-size:34px;line-height:1.1">${esc(show.name)}</div>
+      <div class="row" style="flex-wrap:nowrap;align-items:center;gap:14px">${pimg(show,128,-1.5)}<div><div class="small">${esc(show.alias)}</div><div class="hand" style="font-size:34px;line-height:1.1">${esc(show.name)}</div></div></div>
       <div style="margin:6px 0">${show.kw.map(k=>`<span class="tag">${esc(k)}</span>`).join('')}</div>
       <dl class="kv"><dt>닮은 인물</dt><dd>${esc(show.char)}</dd><br><dt>작품</dt><dd>『${esc(show.work)}』 · ${esc(show.author)}</dd></dl>
       <p><b class="hand" style="font-size:20px">나와 닮은 이유</b><br>${esc(show.why)}</p>
@@ -788,7 +877,7 @@ VIEWS.persona=function(){
     <div class="note card" style="--r:.4deg"><span class="tape"></span><p style="margin:0 0 8px">상황형 질문에 답하면, 수첩에 담긴 ${n}가지 문학 속 인물 중 나와 가장 닮은 한 명을 찾아 드려요.</p>
      <button class="btn" data-act="persona-all" aria-expanded="false">📖 페르소나 설명 보기 (${n}가지)</button></div>`
     :`<h2 class="h3" style="margin-top:0">수첩에 있는 ${n}가지 이야기 <button class="more" data-act="persona-all" aria-expanded="true">접기 ▲</button></h2>
-    ${Object.values(PERSONAS).map((x,i)=>`<div class="note ${p&&p.key===x.key?'kraft':''}" style="--r:${rot(i+2)};margin:7px 4px"><b class="hand" style="font-size:23px">${esc(x.alias)}</b> <span class="small">『${esc(x.work)}』 · ${esc(x.char)}</span><div class="small" style="color:#4a443d">${x.kw.map(esc).join(' · ')}</div></div>`).join('')}
+    ${Object.values(PERSONAS).map((x,i)=>`<div class="note ${p&&p.key===x.key?'kraft':''}" style="--r:${rot(i+2)};margin:7px 4px;display:flex;gap:10px;align-items:center">${pimg(x,48)}<div><b class="hand" style="font-size:23px">${esc(x.alias)}</b> <span class="small">『${esc(x.work)}』 · ${esc(x.char)}</span><div class="small" style="color:#4a443d">${x.kw.map(esc).join(' · ')}</div></div></div>`).join('')}
     <div class="warn">등장인물 설명은 작품을 바탕으로 직접 정리한 소개이며, 인물의 성격을 단정하지 않아요. 같은 인물도 다양하게 해석될 수 있습니다.</div>`;
   }
   return [L,R];
@@ -805,12 +894,12 @@ VIEWS.quotes=function(){
    <div class="row" style="margin:4px 0 8px"><button class="btn solid" data-act="quote-new">＋ 문장 적기</button></div>
    <div class="chiprow"><button class="tag ${!ui.qTag?'on':''}" data-act="qtag" data-v="">전체 ${S.quotes.length}</button>${TAGS.map(t=>`<button class="tag ${ui.qTag===t?'on':''}" data-act="qtag" data-v="${t}">${t}</button>`).join('')}</div>
    ${q.length?q.map((x,i)=>`<div class="note ${i%3==1?'kraft':'card'} click ${ui.qSel===x.id?'sel':''}" style="--r:${rot(i)}" data-act="quote-sel" data-id="${x.id}"><span class="tape ${i%2?'l':''}"></span>
-     <div class="qt">${esc(x.text)}</div><div class="cite">『${esc(x.book)}』${x.author?' · '+esc(x.author):''}${x.from?` · <span class="badge">${esc(x.from)}의 수첩에서</span>`:''}</div><div style="margin-top:4px">${tagsHtml(x.tags,true)}${x.vis==='friends'?'<span class="badge">친구에게 보임</span>':''}</div></div>`).join('')
+     <div class="qt">${qtx(x)}</div><div class="cite">『${esc(x.book)}』${x.author?' · '+esc(x.author):''}${x.from?` · <span class="badge">${esc(x.from)}의 수첩에서</span>`:''}</div><div style="margin-top:4px">${tagsHtml(x.tags,true)}${x.vis==='friends'?'<span class="badge">친구에게 보임</span>':''}</div></div>`).join('')
     :empty(ui.qTag?'이 태그의 문장이 없어요':'문장이 아직 없어요','읽다가 마음에 든 문장을 적어 보세요.',`<button class="btn" data-act="quote-new">문장 적기</button>`)}`;
   const s=S.quotes.find(x=>x.id===ui.qSel);
   const R=s?`<h2 class="h3" style="margin-top:0">문장 자세히</h2>
     <div class="note card" style="--r:.3deg;padding:18px 18px 14px"><span class="tape"></span>
-     <div class="qt" style="font-size:20px">${nl(s.text)}</div>
+     <div class="qt" style="font-size:20px">${qtx(s,true)}</div>
      <div class="cite">『${esc(s.book)}』${s.author?' · '+esc(s.author):''}${s.page?' · '+esc(s.page):''}</div>
      <div class="small">발견한 날 ${esc(s.date)} ${s.kind==='summary'?'<span class="badge">요약·데모</span>':''}</div>
      <div style="margin:6px 0">${tagsHtml(s.tags,true)}</div>
@@ -838,7 +927,7 @@ VIEWS.books=function(){
      <div class="bk"><div class="coverbook" style="width:84px;height:116px;font-size:20px">${esc(s.title)}</div><div><div>${esc(s.author||'작가 미상')}</div><div class="small">상태: <b>${esc(s.status)}</b></div><div style="margin-top:6px"><button class="btn sm" data-act="book-edit" data-id="${s.id}">수정</button><button class="btn sm" data-act="book-del" data-id="${s.id}">삭제</button></div></div></div>
      ${s.review?`<div class="hand" style="font-size:23px;line-height:1.25;border-left:3px solid var(--ink);padding-left:10px;margin:6px 4px">${nl(s.review)}</div>`:'<div class="small" style="margin:4px">짧은 감상이 없어요. 수정에서 적어 보세요.</div>'}
      <h3 class="h3">이 책에서 모은 문장 ${qs.length}</h3>
-     ${qs.length?qs.map(q=>`<div class="note click" data-act="quote-open" data-id="${q.id}"><div class="qt" style="font-size:15.5px">${esc(q.text)}</div></div>`).join(''):`<div class="small" style="margin:4px">아직 없어요. <button class="linkbtn" data-act="quote-new-book" data-id="${s.id}">이 책의 문장 적기</button></div>`}
+     ${qs.length?qs.map(q=>`<div class="note click" data-act="quote-open" data-id="${q.id}"><div class="qt" style="font-size:15.5px">${qtx(q)}</div></div>`).join(''):`<div class="small" style="margin:4px">아직 없어요. <button class="linkbtn" data-act="quote-new-book" data-id="${s.id}">이 책의 문장 적기</button></div>`}
      <h3 class="h3">관련 대화 ${cs.length}</h3>
      ${cs.length?cs.map(c=>`<div class="note click kraft" data-act="talk-open" data-id="${c.id}"><b class="hand" style="font-size:20px">${esc(CHARS[c.charId].name)}</b> <span class="small">${esc(c.date)}</span></div>`).join(''):'<div class="small" style="margin:4px">이 작품의 인물과 나눈 대화가 없어요.</div>'}`;
   }else{
@@ -901,16 +990,17 @@ const FRIEND_TABLIST=[['intro','소개'],['quotes','문장'],['books','독서 �
 const FRIEND_VIEWS={};
 FRIEND_VIEWS.intro=function(f){
   const added=S.friends.added.includes(f.id);
-  const pr=PERSONAS[f.persona];
+  const pr=f.persona&&PERSONAS[f.persona];
   const L=`<h1 class="ptitle">${esc(f.nick)}의 수첩</h1>
    <div class="me-head">${avatar(f.avatar,'')}<div><div class="nick" style="font-size:32px">${esc(f.nick)}</div><div class="bio">${esc(f.bio)}</div></div></div>
-   <div class="row" style="margin-top:8px">${added?`<button class="btn sm" data-act="friend-del" data-id="${f.id}">책장에서 빼기</button>`:`<button class="btn sm solid" data-act="friend-add" data-id="${f.id}">내 책장에 꽂기</button>`}</div>
-   <div class="note card" style="--r:-.3deg;margin-top:12px"><span class="tape"></span>
-    <div class="small">${esc(pr.alias)}</div><div class="hand" style="font-size:28px;line-height:1.1">${esc(pr.name)}</div>
+   <div class="row" style="margin-top:8px">${f.shared?'<span class="badge" style="border-style:solid">📚 우리 책장에 꽂힌 수첩</span>':added?`<button class="btn sm" data-act="friend-del" data-id="${f.id}">책장에서 빼기</button>`:`<button class="btn sm solid" data-act="friend-add" data-id="${f.id}">내 책장에 꽂기</button>`}</div>
+   ${pr?`   <div class="note card" style="--r:-.3deg;margin-top:12px"><span class="tape"></span>
+    <div class="row" style="flex-wrap:nowrap;align-items:center;gap:12px">${pimg(pr,92,1)}<div><div class="small">${esc(pr.alias)}</div><div class="hand" style="font-size:28px;line-height:1.1">${esc(pr.name)}</div></div></div>
     <div style="margin:6px 0">${pr.kw.map(k=>`<span class="tag">${esc(k)}</span>`).join('')}</div>
     <dl class="kv"><dt>닮은 인물</dt><dd>${esc(pr.char)}</dd><br><dt>작품</dt><dd>『${esc(pr.work)}』 · ${esc(pr.author)}</dd></dl>
     <p class="small">${esc(pr.why)}</p></div>
-   <div class="badge">데모 친구 · 프로토타입 예시 데이터</div>`;
+`:empty('아직 페르소나가 없어요','페르소나 검사를 하면 여기에 닮은 인물이 나타나요.')}
+   ${f.shared?'':'<div class="badge">데모 친구 · 프로토타입 예시 데이터</div>'}`;
   const R=`<h2 class="h3" style="margin-top:0">${esc(f.nick)}의 수첩 한눈에</h2>
    <div class="note kraft" style="--r:.4deg">
     <dl class="kv"><dt>문장</dt><dd>${f.quotes.length}개 모았어요</dd><br><dt>독서 기록</dt><dd>${f.books.length}권 기록했어요</dd><br><dt>대화</dt><dd>${f.convs.length}번의 기록</dd><br><dt>방명록</dt><dd>${S.comments.filter(c=>c.fid===f.id).length}개의 흔적</dd></dl></div>
@@ -919,7 +1009,7 @@ FRIEND_VIEWS.intro=function(f){
 };
 FRIEND_VIEWS.quotes=function(f){
   const L=`<h1 class="ptitle">${esc(f.nick)}의 문장</h1>
-   ${f.quotes.length?f.quotes.map((q,i)=>{const have=S.quotes.some(x=>x.from===f.nick&&x.text===q.text);return `<div class="note ${i%2?'kraft':'card'}" style="--r:${rot(i+f.avatar)}"><span class="tape ${i%2?'l':''}"></span><div class="qt">${esc(q.text)}</div><div class="cite">『${esc(q.book)}』 · ${esc(q.author)}</div>${tagsHtml(q.tags)}${q.thought?`<div class="hand" style="font-size:20px;line-height:1.2;margin-top:4px">${esc(q.thought)}</div>`:''}<div class="row" style="margin-top:6px"><button class="btn sm" data-act="friend-take" data-f="${f.id}" data-i="${i}" ${have?'disabled':''}>${have?'담았어요':'내 수첩에 담기'}</button></div></div>`}).join(''):empty('공개한 문장이 없어요','아직 이 친구는 문장을 적지 않았어요.')}`;
+   ${f.quotes.length?f.quotes.map((q,i)=>{const have=S.quotes.some(x=>x.from===f.nick&&x.text===q.text);return `<div class="note ${i%2?'kraft':'card'}" style="--r:${rot(i+f.avatar)}"><span class="tape ${i%2?'l':''}"></span><div class="qt">${qtx(q)}</div><div class="cite">『${esc(q.book)}』 · ${esc(q.author)}</div>${tagsHtml(q.tags)}${q.thought?`<div class="hand" style="font-size:20px;line-height:1.2;margin-top:4px">${esc(q.thought)}</div>`:''}<div class="row" style="margin-top:6px"><button class="btn sm" data-act="friend-take" data-f="${f.id}" data-i="${i}" ${have?'disabled':''}>${have?'담았어요':'내 수첩에 담기'}</button></div></div>`}).join(''):empty('공개한 문장이 없어요','아직 이 친구는 문장을 적지 않았어요.')}`;
   const taken=f.quotes.filter(q=>S.quotes.some(x=>x.from===f.nick&&x.text===q.text)).length;
   const R=`<h2 class="h3" style="margin-top:0">모아 가기</h2><p class="small">지금까지 ${f.quotes.length}개 중 <b>${taken}개</b>를 내 수첩에 담았어요.</p><div class="warn">문장은 저작권을 고려해 짧게 요약하거나 직접 쓴 해석으로만 전달돼요.</div>`;
   return [L,R];
@@ -937,9 +1027,9 @@ FRIEND_VIEWS.talk=function(f){
   return [L,R];
 };
 FRIEND_VIEWS.guestbook=function(f){
-  const cm=S.comments.filter(c=>c.fid===f.id);
+  const cm=f.shared?(f.comments||[]):S.comments.filter(c=>c.fid===f.id);
   const L=`<h1 class="ptitle">${esc(f.nick)}의 방명록</h1>
-   ${cm.length?cm.map(c=>`<div class="note" style="margin:6px 4px;padding:8px 12px"><b class="hand" style="font-size:19px">${esc(c.author)}</b> <span class="small">${esc(c.date)}</span><div>${esc(c.text)}</div><button class="linkbtn" data-act="comment-del" data-id="${c.id}">삭제</button></div>`).join(''):'<div class="small" style="margin:4px">첫 댓글을 남겨 보세요.</div>'}
+   ${cm.length?cm.map(c=>`<div class="note" style="margin:6px 4px;padding:8px 12px"><b class="hand" style="font-size:19px">${esc(c.author)}</b> <span class="small">${esc(c.date)}</span><div>${esc(c.text)}</div>${f.shared?'':`<button class="linkbtn" data-act="comment-del" data-id="${c.id}">삭제</button>`}</div>`).join(''):'<div class="small" style="margin:4px">첫 댓글을 남겨 보세요.</div>'}
    <form data-form="comment" data-f="${f.id}"><label for="cm" style="margin-top:6px">댓글 남기기<span class="opt">120자 이내</span></label><textarea id="cm" name="t" maxlength="120" style="min-height:62px" placeholder="따뜻한 한마디를 남겨 보세요"></textarea><div class="row" style="margin-top:4px"><button class="btn sm solid" type="submit">붙이기</button><span class="small">댓글은 이 브라우저에만 저장돼요</span></div></form>`;
   const R=`<h2 class="h3" style="margin-top:0">방명록 ${cm.length}</h2><p class="small">서로의 수첩에 다녀간 흔적을 남겨요.</p>`;
   return [L,R];
@@ -970,7 +1060,7 @@ VIEWS.decorate=function(){
 /* ================= 렌더 ================= */
 function render(turn){
   const book=$('book');
-  const inFriend=ui.inFriend?FRIENDS.find(x=>x.id===ui.inFriend):null;
+  const inFriend=ui.inFriend?findFriend(ui.inFriend):null;
   const atShelf=!inFriend&&ui.view==='home';
   $('room').hidden=!atShelf;book.hidden=atShelf;$('pager').hidden=atShelf;
   document.documentElement.style.setProperty('--hand',(FONTS[S.settings.font]||FONTS.default).stack);
@@ -1003,14 +1093,15 @@ function quoteForm(q,preBook){
    <div class="grid2"><div><label for="qa">작가<span class="opt">선택</span></label><input type="text" id="qa" name="author" maxlength="30" value="${esc(q.author||'')}"></div>
    <div><label for="qp">페이지·위치<span class="opt">선택</span></label><input type="text" id="qp" name="page" maxlength="20" value="${esc(q.page||'')}"></div></div>
    <div class="grid2"><div><label for="qd">발견한 날</label><input type="date" id="qd" name="date" value="${esc(q.date||today())}"></div>
-   <div><label for="qv">공개 범위</label><select id="qv" name="vis"><option value="me" ${q.vis!=='friends'?'selected':''}>나만 보기</option><option value="friends" ${q.vis==='friends'?'selected':''}>친구에게 보이기</option></select></div></div>
+   <div><label for="qv">공개 범위</label><select id="qv" name="vis"><option value="me" ${q.vis==='me'?'selected':''}>나만 보기</option><option value="friends" ${q.vis!=='me'?'selected':''}>친구에게 보이기</option></select></div></div>
    <label for="qt">나의 생각·감상<span class="opt">선택</span></label><textarea id="qt" name="thought" maxlength="300" style="min-height:64px">${esc(q.thought||'')}</textarea>
    <label>감정 태그<span class="opt">선택 · 하나도 안 붙여도 돼요</span></label><div class="chiprow">${TAGS.map(t=>`<label style="display:inline;margin:0"><input class="sr" type="checkbox" name="tag" value="${t}" ${tags.includes(t)?'checked':''}><span class="tag tgl" style="cursor:pointer">${t}</span></label>`).join('')}</div>
+   <label>글씨체<span class="opt">이 문장만 다른 손글씨로 적을 수 있어요</span></label><div class="chiprow">${[['','기본',"var(--body)"]].concat(Object.entries(FONTS).map(([k,f])=>[k,f.name,f.stack])).map(([k,n,st])=>`<label style="display:inline;margin:0"><input class="sr" type="radio" name="font" value="${k}" ${(q.font||'')===k?'checked':''}><span class="tag tgl" style="cursor:pointer;font-family:${st};font-size:${k?21:16}px">${esc(n)}</span></label>`).join('')}</div>
    <div class="small" style="margin-top:6px">※ 저작권이 있는 책의 긴 문장은 짧게, 또는 내 말로 요약해서 적어 주세요.</div>
    <div class="row" style="margin-top:12px"><button class="btn solid" type="submit">${q.id?'저장':'수첩에 붙이기'}</button><button class="btn" type="button" data-act="close">취소</button></div></form>`);
   syncTgl();
 }
-function syncTgl(){document.querySelectorAll('#modal input[type=checkbox]').forEach(c=>{const t=c.nextElementSibling;if(t)t.classList.toggle('on',c.checked)})}
+function syncTgl(){document.querySelectorAll('#modal input[type=checkbox],#modal input[name=font]').forEach(c=>{const t=c.nextElementSibling;if(t)t.classList.toggle('on',c.checked)})}
 function bookForm(b,pre){
   b=b||{};
   openModal(`<h3>${b.id?'책 고치기':'책 추가'}</h3>
@@ -1056,7 +1147,10 @@ function persistChat(){
 const A={
  nav(e){ui.inFriend=null;go(e.v)},
  close(){closeModal()},
- 'open-book'(){S.meta.seen=true;save();$('intro').hidden=true},
+ 'open-book'(){S.meta.seen=true;save();$('intro').hidden=true;if(!S.meta.made)onboard()},
+ 'share-on'(){closeModal();if(!S.meta.made){onboard();return}sharePush()},
+ 'share-off'(){confirmBox('우리 책장에서 내 수첩을 뺄까요? 내 기록은 이 기기에 그대로 남아요.',shareOff,'빼기')},
+ 'make-book'(){onboard()},
  page(e){ui.page=+e.v;render(true);window.scrollTo({top:0})},
  'rec-topic'(e){ui.recTopic=e.v||null;ui.recIdx=0;render()},
  'rec-next'(){ui.recIdx++;render()},
@@ -1070,7 +1164,7 @@ const A={
  'quote-vis'(e){const q=S.quotes.find(x=>x.id===e.id);q.vis=q.vis==='friends'?'me':'friends';save();render();toast(q.vis==='friends'?'친구에게 보이도록 바꿨어요':'나만 보도록 바꿨어요')},
  'quote-card'(e){const q=S.quotes.find(x=>x.id===e.id);
    openModal(`<h3>문장 카드</h3><div class="note card" style="padding:20px;margin:14px 0"><span class="tape"></span><div class="qt" style="font-size:20px">${nl(q.text)}</div><div class="cite">『${esc(q.book)}』${q.author?' · '+esc(q.author):''}</div><div class="hand" style="text-align:right;font-size:20px;margin-top:8px">— ${esc(S.profile.nick)}의 수첩</div></div><div class="row"><button class="btn solid" data-act="copy-card" data-id="${q.id}">텍스트 복사</button><button class="btn" data-act="close">닫기</button></div>`)},
- 'copy-card'(e){const q=S.quotes.find(x=>x.id===e.id);const t=`“${q.text}”\n— 『${q.book}』${q.author?' '+q.author:''}\n(${S.profile.nick}의 TEXT HIP UNIVERSE 수첩)`;
+ 'copy-card'(e){const q=S.quotes.find(x=>x.id===e.id);const t=`“${q.text}”\n— 『${q.book}』${q.author?' '+q.author:''}\n(${S.profile.nick}의 READ ME 수첩)`;
    try{navigator.clipboard.writeText(t).then(()=>toast('복사했어요'),()=>toast('복사에 실패했어요'))}catch(x){toast('복사할 수 없는 환경이에요')}},
  qtag(e){ui.qTag=e.v||null;render()},
  'qtag-go'(e){ui.qTag=e.v;ui.qSel=null;go('quotes')},
@@ -1107,7 +1201,7 @@ const A={
  'friend-move'(e){const a=S.friends.added,i=a.indexOf(e.id),j=i+(+e.v);if(i<0||j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];ui.justAdded=null;save();render();friendMenu(e.id)},
  'friend-add'(e){if(!S.friends.added.includes(e.id))S.friends.added.push(e.id);ui.justAdded=e.id;save();render();toast('내 책장에 수첩을 꽂았어요')},
  'friend-del'(e){const f=FRIENDS.find(x=>x.id===e.id);confirmBox(`${f.nick}의 수첩을 내 책장에서 뺄까요? 남긴 댓글은 그대로예요.`,()=>{S.friends.added=S.friends.added.filter(x=>x!==e.id);save();render();toast('책장에서 뺐어요')},'빼기')},
- 'friend-take'(e){const f=FRIENDS.find(x=>x.id===e.f),q=f.quotes[+e.i];if(S.quotes.some(x=>x.from===f.nick&&x.text===q.text))return;
+ 'friend-take'(e){const f=findFriend(e.f),q=f.quotes[+e.i];if(S.quotes.some(x=>x.from===f.nick&&x.text===q.text))return;
    S.quotes.push({id:uid(),text:q.text,book:q.book,author:q.author,page:'',date:today(),thought:'',tags:q.tags.slice(),vis:'me',from:f.nick,kind:'summary'});save();render();toast('내 수첩에 담았어요')},
  'comment-del'(e){confirmBox('이 댓글을 지울까요?',()=>{S.comments=S.comments.filter(x=>x.id!==e.id);save();render();toast('댓글을 지웠어요')},'지우기')},
  paper(e){S.settings.paper=e.v;save();render()},
@@ -1116,7 +1210,7 @@ const A={
  sticker(e){const a=S.settings.stickers,i=a.indexOf(e.id);if(i>=0)a.splice(i,1);else a.push(e.id);save();render()},
  export(){openModal(`<h3>내 수첩 텍스트</h3><textarea class="copybox" readonly>${esc(exportText())}</textarea><div class="row" style="margin-top:10px"><button class="btn solid" data-act="copy-export">복사</button><button class="btn" data-act="close">닫기</button></div>`)},
  'copy-export'(){try{navigator.clipboard.writeText(exportText()).then(()=>toast('복사했어요'),()=>toast('복사에 실패했어요'))}catch(x){toast('복사할 수 없는 환경이에요')}},
- reset(){confirmBox('내가 적은 문장·책·대화·댓글이 모두 사라지고 처음 데모 데이터로 돌아가요.\n정말 초기화할까요?',()=>{S=seed();S.meta.seen=true;ui.chat=null;ui.qSel=null;ui.bSel=null;ui.fSel=null;ui.inFriend=null;ui.fTab='intro';ui.pending=null;ui.test=null;save();go('home');toast('데모 데이터로 초기화했어요')},'초기화')}
+ reset(){confirmBox('내가 적은 문장·책·대화·댓글이 모두 사라지고 처음 데모 데이터로 돌아가요.\n정말 초기화할까요?',()=>{if(S.share&&S.share.on)api('/'+S.share.id,{method:'DELETE',body:JSON.stringify({token:S.share.token})}).catch(()=>{});S=seed();S.meta.seen=true;ui.chat=null;ui.qSel=null;ui.bSel=null;ui.fSel=null;ui.inFriend=null;ui.fTab='intro';ui.pending=null;ui.test=null;save();go('home');toast('데모 데이터로 초기화했어요')},'초기화')}
 };
 document.addEventListener('click',ev=>{
   if(ev.target.id==='modal'){closeModal();return}
@@ -1130,7 +1224,7 @@ document.addEventListener('keydown',ev=>{
   if((ev.key==='Enter'||ev.key===' ')&&ev.target.matches('[role=button][data-act]')){ev.preventDefault();ev.target.click()}
 });
 document.addEventListener('change',ev=>{
-  if(ev.target.matches('#modal input[type=checkbox]'))syncTgl();
+  if(ev.target.matches('#modal input[type=checkbox],#modal input[name=font]'))syncTgl();
   if(ev.target.name==='av'){document.querySelectorAll('.avopt').forEach(l=>l.classList.toggle('on',l.contains(ev.target)&&ev.target.checked))}
 });
 $('modal').addEventListener('mousedown',ev=>{if(ev.target.id==='modal')closeModal()});
@@ -1140,7 +1234,7 @@ document.addEventListener('submit',ev=>{
   if(k==='quote'){
     const text=(d.get('text')||'').trim(),book=(d.get('book')||'').trim();
     if(!text||!book){toast('문장과 책 제목은 꼭 필요해요');return}
-    const obj={text,book,author:(d.get('author')||'').trim(),page:(d.get('page')||'').trim(),date:d.get('date')||today(),thought:(d.get('thought')||'').trim(),vis:d.get('vis')==='friends'?'friends':'me',tags:d.getAll('tag')};
+    const obj={text,book,author:(d.get('author')||'').trim(),page:(d.get('page')||'').trim(),date:d.get('date')||today(),thought:(d.get('thought')||'').trim(),vis:d.get('vis')==='friends'?'friends':'me',tags:d.getAll('tag'),font:FONTS[d.get('font')]?d.get('font'):''};
     const id=f.dataset.id;
     if(id){const q=S.quotes.find(x=>x.id===id);const kind=q.kind;Object.assign(q,obj);q.kind=kind;ui.qSel=id}
     else{obj.id=uid();S.quotes.push(obj);ui.qSel=obj.id;ui.qTag=null}
@@ -1160,8 +1254,16 @@ document.addEventListener('submit',ev=>{
     if(ui.chat.id){persistChat();save()}render();
   }else if(k==='talk-note'){
     const r=S.conversations.find(x=>x.id===ui.chat.id);r.note=(d.get('t')||'').trim();save();closeModal();render();toast('한 줄 감상을 남겼어요');
+  }else if(k==='onboard'){
+    const nick=(d.get('nick')||'').trim();if(!nick){toast('닉네임을 적어 주세요');return}
+    S.profile.nick=nick;S.profile.bio=(d.get('bio')||'').trim();S.profile.coverTitle=(d.get('cover')||'').trim()||'나의 문학 수첩';S.profile.avatar=+(d.get('av')||0);
+    S.meta.made=true;save();closeModal();
+    if(d.get('share'))sharePush();else toast('나만의 수첩이 생겼어요');
+    go('mine');
   }else if(k==='comment'){
     const t=(d.get('t')||'').trim();if(!t){toast('댓글 내용을 적어 주세요');return}
+    const sf=findFriend(f.dataset.f);
+    if(sf&&sf.shared){api('/'+sf.sid+'/comments',{method:'POST',body:JSON.stringify({author:S.profile.nick,text:t})}).then(j=>{sf.comments=j.comments;render();toast('방명록에 남겼어요')}).catch(()=>toast('서버에 연결하지 못했어요'));return}
     S.comments.push({id:uid(),fid:f.dataset.f,author:S.profile.nick,text:t,date:today(),mine:true});save();render();toast('댓글을 붙였어요');
   }else if(k==='profile'){
     const nick=(d.get('nick')||'').trim();if(!nick){toast('닉네임을 적어 주세요');return}
