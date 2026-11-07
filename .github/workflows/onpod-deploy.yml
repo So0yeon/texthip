@@ -1,0 +1,65 @@
+# onpod ci init이 만든 파일 — main 브랜치에 push 하면 onpod 앱 「read-me」의 새 버전을 서버에서 빌드해 배포해요(데이터·환경변수 그대로).
+# onpod-ci: app=read-me kind=server provider=github v1
+# 필요한 비밀: ONPOD_TOKEN (Settings → Secrets and variables → Actions)
+# 다시 만들기: onpod ci init --app read-me --provider github --branch main --no-key --force
+
+name: "onpod deploy · read-me"
+
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+concurrency:
+  group: "onpod-deploy-read-me"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      ONPOD_DISABLE_UPDATE_CHECK: "1"
+      ONPOD_CONFIG: "/nonexistent/onpod-ci/config.json"
+      ONPOD_URL: "https://api.onpod.ai"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: "onpod CLI 설치 (체크섬 확인)"
+        run: |
+          set -eu
+          ONPOD_BIN="$RUNNER_TEMP/onpod-bin"
+          mkdir -p "$ONPOD_BIN"
+          case "$(uname -s)" in Darwin) ONPOD_OS=darwin ;; *) ONPOD_OS=linux ;; esac
+          case "$(uname -m)" in aarch64|arm64) ONPOD_ARCH=arm64 ;; *) ONPOD_ARCH=amd64 ;; esac
+          ONPOD_FILE="onpod-${ONPOD_OS}-${ONPOD_ARCH}"
+          ONPOD_CLI_URL="https://onpod.ai/cli"
+          onpod_get() { curl -fsSL --retry 3 --proto =https --proto-redir =https -o "$2" "$1"; }
+          onpod_get "${ONPOD_CLI_URL}/${ONPOD_FILE}" "${ONPOD_BIN}/onpod" || { echo "::error::onpod CLI를 못 받았어요: ${ONPOD_CLI_URL}/${ONPOD_FILE}"; exit 1; }
+          onpod_get "${ONPOD_CLI_URL}/sha256sums.txt" "${ONPOD_BIN}/sha256sums.txt" || { echo "::error::onpod CLI 체크섬 목록(sha256sums.txt)을 못 받았어요 — 설치를 멈춰요"; exit 1; }
+          want=""
+          while read -r h f; do if [ "${f#\*}" = "$ONPOD_FILE" ]; then want="$h"; fi; done < "${ONPOD_BIN}/sha256sums.txt"
+          [ -n "$want" ] || { echo "::error::onpod CLI 체크섬 목록에 ${ONPOD_FILE}이 없어요 — 설치를 멈춰요"; exit 1; }
+          if command -v sha256sum >/dev/null 2>&1; then echo "$want  ${ONPOD_BIN}/onpod" | sha256sum -c -; else echo "$want  ${ONPOD_BIN}/onpod" | shasum -a 256 -c -; fi || { echo "::error::onpod CLI 체크섬이 맞지 않아요 — 받은 파일을 쓰지 않아요"; exit 1; }
+          chmod +x "${ONPOD_BIN}/onpod"
+          echo "$ONPOD_BIN" >> "$GITHUB_PATH"
+          "$ONPOD_BIN/onpod" --version
+
+      - name: "onpod 배포"
+        env:
+          ONPOD_TOKEN: ${{ secrets.ONPOD_TOKEN }}
+        run: |
+          set -eu
+          [ -n "${ONPOD_TOKEN:-}" ] || { echo "::error::ONPOD_TOKEN이 비어 있어요 — Settings → Secrets and variables → Actions에 onpod CI 키를 넣어 주세요 (키 만들기: onpod ci init --app read-me)"; exit 1; }
+          ONPOD_SHA12=${GITHUB_SHA%"${GITHUB_SHA#????????????}"}
+          if ! onpod app update read-me --build . --build-tag "read-me:$ONPOD_SHA12"; then
+            echo "::error::onpod 배포가 실패했어요 — 위 오류를 보세요. 401이면 키가 틀렸거나 만료됐어요(새 키: onpod ci init --app read-me). 되돌리기: onpod app rollback read-me"
+            exit 1
+          fi
