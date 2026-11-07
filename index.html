@@ -270,9 +270,10 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 .cover{background:var(--kraft);border:2px solid #6e6454;border-radius:6px 16px 16px 6px;max-width:470px;width:100%;padding:44px 34px 30px 52px;position:relative;box-shadow:0 12px 30px rgba(56,52,47,.4);transform:rotate(-1deg)}
 .cover::before{content:"";position:absolute;left:18px;top:14px;bottom:14px;width:14px;background:radial-gradient(circle,#f3efe6 0 4px,#4a443d 4.5px 6px,transparent 6.5px) 0 0/14px 40px repeat-y}
 .cover .label{background:var(--paper);border:1.5px solid var(--ink);padding:18px 16px 14px;text-align:center;transform:rotate(1.2deg);position:relative}
-.cover h1{font-family:var(--type);font-size:30px;letter-spacing:.1em;line-height:1.15;font-weight:400}
+.cover h1{font-family:var(--type);font-size:30px;letter-spacing:.1em;line-height:1.15;font-weight:400;white-space:nowrap}
 .cover p{margin:10px 0 0}
-.cover .tagline{font-family:var(--hand);font-size:27px;line-height:1.15}
+.cover .tagline{font-family:var(--hand);font-size:clamp(14px,4vw,23px);line-height:1.15;white-space:nowrap}
+@media (max-width:520px){.cover{padding:30px 16px 24px 40px}.cover .label{padding:16px 10px 12px}.cover h1{font-size:26px}}
 
 /* print/export & misc */
 .copybox{width:100%;min-height:150px;font-family:var(--type);font-size:12.5px}
@@ -322,8 +323,8 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 <div class="intro" id="intro" hidden>
   <div class="cover">
     <div class="label">
-      <h1>READ<br>ME</h1>
-      <p class="tagline">문학으로 연결되는<br>우리의 디지털 수첩</p>
+      <h1>READ ME</h1>
+      <p class="tagline">문학으로 연결되는 우리의 디지털 수첩</p>
     </div>
     <p class="pen" style="margin-top:20px;font-size:14.5px">내 문학 페르소나, 모아 둔 문장, 문학 속 인물과 나눈 대화가 한 권의 수첩에 쌓이고, 친구의 수첩이 내 책장에 꽂힙니다.</p>
     <p class="small">※ 독서량을 재거나 평가하지 않아요. 이 앱은 해커톤 프로토타입이라 모든 기록은 이 기기의 브라우저에만 저장됩니다.</p>
