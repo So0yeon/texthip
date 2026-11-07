@@ -1,0 +1,16 @@
+{
+  "name": "read-me",
+  "version": "1.0.0",
+  "private": true,
+  "description": "READ ME — 문학 수첩 & 우리 책장",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
+  }
+}

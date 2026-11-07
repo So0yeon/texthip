@@ -1,6 +1,8 @@
-// READ ME — 공유 책장 서버 (의존성 없음, Node 18+)
-// 실행: node server.js  →  http://localhost:3000
-// 정적 파일(index.html, assets/)을 서비스하고, 모두가 꽂은 수첩을 data/notebooks.json 에 저장합니다.
+// READ ME — 공유 책장 서버 (Node 18+)
+// 실행: npm install && node server.js  →  http://localhost:3000
+// 정적 파일(index.html, assets/)을 서비스하고, 모두가 꽂은 수첩을 저장합니다.
+//  - DATABASE_URL 이 있으면 Postgres(onpod 무료 DB)에 저장 → 재시작·재배포에도 유지
+//  - 없으면 data/notebooks.json 파일에 저장 (로컬 개발용)
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -19,9 +21,27 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; cha
 
 // ---------- 저장소 ----------
 let db = { notebooks: {} };
-try { db = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); if (!db.notebooks) db.notebooks = {}; } catch (e) {}
+let pool = null;
+async function loadStore() {
+  if (process.env.DATABASE_URL) {
+    const { Pool } = require('pg');
+    pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 4 });
+    await pool.query('CREATE TABLE IF NOT EXISTS notebooks (id TEXT PRIMARY KEY, doc JSONB NOT NULL)');
+    const { rows } = await pool.query('SELECT id, doc FROM notebooks');
+    rows.forEach(r => { db.notebooks[r.id] = r.doc; });
+    console.log(`Postgres 연결 · 수첩 ${rows.length}권 불러옴`);
+    return;
+  }
+  try { db = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); if (!db.notebooks) db.notebooks = {}; } catch (e) {}
+}
 let saveTimer = null;
-function persist() {
+function persist(id) {
+  if (pool) {
+    const n = db.notebooks[id];
+    (n ? pool.query('INSERT INTO notebooks (id, doc) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET doc = EXCLUDED.doc', [id, n])
+       : pool.query('DELETE FROM notebooks WHERE id = $1', [id])).catch(e => console.error('DB 저장 실패:', e.message));
+    return;
+  }
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -100,7 +120,7 @@ async function api(req, res, url) {
     if (!cur && Object.keys(db.notebooks).length >= MAX_NOTEBOOKS) return send(res, 507, { error: 'shelf_full' });
     const now = Date.now();
     db.notebooks[id] = { tokenHash: hash(token), data: clean(body.notebook), comments: cur ? cur.comments : [], createdAt: cur ? cur.createdAt : now, updatedAt: now };
-    persist();
+    persist(id);
     return send(res, 200, { ok: true, notebook: pub(id, db.notebooks[id]) });
   }
   // 책장에서 빼기
@@ -109,7 +129,7 @@ async function api(req, res, url) {
     const cur = db.notebooks[id];
     if (!cur) return send(res, 404, { error: 'not_found' });
     if (cur.tokenHash !== hash(str(body.token, 100))) return send(res, 403, { error: 'not_owner' });
-    delete db.notebooks[id]; persist();
+    delete db.notebooks[id]; persist(id);
     return send(res, 200, { ok: true });
   }
   // 방명록 남기기
@@ -120,7 +140,7 @@ async function api(req, res, url) {
     const text = str(body.text, 120).trim();
     if (!text) return send(res, 400, { error: 'empty' });
     cur.comments = (cur.comments || []).concat({ id: crypto.randomBytes(6).toString('hex'), author: str(body.author, 20) || '익명', text, date: new Date().toISOString().slice(0, 10) }).slice(-200);
-    persist();
+    persist(id);
     return send(res, 200, { ok: true, comments: cur.comments });
   }
   return send(res, 404, { error: 'not_found' });
@@ -143,7 +163,7 @@ function serveStatic(req, res, url) {
   });
 }
 
-http.createServer(async (req, res) => {
+const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   try {
     if (url.pathname === '/api/health') return send(res, 200, { ok: true });
@@ -153,4 +173,6 @@ http.createServer(async (req, res) => {
   } catch (e) {
     send(res, e.message === 'too_large' ? 413 : 400, { error: e.message || 'error' });
   }
-}).listen(PORT, () => console.log(`READ ME → http://localhost:${PORT}`));
+});
+loadStore().then(() => server.listen(PORT, () => console.log(`READ ME → http://localhost:${PORT}`)))
+  .catch(e => { console.error('저장소 연결 실패:', e.message); process.exit(1); });
