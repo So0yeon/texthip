@@ -228,6 +228,7 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 .room .shelf{min-height:184px}
 .live{font-family:var(--body);font-size:12px;color:#7d7a55;vertical-align:middle;margin-left:6px;animation:blink 2s infinite}
 @keyframes blink{50%{opacity:.35}}
+.thought{font-family:var(--hand);font-size:19px;line-height:1.25;color:#4a443d;border-left:2.5px solid rgba(56,52,47,.45);padding-left:8px;margin-top:6px}
 .castlist{max-height:440px;overflow:auto;padding:2px 4px 4px 0;margin:4px 0 6px}
 .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 10px}
 @media (max-width:640px){.room{padding:18px 14px 22px}}
@@ -737,7 +738,7 @@ function confirmBox(msg,onYes,yesLabel){
 
 /* ================= 뷰 ================= */
 const VIEWS={};
-const TABLIST=[['mine','내 수첩'],['persona','페르소나'],['quotes','문장'],['books','독서 기록'],['talk','대화'],['friends','친구 찾기'],['decorate','꾸미기']];
+const TABLIST=[['mine','내 수첩'],['persona','페르소나'],['quotes','문장 수집함'],['talk','대화'],['friends','친구 찾기'],['decorate','꾸미기']];
 
 function curRec(){
   const list=ui.recTopic?RECS.filter(r=>r.topic===ui.recTopic):RECS;
@@ -766,12 +767,9 @@ VIEWS.mine=function(){
    ${shareCard()}
    ${recBox()}`;
   const rq=[...S.quotes].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,3);
-  const rb=S.books.slice(-3).reverse();
   const rc=S.conversations[S.conversations.length-1];
   const R=`<h2 class="h3">최근 모은 문장 <button class="more" data-act="nav" data-v="quotes">문장 수집함 →</button></h2>
    ${rq.length?rq.map((q,i)=>`<div class="note click" style="--r:${rot(i)}" data-act="quote-open" data-id="${q.id}"><span class="tape l"></span><div class="qt">${qtx(q)}</div><div class="cite">『${esc(q.book)}』${q.author?' · '+esc(q.author):''}</div></div>`).join(''):empty('문장이 아직 없어요','마음에 든 문장 하나로 수첩을 시작해 보세요.',`<button class="btn" data-act="quote-new">첫 문장 적기</button>`)}
-   <h2 class="h3">독서 기록 <button class="more" data-act="nav" data-v="books">전체 보기 →</button></h2>
-   ${rb.length?`<div class="row" style="align-items:flex-end">${rb.map(b=>`<div data-act="book-open" data-id="${b.id}" style="cursor:pointer;width:84px"><div class="coverbook" style="width:78px">${esc(b.title)}</div><div class="small">${esc(b.status)}</div></div>`).join('')}</div>`:empty('아직 기록한 책이 없어요','읽은 책, 읽고 싶은 책을 적어 보세요.',`<button class="btn" data-act="book-new">책 추가</button>`)}
    <h2 class="h3">최근 인물 대화 <button class="more" data-act="nav" data-v="talk">대화 →</button></h2>
    ${rc?`<div class="note click kraft" data-act="talk-open" data-id="${rc.id}" style="--r:.6deg"><b class="hand" style="font-size:22px">${esc(CHARS[rc.charId].name)}</b> <span class="small">${esc(rc.date)}</span><div class="small" style="margin-top:2px">${esc((rc.msgs.filter(m=>m.who==='ch').slice(-1)[0]||{}).text||'').slice(0,60)}…</div></div>`:empty('대화 기록이 없어요','문학 속 인물과 이야기해 보세요.',`<button class="btn" data-act="nav" data-v="talk">인물 만나기</button>`)}`;
   return [L,R];
@@ -786,7 +784,7 @@ function friendMenu(id){
    <div class="me-head">${avatar(f.avatar,'')}<div><h3 style="margin:0">${esc(f.nick)}의 수첩</h3><div class="bio">${esc(f.bio)}</div><div class="small">${pr?esc(pr.alias)+' · '+pr.kw.slice(0,3).map(esc).join(' · '):'아직 페르소나가 없어요'}</div></div></div>
    ${q?`<div class="note card" style="--r:-.3deg;margin:12px 2px"><span class="tape"></span><div class="qt" style="font-size:15.5px">${qtx(q)}</div><div class="cite">『${esc(q.book)}』</div></div>`:''}
    <div class="small" style="margin-top:6px">바로 펼쳐 보기</div>
-   <div class="chiprow">${[['quotes','문장 '+f.quotes.length],['books','독서 기록 '+f.books.length],['talk','대화 '+f.convs.length],['guestbook','방명록 '+gb]].map(([k,n])=>`<button class="tag" data-act="friend-go" data-id="${id}" data-v="${k}">${n}</button>`).join('')}</div>
+   <div class="chiprow">${[['quotes','문장 '+f.quotes.length],['talk','대화 '+f.convs.length],['guestbook','방명록 '+gb]].map(([k,n])=>`<button class="tag" data-act="friend-go" data-id="${id}" data-v="${k}">${n}</button>`).join('')}</div>
    <div class="row" style="margin-top:12px"><button class="btn solid" data-act="friend-go" data-id="${id}">📖 수첩 펼치기</button></div>
    ${f.shared?`<div class="small" style="margin-top:12px;border-top:1.4px dashed var(--gray);padding-top:10px">우리 책장에 함께 꽂힌 수첩이에요 · ${esc(sinceText(f.createdAt))}</div>`
    :`<div class="row" style="margin-top:12px;justify-content:space-between;align-items:center;border-top:1.4px dashed var(--gray);padding-top:10px">
@@ -853,7 +851,7 @@ function myNotebook(){
   const pr=S.profile;
   return {nick:pr.nick,bio:pr.bio,coverTitle:pr.coverTitle,avatar:pr.avatar,persona:pr.persona,
    quotes:S.quotes.filter(q=>q.vis!=='me').map(q=>({text:q.text,book:q.book,author:q.author,thought:q.thought,tags:q.tags,font:q.font})),
-   books:S.books.map(b=>({title:b.title,author:b.author,status:b.status})),
+   books:[],
    convs:S.conversations.filter(c=>c.vis==='friends').map(c=>({charId:c.charId,note:c.note,lines:c.msgs.slice(-6).map(m=>({who:m.who,text:m.text}))}))};
 }
 async function sharePush(quiet){
@@ -875,7 +873,7 @@ function shareCard(){
   if(!SHARED.loaded)return '';
   if(!SHARED.online)return `<div class="note" style="--r:.3deg;margin:10px 4px"><b class="hand" style="font-size:21px">우리 책장</b><div class="small">공유 서버에 연결되면 내 수첩을 모두의 책장에 꽂을 수 있어요.</div></div>`;
   return on?`<div class="note kraft" style="--r:.3deg;margin:10px 4px"><b class="hand" style="font-size:21px">📚 우리 책장에 꽂혀 있어요</b><div class="small">기록하면 자동으로 반영돼요. 문장은 ‘친구에게 보이기’로 둔 것만, 대화는 친구에게 보이기로 바꾼 것만 공개돼요.</div><div class="row" style="margin-top:6px"><button class="btn sm" data-act="nav" data-v="home">책장에서 보기</button><button class="btn sm" data-act="share-off">책장에서 빼기</button></div></div>`
-   :`<div class="note card" style="--r:-.3deg;margin:10px 4px"><span class="tape"></span><b class="hand" style="font-size:22px">내 수첩을 우리 책장에 꽂아 볼까요?</b><div class="small">발표장의 모두가 내 수첩을 펼쳐 볼 수 있어요. 닉네임·페르소나·독서 기록과 ‘친구에게 보이기’ 문장만 공개돼요.</div><div class="row" style="margin-top:6px"><button class="btn solid sm" data-act="share-on">우리 책장에 꽂기</button></div></div>`;
+   :`<div class="note card" style="--r:-.3deg;margin:10px 4px"><span class="tape"></span><b class="hand" style="font-size:22px">내 수첩을 우리 책장에 꽂아 볼까요?</b><div class="small">발표장의 모두가 내 수첩을 펼쳐 볼 수 있어요. 닉네임·페르소나와 ‘친구에게 보이기’ 문장·생각만 공개돼요.</div><div class="row" style="margin-top:6px"><button class="btn solid sm" data-act="share-on">우리 책장에 꽂기</button></div></div>`;
 }
 function onboard(){
   const pr=S.profile;
@@ -933,16 +931,20 @@ VIEWS.persona=function(){
 function filteredQuotes(){
   let q=[...S.quotes].sort((a,b)=>(b.date||'').localeCompare(a.date||'')||0);
   if(ui.qTag)q=q.filter(x=>(x.tags||[]).includes(ui.qTag));
+  if(ui.qBook)q=q.filter(x=>x.book===ui.qBook);
   return q;
 }
 VIEWS.quotes=function(){
   const q=filteredQuotes();
+  const books=[...new Set(S.quotes.map(x=>x.book).filter(Boolean))];
   const L=`<h1 class="ptitle">문장 수집함</h1>
-   <div class="row" style="margin:4px 0 8px"><button class="btn solid" data-act="quote-new">＋ 문장 적기</button></div>
+   <div class="sub">마음에 남은 문장과 그때의 내 생각을 함께 모아요</div>
+   <div class="row" style="margin:4px 0 8px"><button class="btn solid" data-act="quote-new">＋ 문장과 생각 적기</button></div>
+   ${books.length>1?`<div class="chiprow"><span class="small" style="margin-right:4px">책별</span><button class="tag ${!ui.qBook?'on':''}" data-act="qbook" data-v="">모든 책</button>${books.map(b=>`<button class="tag ${ui.qBook===b?'on':''}" data-act="qbook" data-v="${esc(b)}">『${esc(b)}』 ${S.quotes.filter(x=>x.book===b).length}</button>`).join('')}</div>`:''}
    <div class="chiprow"><button class="tag ${!ui.qTag?'on':''}" data-act="qtag" data-v="">전체 ${S.quotes.length}</button>${TAGS.map(t=>`<button class="tag ${ui.qTag===t?'on':''}" data-act="qtag" data-v="${t}">${t}</button>`).join('')}</div>
    ${q.length?q.map((x,i)=>`<div class="note ${i%3==1?'kraft':'card'} click ${ui.qSel===x.id?'sel':''}" style="--r:${rot(i)}" data-act="quote-sel" data-id="${x.id}"><span class="tape ${i%2?'l':''}"></span>
-     <div class="qt">${qtx(x)}</div><div class="cite">『${esc(x.book)}』${x.author?' · '+esc(x.author):''}${x.from?` · <span class="badge">${esc(x.from)}의 수첩에서</span>`:''}</div><div style="margin-top:4px">${tagsHtml(x.tags,true)}${x.vis==='friends'?'<span class="badge">친구에게 보임</span>':''}</div></div>`).join('')
-    :empty(ui.qTag?'이 태그의 문장이 없어요':'문장이 아직 없어요','읽다가 마음에 든 문장을 적어 보세요.',`<button class="btn" data-act="quote-new">문장 적기</button>`)}`;
+     <div class="qt">${qtx(x)}</div><div class="cite">『${esc(x.book)}』${x.author?' · '+esc(x.author):''}${x.from?` · <span class="badge">${esc(x.from)}의 수첩에서</span>`:''}</div>${x.thought?`<div class="thought">✎ ${esc(x.thought.length>70?x.thought.slice(0,70)+'…':x.thought)}</div>`:''}<div style="margin-top:4px">${tagsHtml(x.tags,true)}${x.vis==='friends'?'<span class="badge">친구에게 보임</span>':''}</div></div>`).join('')
+    :empty(ui.qTag||ui.qBook?'조건에 맞는 문장이 없어요':'문장이 아직 없어요','읽다가 마음에 남은 문장과 그때의 생각을 적어 보세요.',`<button class="btn" data-act="quote-new">문장과 생각 적기</button>`)}`;
   const s=S.quotes.find(x=>x.id===ui.qSel);
   const R=s?`<h2 class="h3" style="margin-top:0">문장 자세히</h2>
     <div class="note card" style="--r:.3deg;padding:18px 18px 14px"><span class="tape"></span>
@@ -950,37 +952,11 @@ VIEWS.quotes=function(){
      <div class="cite">『${esc(s.book)}』${s.author?' · '+esc(s.author):''}${s.page?' · '+esc(s.page):''}</div>
      <div class="small">발견한 날 ${esc(s.date)} ${s.kind==='summary'?'<span class="badge">요약·데모</span>':''}</div>
      <div style="margin:6px 0">${tagsHtml(s.tags,true)}</div>
-     ${s.thought?`<div class="hand" style="font-size:23px;line-height:1.25;border-left:3px solid var(--ink);padding-left:10px;margin-top:8px">${nl(s.thought)}</div>`:'<div class="small">아직 나의 생각이 없어요. 수정해서 한 줄 남겨 보세요.</div>'}
+     ${s.thought?`<div class="hand" style="font-size:23px;line-height:1.25;border-left:3px solid var(--ink);padding-left:10px;margin-top:8px">${nl(s.thought)}</div>`:`<div class="small" style="margin-top:8px">아직 내 생각이 없어요. <button class="linkbtn" data-act="quote-edit" data-id="${s.id}">생각 한 줄 남기기</button></div>`}
      <div class="small" style="margin-top:6px">공개 범위: <b>${s.vis==='friends'?'친구에게 보이기':'나만 보기'}</b> <button class="linkbtn" data-act="quote-vis" data-id="${s.id}">바꾸기</button></div></div>
     <div class="row" style="margin-top:6px"><button class="btn sm" data-act="quote-edit" data-id="${s.id}">수정</button><button class="btn sm" data-act="quote-card" data-id="${s.id}">문장 카드 미리보기</button><button class="btn sm" data-act="quote-del" data-id="${s.id}">삭제</button></div>
-    <div class="warn">공개 범위는 화면 표시용이에요. 프로토타입이라 실제로 외부에 공개되지 않아요.</div>`
+    <div class="warn">‘친구에게 보이기’ 문장과 생각은 내 수첩을 우리 책장에 꽂았을 때 함께 보여요.</div>`
    :`<h2 class="h3" style="margin-top:0">오늘의 문장</h2>${recBox()}<div class="small" style="margin:10px 4px">왼쪽에서 문장을 고르면 이곳에 자세히 보여요.</div>`;
-  return [L,R];
-};
-
-const STATUSES=['읽고 싶은 책','읽는 중','읽음'];
-VIEWS.books=function(){
-  let b=S.books; if(ui.bStatus!=='all')b=b.filter(x=>x.status===ui.bStatus);
-  const L=`<h1 class="ptitle">독서 기록</h1>
-   <div class="row" style="margin:4px 0 6px"><button class="btn solid" data-act="book-new">＋ 책 추가</button></div>
-   <div class="chiprow"><button class="tag ${ui.bStatus==='all'?'on':''}" data-act="bstat" data-v="all">전체 ${S.books.length}</button>${STATUSES.map(s=>`<button class="tag ${ui.bStatus===s?'on':''}" data-act="bstat" data-v="${s}">${s} ${S.books.filter(x=>x.status===s).length}</button>`).join('')}</div>
-   ${b.length?b.map((x,i)=>`<div class="bk note click ${ui.bSel===x.id?'sel':''}" style="--r:${rot(i+1)}" data-act="book-sel" data-id="${x.id}"><div class="coverbook">${esc(x.title)}</div><div><b>${esc(x.title)}</b><div class="small">${esc(x.author||'작가 미상')} · ${esc(x.status)}</div>${x.keywords?`<div>${x.keywords.split(',').map(k=>k.trim()).filter(Boolean).map(k=>`<span class="tag">${esc(k)}</span>`).join('')}</div>`:''}</div></div>`).join(''):empty('여기엔 책이 없어요','읽은 책, 읽고 싶은 책을 꽂아 두세요.',`<button class="btn" data-act="book-new">책 추가</button>`)}`;
-  const s=S.books.find(x=>x.id===ui.bSel);
-  let R;
-  if(s){
-    const qs=S.quotes.filter(q=>q.book.trim()===s.title.trim());
-    const cs=S.conversations.filter(c=>CHARS[c.charId].work===s.title);
-    R=`<h2 class="h3" style="margin-top:0">『${esc(s.title)}』</h2>
-     <div class="bk"><div class="coverbook" style="width:84px;height:116px;font-size:20px">${esc(s.title)}</div><div><div>${esc(s.author||'작가 미상')}</div><div class="small">상태: <b>${esc(s.status)}</b></div><div style="margin-top:6px"><button class="btn sm" data-act="book-edit" data-id="${s.id}">수정</button><button class="btn sm" data-act="book-del" data-id="${s.id}">삭제</button></div></div></div>
-     ${s.review?`<div class="hand" style="font-size:23px;line-height:1.25;border-left:3px solid var(--ink);padding-left:10px;margin:6px 4px">${nl(s.review)}</div>`:'<div class="small" style="margin:4px">짧은 감상이 없어요. 수정에서 적어 보세요.</div>'}
-     <h3 class="h3">이 책에서 모은 문장 ${qs.length}</h3>
-     ${qs.length?qs.map(q=>`<div class="note click" data-act="quote-open" data-id="${q.id}"><div class="qt" style="font-size:15.5px">${qtx(q)}</div></div>`).join(''):`<div class="small" style="margin:4px">아직 없어요. <button class="linkbtn" data-act="quote-new-book" data-id="${s.id}">이 책의 문장 적기</button></div>`}
-     <h3 class="h3">관련 대화 ${cs.length}</h3>
-     ${cs.length?cs.map(c=>`<div class="note click kraft" data-act="talk-open" data-id="${c.id}"><b class="hand" style="font-size:20px">${esc(CHARS[c.charId].name)}</b> <span class="small">${esc(c.date)}</span></div>`).join(''):'<div class="small" style="margin:4px">이 작품의 인물과 나눈 대화가 없어요.</div>'}`;
-  }else{
-    R=`<h2 class="h3" style="margin-top:0">책 한 권을 골라 보세요</h2>${empty('책을 선택하면','이곳에 감상, 관련 문장, 대화 기록이 모여요.')}
-    <div class="small" style="margin:8px 4px">표지는 외부 이미지 없이 제목으로 만든 기본 표지예요.</div>`;
-  }
   return [L,R];
 };
 
@@ -1033,7 +1009,7 @@ VIEWS.friends=function(){
 };
 
 /* 친구의 수첩 속 — 몰입 모드 */
-const FRIEND_TABLIST=[['intro','소개'],['quotes','문장'],['books','독서 기록'],['talk','대화'],['guestbook','방명록']];
+const FRIEND_TABLIST=[['intro','소개'],['quotes','문장 수집함'],['talk','대화'],['guestbook','방명록']];
 const FRIEND_VIEWS={};
 FRIEND_VIEWS.intro=function(f){
   const added=S.friends.added.includes(f.id);
@@ -1050,7 +1026,7 @@ FRIEND_VIEWS.intro=function(f){
    ${f.shared?'':'<div class="badge">데모 친구 · 프로토타입 예시 데이터</div>'}`;
   const R=`<h2 class="h3" style="margin-top:0">${esc(f.nick)}의 수첩 한눈에</h2>
    <div class="note kraft" style="--r:.4deg">
-    <dl class="kv"><dt>문장</dt><dd>${f.quotes.length}개 모았어요</dd><br><dt>독서 기록</dt><dd>${f.books.length}권 기록했어요</dd><br><dt>대화</dt><dd>${f.convs.length}번의 기록</dd><br><dt>방명록</dt><dd>${S.comments.filter(c=>c.fid===f.id).length}개의 흔적</dd></dl></div>
+    <dl class="kv"><dt>문장</dt><dd>${f.quotes.length}개 모았어요</dd><br><dt>대화</dt><dd>${f.convs.length}번의 기록</dd><br><dt>방명록</dt><dd>${S.comments.filter(c=>c.fid===f.id).length}개의 흔적</dd></dl></div>
    <div class="small" style="margin-top:8px">탭을 눌러 이 수첩을 한 장씩 넘겨 보세요.</div>`;
   return [L,R];
 };
@@ -1059,12 +1035,6 @@ FRIEND_VIEWS.quotes=function(f){
    ${f.quotes.length?f.quotes.map((q,i)=>{const have=S.quotes.some(x=>x.from===f.nick&&x.text===q.text);return `<div class="note ${i%2?'kraft':'card'}" style="--r:${rot(i+f.avatar)}"><span class="tape ${i%2?'l':''}"></span><div class="qt">${qtx(q)}</div><div class="cite">『${esc(q.book)}』 · ${esc(q.author)}</div>${tagsHtml(q.tags)}${q.thought?`<div class="hand" style="font-size:20px;line-height:1.2;margin-top:4px">${esc(q.thought)}</div>`:''}<div class="row" style="margin-top:6px"><button class="btn sm" data-act="friend-take" data-f="${f.id}" data-i="${i}" ${have?'disabled':''}>${have?'담았어요':'내 수첩에 담기'}</button></div></div>`}).join(''):empty('공개한 문장이 없어요','아직 이 친구는 문장을 적지 않았어요.')}`;
   const taken=f.quotes.filter(q=>S.quotes.some(x=>x.from===f.nick&&x.text===q.text)).length;
   const R=`<h2 class="h3" style="margin-top:0">모아 가기</h2><p class="small">지금까지 ${f.quotes.length}개 중 <b>${taken}개</b>를 내 수첩에 담았어요.</p><div class="warn">문장은 저작권을 고려해 짧게 요약하거나 직접 쓴 해석으로만 전달돼요.</div>`;
-  return [L,R];
-};
-FRIEND_VIEWS.books=function(f){
-  const L=`<h1 class="ptitle">${esc(f.nick)}의 독서 기록</h1>
-   ${f.books.length?`<div class="row">${f.books.map(b=>`<div style="width:78px"><div class="coverbook" style="width:72px;height:96px;font-size:16px">${esc(b.title)}</div><div class="small">${esc(b.status)}</div></div>`).join('')}</div>`:empty('기록한 책이 없어요','')}`;
-  const R=`<h2 class="h3" style="margin-top:0">독서 기록 한눈에</h2><div class="kv">${STATUSES.map(s=>`<div>${esc(s)} <b>${f.books.filter(b=>b.status===s).length}권</b></div>`).join('')}</div>`;
   return [L,R];
 };
 FRIEND_VIEWS.talk=function(f){
@@ -1153,15 +1123,15 @@ function go(v,page){ui.view=v;ui.page=page||0;try{history.replaceState(null,'','
 /* ================= 폼 모달 ================= */
 function quoteForm(q,preBook){
   q=q||{};const tags=q.tags||[];
-  openModal(`<h3>${q.id?'문장 고치기':'문장 적기'}</h3>
+  openModal(`<h3>${q.id?'문장과 생각 고치기':'문장과 생각 적기'}</h3>
   <form data-form="quote" data-id="${q.id||''}">
-   <label for="qx">문장<span class="req">*</span></label><textarea id="qx" name="text" required maxlength="300">${esc(q.text||'')}</textarea>
-   <label for="qb">책 제목<span class="req">*</span></label><input type="text" id="qb" name="book" required maxlength="40" value="${esc(q.book||preBook||'')}" list="booklist"><datalist id="booklist">${S.books.map(b=>`<option value="${esc(b.title)}">`).join('')}</datalist>
+   <label for="qx">마음에 남은 문장<span class="req">*</span></label><textarea id="qx" name="text" required maxlength="300" placeholder="책에서 만난 문장, 또는 내 말로 요약한 문장">${esc(q.text||'')}</textarea>
+   <label for="qt">이 문장에 대한 내 생각<span class="opt">선택 · 떠오른 장면, 느낌, 질문 무엇이든</span></label><textarea id="qt" name="thought" maxlength="300" style="min-height:84px" placeholder="예) 요즘 내가 누구에게 시간을 쓰고 있는지 돌아보게 됐다.">${esc(q.thought||'')}</textarea>
+   <label for="qb">책 제목<span class="req">*</span></label><input type="text" id="qb" name="book" required maxlength="40" value="${esc(q.book||preBook||'')}" list="booklist"><datalist id="booklist">${[...new Set(S.quotes.map(x=>x.book).filter(Boolean))].map(b=>`<option value="${esc(b)}">`).join('')}</datalist>
    <div class="grid2"><div><label for="qa">작가<span class="opt">선택</span></label><input type="text" id="qa" name="author" maxlength="30" value="${esc(q.author||'')}"></div>
    <div><label for="qp">페이지·위치<span class="opt">선택</span></label><input type="text" id="qp" name="page" maxlength="20" value="${esc(q.page||'')}"></div></div>
    <div class="grid2"><div><label for="qd">발견한 날</label><input type="date" id="qd" name="date" value="${esc(q.date||today())}"></div>
    <div><label for="qv">공개 범위</label><select id="qv" name="vis"><option value="me" ${q.vis==='me'?'selected':''}>나만 보기</option><option value="friends" ${q.vis!=='me'?'selected':''}>친구에게 보이기</option></select></div></div>
-   <label for="qt">나의 생각·감상<span class="opt">선택</span></label><textarea id="qt" name="thought" maxlength="300" style="min-height:64px">${esc(q.thought||'')}</textarea>
    <label>감정 태그<span class="opt">선택 · 하나도 안 붙여도 돼요</span></label><div class="chiprow">${TAGS.map(t=>`<label style="display:inline;margin:0"><input class="sr" type="checkbox" name="tag" value="${t}" ${tags.includes(t)?'checked':''}><span class="tag tgl" style="cursor:pointer">${t}</span></label>`).join('')}</div>
    <label>글씨체<span class="opt">이 문장만 다른 손글씨로 적을 수 있어요</span></label><div class="chiprow">${[['','기본',"var(--body)"]].concat(Object.entries(FONTS).map(([k,f])=>[k,f.name,f.stack])).map(([k,n,st])=>`<label style="display:inline;margin:0"><input class="sr" type="radio" name="font" value="${k}" ${(q.font||'')===k?'checked':''}><span class="tag tgl" style="cursor:pointer;font-family:${st};font-size:${k?21:16}px">${esc(n)}</span></label>`).join('')}</div>
    <div class="small" style="margin-top:6px">※ 저작권이 있는 책의 긴 문장은 짧게, 또는 내 말로 요약해서 적어 주세요.</div>
@@ -1169,24 +1139,11 @@ function quoteForm(q,preBook){
   syncTgl();
 }
 function syncTgl(){document.querySelectorAll('#modal input[type=checkbox],#modal input[name=font]').forEach(c=>{const t=c.nextElementSibling;if(t)t.classList.toggle('on',c.checked)})}
-function bookForm(b,pre){
-  b=b||{};
-  openModal(`<h3>${b.id?'책 고치기':'책 추가'}</h3>
-  <form data-form="book" data-id="${b.id||''}">
-   <label for="bt">제목<span class="req">*</span></label><input type="text" id="bt" name="title" required maxlength="40" value="${esc(b.title||'')}">
-   <label for="ba">작가<span class="opt">선택</span></label><input type="text" id="ba" name="author" maxlength="30" value="${esc(b.author||'')}">
-   <label for="bs">상태</label><select id="bs" name="status">${STATUSES.map(s=>`<option ${((b.status||'읽고 싶은 책')===s)?'selected':''}>${s}</option>`).join('')}</select>
-   <label for="br">짧은 감상<span class="opt">선택</span></label><textarea id="br" name="review" maxlength="200" style="min-height:64px">${esc(b.review||'')}</textarea>
-   <label for="bk">나에게 남은 키워드<span class="opt">선택 · 쉼표로 구분</span></label><input type="text" id="bk" name="keywords" maxlength="40" value="${esc(b.keywords||'')}">
-   <div class="small" style="margin-top:6px">표지는 제목으로 만든 기본 표지가 붙어요.</div>
-   <div class="row" style="margin-top:12px"><button class="btn solid" type="submit">${b.id?'저장':'기록하기'}</button><button class="btn" type="button" data-act="close">취소</button></div></form>`);
-}
 function exportText(){
   const p=persona();
   let t=`[${S.profile.coverTitle}] ${S.profile.nick} — ${S.profile.bio}\n`;
   if(p)t+=`페르소나: ${p.alias} (${p.name})\n`;
   t+=`\n# 문장 ${S.quotes.length}\n`+S.quotes.map(q=>`- ${q.text} — 『${q.book}』${q.author?' '+q.author:''}${q.thought?'\n  생각: '+q.thought:''}`).join('\n');
-  t+=`\n\n# 독서 기록 ${S.books.length}\n`+S.books.map(b=>`- 『${b.title}』 ${b.author||''} (${b.status})`).join('\n');
   t+=`\n\n# 대화 ${S.conversations.length}\n`+S.conversations.map(c=>`- ${CHARS[c.charId].name} (${c.date})${c.note?' “'+c.note+'”':''}`).join('\n');
   return t;
 }
@@ -1223,7 +1180,6 @@ const A={
  'rec-next'(){ui.recIdx++;render()},
  'rec-save'(){const r=curRec();if(S.savedRecs.includes(r.id))return;S.savedRecs.push(r.id);S.quotes.push({id:uid(),text:r.text,book:r.book,author:r.author,page:'',date:today(),thought:'',tags:[r.topic].filter(t=>TAGS.includes(t)),vis:'me',kind:'summary'});save();render();toast('문장 수집함에 담았어요')},
  'quote-new'(){quoteForm()},
- 'quote-new-book'(e){const b=S.books.find(x=>x.id===e.id);quoteForm(null,b&&b.title)},
  'quote-edit'(e){quoteForm(S.quotes.find(x=>x.id===e.id))},
  'quote-sel'(e){ui.qSel=e.id;ui.page=1;render(true)},
  'quote-open'(e){ui.qSel=e.id;ui.qTag=null;go('quotes',1)},
@@ -1234,13 +1190,8 @@ const A={
  'copy-card'(e){const q=S.quotes.find(x=>x.id===e.id);const t=`“${q.text}”\n— 『${q.book}』${q.author?' '+q.author:''}\n(${S.profile.nick}의 READ ME 수첩)`;
    try{navigator.clipboard.writeText(t).then(()=>toast('복사했어요'),()=>toast('복사에 실패했어요'))}catch(x){toast('복사할 수 없는 환경이에요')}},
  qtag(e){ui.qTag=e.v||null;render()},
- 'qtag-go'(e){ui.qTag=e.v;ui.qSel=null;go('quotes')},
- 'book-new'(){bookForm()},
- 'book-edit'(e){bookForm(S.books.find(x=>x.id===e.id))},
- 'book-sel'(e){ui.bSel=e.id;ui.page=1;render(true)},
- 'book-open'(e){ui.bSel=e.id;ui.bStatus='all';go('books',1)},
- 'book-del'(e){confirmBox('이 책을 독서 기록에서 지울까요? 모아 둔 문장은 그대로 남아요.',()=>{S.books=S.books.filter(x=>x.id!==e.id);ui.bSel=null;save();render();toast('책을 뺐어요')},'빼기')},
- bstat(e){ui.bStatus=e.v;render()},
+ qbook(e){ui.qBook=e.v||null;render()},
+ 'qtag-go'(e){ui.qTag=e.v;ui.qBook=null;ui.qSel=null;go('quotes')},
  'persona-start'(){ui.test={i:0,ans:[]};ui.pending=null;ui.page=1;render(true)},
  'persona-cancel'(){ui.test=null;render()},
  'persona-back'(){const t=ui.test;if(t.i>0){t.i--;t.ans.pop();render()}},
@@ -1308,12 +1259,6 @@ document.addEventListener('submit',ev=>{
     if(id){const q=S.quotes.find(x=>x.id===id);const kind=q.kind;Object.assign(q,obj);q.kind=kind;ui.qSel=id}
     else{obj.id=uid();S.quotes.push(obj);ui.qSel=obj.id;ui.qTag=null}
     save();closeModal();ui.page=ui.view==='quotes'?ui.page:ui.page;render();toast(id?'문장을 고쳤어요':'문장을 수첩에 붙였어요');
-  }else if(k==='book'){
-    const title=(d.get('title')||'').trim();if(!title){toast('책 제목은 꼭 필요해요');return}
-    const obj={title,author:(d.get('author')||'').trim(),status:d.get('status'),review:(d.get('review')||'').trim(),keywords:(d.get('keywords')||'').trim()};
-    const id=f.dataset.id;
-    if(id){Object.assign(S.books.find(x=>x.id===id),obj);ui.bSel=id}else{obj.id=uid();S.books.push(obj);ui.bSel=obj.id}
-    save();closeModal();render();toast(id?'책을 고쳤어요':'독서 기록에 추가했어요');
   }else if(k==='talk-search'){
     ui.talkQ=(d.get('q')||'').trim();render();
     const i=document.querySelector('form[data-form="talk-search"] input');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}
