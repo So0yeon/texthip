@@ -8,6 +8,30 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Nanum+Myeongjo:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
+@font-face {
+    font-family: 'OksuniSNostalgicHandwriting';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607161334@griun-oksooni-rg/griun-oksooni-rg/Griun_Oksooni-Rg.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'NostalgicOnHandwriting';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607161334@griun-onhandwriting-rg/griun-onhandwriting-rg/Griun_OnHandwriting-Rg.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'HandwritingAsOne';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_01@1.0/Become_one.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'KotraHandwritingFont';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/KOTRA_SONGEULSSI.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
 :root{
   --paper:#F3EFE6; --kraft:#D8CBB5; --ink:#38342F; --gray:#8A8379; --olive:#7d7a55; --plum:#8a6a78;
   --hand:'Nanum Pen Script','Gaegu','Segoe Print','Apple SD Gothic Neo',cursive;
@@ -236,6 +260,13 @@ const KEY='thu_proto_v1';
 const TOPICS=['위로','용기','관계','자유','성장','고독'];
 const TAGS=['위로','용기','외로움','자유','성장','사랑','관계','고독'];
 
+const FONTS={
+ default:{name:'단정체',stack:"'KotraHandwritingFont','NostalgicOnHandwriting','OksuniSNostalgicHandwriting','Nanum Pen Script',cursive"},
+ becomeone:{name:'단아체',stack:"'HandwritingAsOne','KotraHandwritingFont','Nanum Pen Script',cursive"},
+ onhand:{name:'다정체',stack:"'NostalgicOnHandwriting','OksuniSNostalgicHandwriting','Nanum Pen Script',cursive"},
+ oksooni:{name:'말랑체',stack:"'OksuniSNostalgicHandwriting','NostalgicOnHandwriting','Nanum Pen Script',cursive"}
+};
+
 const AV=[
  '<circle cx="20" cy="20" r="13" fill="none" stroke="#38342F" stroke-width="1.6"/><circle cx="15.5" cy="18" r="1.4" fill="#38342F"/><circle cx="24.5" cy="18" r="1.4" fill="#38342F"/><path d="M15 25q5 3 10 0" fill="none" stroke="#38342F" stroke-width="1.5" stroke-linecap="round"/>',
  '<circle cx="20" cy="21" r="12" fill="none" stroke="#38342F" stroke-width="1.6"/><circle cx="15" cy="20" r="4" fill="none" stroke="#38342F" stroke-width="1.4"/><circle cx="25" cy="20" r="4" fill="none" stroke="#38342F" stroke-width="1.4"/><path d="M19 20h2M17 27h6" stroke="#38342F" stroke-width="1.5" stroke-linecap="round"/>',
@@ -408,7 +439,7 @@ function seed(){
     friends:{added:['f1','f2']},
     comments:[],
     savedRecs:[],
-    settings:{paper:'plain',cover:'kraft',stickers:['star','clip','tape']}
+    settings:{paper:'plain',cover:'kraft',stickers:['star','clip','tape'],font:'default'}
   };
   FRIENDS.forEach(f=>f.comments.forEach(c=>st.comments.push({id:uid(),fid:f.id,author:c.author,text:c.text,date:today(),mine:false})));
   return st;
@@ -712,6 +743,7 @@ VIEWS.decorate=function(){
     <div class="row" style="margin-top:10px"><button class="btn solid" type="submit">저장</button></div></form>`;
   const R=`<h2 class="h3" style="margin-top:0">종이</h2><div class="chiprow">${[['plain','무지'],['lined','줄 노트'],['grid','모눈']].map(([k,n])=>`<button class="tag ${st.paper===k?'on':''}" data-act="paper" data-v="${k}">${n}</button>`).join('')}</div>
    <h2 class="h3">표지 색</h2><div class="chiprow">${[['kraft','크래프트'],['ink','먹색'],['paper','미색']].map(([k,n])=>`<button class="tag ${st.cover===k?'on':''}" data-act="cover" data-v="${k}">${n}</button>`).join('')}</div>
+   <h2 class="h3">손글씨체</h2><div class="row">${Object.entries(FONTS).map(([k,f])=>`<button class="tag ${(st.font||'default')===k?'on':''}" style="font-family:${f.stack};font-size:21px" data-act="font" data-v="${k}">${esc(f.name)}</button>`).join('')}</div>
    <h2 class="h3">스티커·낙서 <span class="small" style="font-family:var(--body)">내 수첩 첫 페이지에 붙어요</span></h2>
    <div class="row">${STICKERS.map(s=>`<button class="note click ${st.stickers.includes(s.id)?'sel':''}" style="margin:6px;padding:8px 10px;min-width:110px;text-align:center;background:#fbf8f0" data-act="sticker" data-id="${s.id}" aria-pressed="${st.stickers.includes(s.id)}">${stickerSvg(s.id)}<div class="small">${esc(s.name)}</div></button>`).join('')}</div>
    <h2 class="h3">내 수첩 가져가기</h2>
@@ -726,6 +758,7 @@ VIEWS.decorate=function(){
 function render(turn){
   const book=$('book');
   book.className='book c-'+S.settings.cover+' paper-'+S.settings.paper;
+  document.documentElement.style.setProperty('--hand',(FONTS[S.settings.font]||FONTS.default).stack);
   $('tabs').innerHTML=TABLIST.map(([k,n])=>`<button class="tab ${ui.view===k?'on':''}" data-act="nav" data-v="${k}" ${ui.view===k?'aria-current="page"':''}>${n}</button>`).join('');
   const [L,R]=VIEWS[ui.view]();
   $('pages').innerHTML=`<section class="page L ${ui.page===0?'on':''}" aria-label="앞 페이지">${L}</section><section class="page R ${ui.page===1?'on':''}" aria-label="뒷 페이지">${R}</section>`;
@@ -844,6 +877,7 @@ const A={
  'comment-del'(e){confirmBox('이 댓글을 지울까요?',()=>{S.comments=S.comments.filter(x=>x.id!==e.id);save();render();toast('댓글을 지웠어요')},'지우기')},
  paper(e){S.settings.paper=e.v;save();render()},
  cover(e){S.settings.cover=e.v;save();render()},
+ font(e){S.settings.font=e.v;save();render()},
  sticker(e){const a=S.settings.stickers,i=a.indexOf(e.id);if(i>=0)a.splice(i,1);else a.push(e.id);save();render()},
  export(){openModal(`<h3>내 수첩 텍스트</h3><textarea class="copybox" readonly>${esc(exportText())}</textarea><div class="row" style="margin-top:10px"><button class="btn solid" data-act="copy-export">복사</button><button class="btn" data-act="close">닫기</button></div>`)},
  'copy-export'(){try{navigator.clipboard.writeText(exportText()).then(()=>toast('복사했어요'),()=>toast('복사에 실패했어요'))}catch(x){toast('복사할 수 없는 환경이에요')}},
