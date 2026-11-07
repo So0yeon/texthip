@@ -56,7 +56,8 @@ a{color:inherit}
 /* binder */
 .wrap{max-width:1220px;margin:0 auto}
 .topline{display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 8px;gap:10px;flex-wrap:wrap}
-.logo{font-family:var(--type);font-size:20px;letter-spacing:.14em;transform:rotate(-1deg);display:inline-block}
+.logo{font-family:var(--type);font-size:20px;letter-spacing:.14em;transform:rotate(-1deg);display:inline-block;border:0;background:none;padding:0;text-align:left;transition:opacity .15s}
+.logo:hover{opacity:.72}
 .logo small{font-family:var(--hand);font-size:20px;letter-spacing:0;margin-left:10px;color:#4a443d}
 .notice{font-size:12.5px;color:#4a443d;font-family:var(--body)}
 .book{display:flex;background:var(--cover);border-radius:8px 14px 14px 8px;padding:14px 0 14px 14px;position:relative;
@@ -228,7 +229,7 @@ svg.map .node:hover .shape,svg.map .node.sel .shape{stroke-width:3.2}
 <body>
 <div class="wrap">
   <div class="topline">
-    <div class="logo">TEXT HIP UNIVERSE<small>나의 문학 수첩</small></div>
+    <button class="logo" data-act="nav" data-v="home" title="홈으로 돌아가기">TEXT HIP UNIVERSE<small>나의 문학 수첩</small></button>
     <div class="notice">프로토타입 · 서버 없이 이 브라우저에만 저장돼요 · 친구와 문장은 예시 데이터입니다</div>
   </div>
   <div class="book" id="book">
