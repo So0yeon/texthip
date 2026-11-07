@@ -176,6 +176,7 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 .room[hidden],.book[hidden],.pager[hidden]{display:none!important}
 .room .case{padding:0 14px 2px}
 .room .shelf{min-height:184px}
+.castlist{max-height:440px;overflow:auto;padding:2px 4px 4px 0;margin:4px 0 6px}
 .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 10px}
 @media (max-width:640px){.room{padding:18px 14px 22px}}
 .case{border:2px solid #8c7e66;border-top-width:10px;background:linear-gradient(#efe7d4,#e6dcc6);padding:0 8px 2px;border-radius:3px;margin:10px 0 6px}
@@ -388,7 +389,7 @@ const RECS=[
 ];
 
 const CHARS={
- prince:{id:'prince',name:'어린 왕자',work:'어린 왕자',author:'생텍쥐페리',era:'20세기 프랑스 동화',trait:'호기심 많고 솔직하며 한 번 마음 준 존재를 끝까지 책임지려 한다',conflict:'두고 온 장미에 대한 그리움과 책임',
+ prince:{id:'prince',cat:'동화',name:'어린 왕자',work:'어린 왕자',author:'생텍쥐페리',era:'20세기 프랑스 동화',trait:'호기심 많고 솔직하며 한 번 마음 준 존재를 끝까지 책임지려 한다',conflict:'두고 온 장미에 대한 그리움과 책임',
   greet:'안녕! 나는 작은 별에서 온 어린 왕자야. 오늘은 어떤 별에서 왔니?',
   sc:[
    {q:'관계는 어떻게 만들어져?',k:['관계','친구','사이','만들'],a:'여우가 알려 줬어. 서로 길들이려면 참을성이 필요하대. 처음엔 멀리 앉아 있다가, 날마다 조금씩 가까이 앉는 거야.'},
@@ -398,7 +399,7 @@ const CHARS={
    {q:'책임진다는 건 뭐야?',k:['책임','약속','돌','지키'],a:'길들인 것에는 영원히 책임이 있대. 그래서 나는 내 장미한테 돌아가야 해. 장미는 생각보다 약하고, 가시 네 개밖에 없거든.'},
    {q:'헤어지는 건 슬프지 않아?',k:['이별','헤어','슬프','작별'],a:'슬퍼. 그래도 밀밭을 보면 여우가 생각나. 헤어져도 남는 게 있다는 걸 알게 되면, 조금은 괜찮아져.'}
   ]},
- gildong:{id:'gildong',name:'홍길동',work:'홍길동전',author:'허균',era:'조선 시대 고전소설',trait:'재주가 뛰어나고 의리가 깊으며 불의를 보면 참지 못한다',conflict:'신분 차별과 가족 안에서의 소외',
+ gildong:{id:'gildong',cat:'한국 고전',name:'홍길동',work:'홍길동전',author:'허균',era:'조선 시대 고전소설',trait:'재주가 뛰어나고 의리가 깊으며 불의를 보면 참지 못한다',conflict:'신분 차별과 가족 안에서의 소외',
   greet:'나는 홍길동이다. 이름 하나 제대로 불리지 못했던 사람이지. 무엇이 궁금하냐?',
   sc:[
    {q:'왜 집을 떠났어?',k:['떠','집','왜','가출'],a:'재주가 있어도 서자라는 이유로 아버지를 아버지라 부르지 못했다. 그 집에 남아서는 나도, 나를 아끼는 사람도 숨이 막힐 것 같았다.'},
@@ -408,7 +409,7 @@ const CHARS={
    {q:'어디서 힘을 얻어?',k:['힘','용기','어떻게','버티'],a:'함께한 사람들에게서다. 혼자였다면 이미 포기했을 것이다. 나를 믿어 준 사람들 덕분에 나는 끝까지 갈 수 있었다.'},
    {q:'어떤 나라를 꿈꿔?',k:['나라','이상','꿈','율도'],a:'태어난 처지로 사람을 가르지 않는 곳이다. 각자 가진 재주를 펼칠 수 있고, 서로의 이름을 제대로 불러 주는 곳.'}
   ]},
- chunhyang:{id:'chunhyang',name:'춘향',work:'춘향전',author:'작자 미상',era:'조선 후기 판소리계 소설',trait:'다정하지만 자신의 신념 앞에서는 한 발도 물러서지 않는다',conflict:'권력의 압박과 사랑의 약속',
+ chunhyang:{id:'chunhyang',cat:'한국 고전',name:'춘향',work:'춘향전',author:'작자 미상',era:'조선 후기 판소리계 소설',trait:'다정하지만 자신의 신념 앞에서는 한 발도 물러서지 않는다',conflict:'권력의 압박과 사랑의 약속',
   greet:'어서 오세요. 저는 춘향이라 합니다. 편하게 물어보셔요.',
   sc:[
    {q:'왜 끝까지 거절했어요?',k:['거절','왜','수청','버텼'],a:'제 마음은 힘으로 가져갈 수 있는 물건이 아니니까요. 한번 한 약속을 저버리면, 저는 저 자신을 잃어버릴 것 같았습니다.'},
@@ -418,7 +419,7 @@ const CHARS={
    {q:'지치면 어떻게 버텨요?',k:['지치','버티','힘들','포기'],a:'오늘 하루만 지키자, 하고 생각했어요. 먼 훗날이 아니라 오늘 밤 한 번의 선택에만 집중하면 조금 덜 무겁더라고요.'},
    {q:'신념을 지키는 게 어려울 땐?',k:['신념','어렵','선택','흔들'],a:'혼자라고 느껴질 때가 제일 흔들려요. 그럴수록 월매 어머니나 방자처럼 곁을 지켜 준 얼굴들을 떠올려요.'}
   ]},
- hamlet:{id:'hamlet',name:'햄릿',work:'햄릿',author:'윌리엄 셰익스피어',era:'17세기 초 영국 비극',trait:'생각이 깊고 말이 날카로우며 확신 전에는 쉽게 움직이지 않는다',conflict:'복수와 망설임, 진실을 알고 싶은 마음',
+ hamlet:{id:'hamlet',cat:'문학',name:'햄릿',work:'햄릿',author:'윌리엄 셰익스피어',era:'17세기 초 영국 비극',trait:'생각이 깊고 말이 날카로우며 확신 전에는 쉽게 움직이지 않는다',conflict:'복수와 망설임, 진실을 알고 싶은 마음',
   greet:'……왔는가. 나는 덴마크의 왕자 햄릿이다. 오늘 밤은 질문이 많아서 잠이 오지 않는군.',
   sc:[
    {q:'왜 그렇게 망설여요?',k:['망설','주저','왜','행동'],a:'한번 저지른 일은 되돌릴 수 없으니까. 내가 본 것이 진실인지 확인하기 전에 칼을 뽑는 건, 또 다른 비극을 만들 뿐이라 생각했다.'},
@@ -429,12 +430,74 @@ const CHARS={
    {q:'친구에겐 뭘 바라요?',k:['친구','호레이쇼','우정','믿'],a:'호레이쇼 같은 친구다. 운이 좋을 때나 나쁠 때나 같은 얼굴을 하고 있는 사람. 그런 이가 한 명이라도 있다면 충분하다.'}
   ]}
 };
+/* 발표용: 싯다르타 (헤르만 헤세, 1922) — 원문 인용이 아닌 작품 해석 기반 대사 */
+CHARS.siddhartha={id:'siddhartha',cat:'철학',pick:true,name:'싯다르타',work:'싯다르타',author:'헤르만 헤세',era:'20세기 초 독일 소설 · 구도와 깨달음',
+ trait:'스스로 걸어 보지 않은 길은 믿지 않으며, 말하기보다 듣는 법을 강에게서 배웠다',conflict:'가르침과 체험 사이, 진짜 나를 찾는 여정',
+ greet:'어서 오게, 벗이여. 나는 강가에서 뱃사공으로 사는 싯다르타라네. 오늘도 강물 소리를 들으며 누군가를 기다리고 있었지. 무엇이 그대의 마음을 흔드는가?',
+ sc:[
+  {q:'깨달음이란 뭐예요?',k:['깨달','득도','진리','해탈','깨우','지혜'],a:'지식은 말로 건넬 수 있지만, 지혜는 건넬 수가 없다네. 깨달음은 누군가에게 받아 오는 것이 아니라, 직접 살아 보고 넘어져 보면서 몸으로 알게 되는 것이지.'},
+  {q:'왜 부처님의 제자가 되지 않았어요?',k:['부처','고타마','제자','스승','가르침','배우'],a:'고타마의 가르침은 더없이 훌륭했네. 하지만 가르침은 그분이 걸은 길의 지도일 뿐, 길 그 자체는 아니었지. 나는 내 발로 걸어야 했어. 그래서 가장 존경하는 스승 곁을 떠났다네.'},
+  {q:'당신이 할 수 있는 건 뭐예요?',k:['할수','능력','잘하','재능','기술','장점','무엇을할'],a:'나는 생각할 줄 알고, 기다릴 줄 알고, 굶을 줄 안다네. 대단해 보이지 않겠지만, 이 세 가지가 있으면 서두르지 않고 무엇이든 해낼 수 있지.'},
+  {q:'강에게서 무엇을 배웠어요?',k:['강물','강가','강에','강은','뱃사공','바수데바','흐르','흐름'],a:'강은 늘 흐르지만 언제나 그 자리에 있네. 강에게는 과거도 미래도 없고, 오직 지금만 있지. 바수데바는 내게 말하는 법이 아니라 듣는 법을 가르쳐 주었다네.'},
+  {q:'진로가 고민돼요',k:['진로','미래','꿈','직업','앞으로','전공','취업','선택'],a:'나도 아버지의 집을 떠나 사문으로, 상인으로, 뱃사공으로 길을 여러 번 바꾸었네. 돌아보니 잘못 든 길은 없었어. 모든 길이 지금의 나에게로 흘러왔지. 서두르지 말고, 그대 안의 목소리가 들릴 때까지 기다려 보게.'},
+  {q:'실패하면 어떡하죠?',k:['실패','망하','망쳤','후회','잘못','실수','떨어'],a:'나는 부와 쾌락 속에서 나를 잃었고, 강가에서 모든 걸 끝내려고까지 했네. 그런데 바로 그 바닥에서 마음속 깊은 소리를 다시 들었지. 넘어져 본 사람만 닿을 수 있는 깨달음도 있다네.'},
+  {q:'사랑이 뭐예요?',k:['사랑','카말라','연애','좋아하','짝사랑','이별'],a:'카말라에게서 사랑의 기술을 배웠지만, 정작 사랑하는 법은 훗날 아들을 통해 배웠네. 사랑은 붙잡는 것이 아니라, 상대가 제 길을 가도록 놓아주는 것이더군.'},
+  {q:'친구란 어떤 존재예요?',k:['친구','고빈다','우정','벗','관계'],a:'고빈다는 오랫동안 내 그림자처럼 함께 걸었고, 끝내 스스로의 길을 택했지. 친구란 같은 길을 걷는 사람이 아니라, 서로 다른 길을 가다가 다시 만났을 때 한눈에 알아보는 사람이라네.'},
+  {q:'불안할 땐 어떻게 해요?',k:['불안','걱정','두려','무서','초조','긴장','스트레스'],a:'강가에 앉아 물소리를 들어 보게. 불안은 대개 아직 오지 않은 내일에서 오지. 그런데 강에는 내일이 없네. 숨 한 번, 물결 하나에만 머물러 보게.'},
+  {q:'돈과 성공은 중요하지 않나요?',k:['돈','성공','부자','명예','상인','카마스와미','출세'],a:'카마스와미 곁에서 장사를 배워 부자가 되었지. 처음엔 놀이 같았는데, 어느새 그 놀이가 나를 삼키고 있었네. 돈이 나쁜 건 아니야. 다만 그것이 주인이 되면 마음이 잠들어 버린다네.'},
+  {q:'아버지를 떠날 때 어땠어요?',k:['아버지','부모','엄마','가족','떠나','독립','반대'],a:'아버지는 허락하지 않으셨지. 나는 밤새 팔짱을 끼고 그 자리에 서 있었네. 새벽이 되자 아버지는 결국 나를 보내 주셨어. 떠나는 일도, 보내 주는 일도 모두 사랑이었다는 걸 나중에야 알았지.'},
+  {q:'아들 이야기를 해 주세요',k:['아들','자식','자녀','놓아','보내주'],a:'아들이 나를 떠났을 때 가슴이 찢어지는 듯했네. 그때 알았어. 내가 아버지를 떠났듯, 아들도 자기 길을 가야 한다는 걸. 그 상처를 강물에 비추어 보니 조금씩 아물더군.'},
+  {q:'시간이란 뭘까요?',k:['시간','과거','현재','영원','순간'],a:'강은 근원에서도, 바다에서도, 폭포에서도 동시에 존재한다네. 시간이란 어쩌면 우리 마음이 그어 놓은 경계일지도 모르지. 지금 이 순간 안에 모든 것이 다 들어 있다네.'},
+  {q:'외로울 땐 어떻게 해요?',k:['외로','고독','혼자','쓸쓸'],a:'숲에서 사문으로 지낼 때 나는 늘 혼자였지. 외로움은 피해야 할 적이 아니라, 내 안의 소리를 들을 수 있는 고요한 방이라네.'},
+  {q:'행복은 어디에 있어요?',k:['행복','기쁨','즐거','만족','평화'],a:'나는 행복을 찾아 아주 멀리 떠났는데, 결국 강가의 작은 오두막에서 찾았네. 애써 찾는 동안에는 보이지 않더군. 멈추고 귀 기울일 때 비로소 보였다네.'},
+  {q:'고통은 왜 있는 거예요?',k:['고통','아프','괴로','힘들','슬프','우울'],a:'고통도 강물처럼 흘러간다네. 강가에서 들은 수많은 목소리 중에는 웃음도 울음도 있었지. 그 모든 소리가 합쳐지자 하나의 노래가 되었어. 그대의 아픔도 언젠가 그 노래의 한 소절이 될 걸세.'},
+  {q:'싯다르타는 어떤 사람이에요?',k:['누구','소개','어떤사람','자기소개'],a:'브라만의 아들로 태어나 모두의 기대를 받았지만, 진리를 찾아 집을 떠난 사람이라네. 사문으로 굶어도 보고, 상인으로 부자가 되어도 보고, 지금은 강가에서 사람들을 건네주며 살고 있지.'}
+ ]};
+/* 목록용 인물 — 대화 시나리오는 해커톤 이후 AI 연결 예정, 지금은 기본 응답 */
+const TALK_CATS=['전체','문학','철학','동화','한국 고전','신화'];
+const CAST=[
+ ['elizabeth','엘리자베스 베넷','오만과 편견','제인 오스틴','문학','첫인상과 편견, 그리고 다시 보기'],
+ ['gatsby','제이 개츠비','위대한 개츠비','F. 스콧 피츠제럴드','문학','이룰 수 없는 꿈과 동경'],
+ ['valjean','장발장','레미제라블','빅토르 위고','문학','용서와 새로운 삶'],
+ ['santiago','산티아고','노인과 바다','어니스트 헤밍웨이','문학','끝까지 버티는 존엄'],
+ ['gregor','그레고르 잠자','변신','프란츠 카프카','문학','소외와 가족'],
+ ['raskolnikov','라스콜니코프','죄와 벌','표도르 도스토옙스키','문학','신념과 죄책감'],
+ ['janeeyre','제인 에어','제인 에어','샬럿 브론테','문학','가난 속에서도 지키는 자존'],
+ ['heathcliff','히스클리프','폭풍의 언덕','에밀리 브론테','문학','격정적인 사랑과 복수'],
+ ['quixote','돈키호테','돈키호테','미겔 데 세르반테스','문학','비웃음 속의 이상과 모험'],
+ ['sinclair','싱클레어','데미안','헤르만 헤세','문학','알을 깨고 나오는 성장'],
+ ['socrates','소크라테스','소크라테스의 변명','플라톤','철학','모른다는 것을 아는 지혜'],
+ ['zhuangzi','장자','장자','장주','철학','나비 꿈과 자유로운 마음'],
+ ['confucius','공자','논어','공자의 제자들','철학','배움과 어진 마음'],
+ ['zarathustra','차라투스트라','차라투스트라는 이렇게 말했다','프리드리히 니체','철학','스스로를 넘어서는 삶'],
+ ['diogenes','디오게네스','그리스 철학자 열전','디오게네스 라에르티오스','철학','가진 것 없이 자유롭게 사는 법'],
+ ['aurelius','마르쿠스 아우렐리우스','명상록','마르쿠스 아우렐리우스','철학','흔들리지 않는 마음'],
+ ['alice','앨리스','이상한 나라의 앨리스','루이스 캐럴','동화','호기심과 엉뚱한 질문'],
+ ['pinocchio','피노키오','피노키오의 모험','카를로 콜로디','동화','거짓말과 진짜가 되는 일'],
+ ['peterpan','피터 팬','피터 팬','J. M. 배리','동화','어른이 되지 않는 마음'],
+ ['mermaid','인어공주','인어공주','한스 크리스티안 안데르센','동화','목소리를 내어 준 사랑'],
+ ['dorothy','도로시','오즈의 마법사','L. 프랭크 바움','동화','집으로 돌아가는 길'],
+ ['momo','모모','모모','미하엘 엔데','동화','시간과 귀 기울여 듣기'],
+ ['simcheong','심청','심청전','작자 미상','한국 고전','효와 희생'],
+ ['heungbu','흥부','흥부전','작자 미상','한국 고전','가난 속의 선함'],
+ ['heosaeng','허생','허생전','박지원','한국 고전','책 밖의 세상과 실천'],
+ ['parkssi','박씨 부인','박씨전','작자 미상','한국 고전','편견을 넘어서는 지혜'],
+ ['prometheus','프로메테우스','그리스 신화','고대 그리스','신화','인간에게 건넨 불'],
+ ['odysseus','오디세우스','오디세이아','호메로스','신화','먼 귀향길'],
+ ['sisyphus','시시포스','그리스 신화','고대 그리스','신화','끝없이 바위를 미는 삶'],
+ ['pandora','판도라','그리스 신화','고대 그리스','신화','상자 속에 남은 희망']
+];
+CAST.forEach(([id,name,work,author,cat,theme])=>{CHARS[id]={id,cat,name,work,author,era:cat,theme,trait:`『${work}』 속 인물. ${theme}에 대해 이야기를 나눌 수 있다`,conflict:theme,lite:true,
+  greet:`『${work}』에서 온 ${name}입니다. ${theme}에 관한 이야기라면 무엇이든 물어보세요.`,sc:[]}});
 const FALLBACK={
  prince:['음, 그건 어른들이 묻는 질문 같지만 재미있다! 그럼 너는 어떻게 생각해?','나는 아직 잘 모르겠어. 하지만 그 이야기를 들으니 별 하나가 더 반짝이는 것 같아.','그건 눈으로 보기보다 마음으로 보아야 할 것 같아. 네 마음은 뭐라고 하니?'],
  gildong:['쉽게 답할 수 없는 물음이구나. 네가 겪은 일에 비추어 말해 주겠느냐?','나는 내 처지에서만 말할 수 있다. 너는 어떻게 생각하느냐?','그 이야기는 조금 더 듣고 싶구나. 어떤 장면을 떠올리고 있느냐?'],
  chunhyang:['그 이야기에는 정답이 없을 것 같아요. 당신은 어떻게 느끼시나요?','제가 아는 만큼만 말씀드릴게요. 먼저 당신의 생각을 들려주시겠어요?','조금 더 자세히 말씀해 주시면 같이 생각해 볼게요.'],
+ siddhartha:['좋은 물음이네. 그 답은 내 말보다 그대 안에서 먼저 들려올 걸세. 잠시 함께 강물 소리를 들어 볼까?','흠… 그 이야기를 조금 더 들려주겠나? 나는 말하는 것보다 듣는 것을 강에게서 먼저 배웠다네.','나는 가르칠 수 있는 것이 많지 않다네. 다만 그 질문을 품고 기다려 본다면, 언젠가 답이 강물처럼 찾아올 거야.'],
  hamlet:['흠, 그건 한 줄로 답할 수 없다. 너는 어떤 쪽에 마음이 기우는가?','질문에 질문으로 답해서 미안하지만, 너는 왜 그것이 궁금한가?','그 물음 속에는 네 이야기가 있는 것 같군. 계속해 보게.']
 };
+CAST.forEach(([id,name,work,author,cat,theme])=>{FALLBACK[id]=[`좋은 질문이에요. ${theme}에 대해 오래 생각해 온 나로서는, 먼저 당신의 생각이 궁금해요.`,`『${work}』 속에서 나도 비슷한 물음 앞에 선 적이 있어요. 조금 더 이야기해 줄래요?`,`그 물음은 쉽게 답하기 어렵네요. 당신이라면 어떤 선택을 하겠어요?`]});
+Object.values(PERSONAS).forEach(p=>{if(!p.chat){const c=Object.values(CHARS).find(c=>c.name===p.char);if(c)p.chat=c.id}});
 
 const FRIENDS=[
  {id:'f1',nick:'밤하늘서점',bio:'별 보는 날엔 책도 한 권 같이 펼쳐요',avatar:4,persona:'LP',
@@ -788,26 +851,20 @@ VIEWS.books=function(){
 VIEWS.talk=function(){
   const c=ui.chat;
   const recs=[...S.conversations].reverse();
-  const q=ui.talkQ||'';
-  let found='';
-  if(!q){
-    found=`<div class="small" style="margin:6px 4px 2px">이렇게 찾아볼 수 있어요</div><div class="chiprow">${TALK_HINTS.map(h=>`<button class="tag" data-act="talk-search" data-v="${esc(h)}">${esc(h)}</button>`).join('')}</div>`;
-  }else{
-    const {ready,soon}=searchChars(q);
-    found=`<div class="row" style="justify-content:space-between;margin:6px 4px 0"><span class="small">‘${esc(q)}’ 검색 결과 ${ready.length}</span><button class="linkbtn" data-act="talk-search" data-v="">지우기</button></div>`
-     +(ready.length?ready.map((ch,i)=>`<div class="note click ${c&&c.charId===ch.id?'sel':''}" style="--r:${rot(i+3)}" data-act="talk-pick" data-id="${ch.id}"><b class="hand" style="font-size:25px">${esc(ch.name)}</b> <span class="small">『${esc(ch.work)}』 · ${esc(ch.author)}</span><div class="small" style="color:#4a443d">${esc(ch.era)} · ${esc(ch.conflict)}</div></div>`).join('')
-       :empty('대화할 수 있는 인물을 찾지 못했어요','인물 이름, 작품, 작가, 또는 ‘외로움’ 같은 고민으로 다시 찾아보세요.'))
-     +(soon.length?`<div class="small" style="margin:8px 4px 2px">대화 준비 중</div>${soon.map(p=>`<div class="note" style="opacity:.7;margin:6px 4px"><b class="hand" style="font-size:22px">${esc(p.char)}</b> <span class="small">『${esc(p.work)}』 · ${esc(p.author)} · 아직 대화를 준비하고 있어요</span></div>`).join('')}`:'');
-  }
+  const q=ui.talkQ||'',cat=ui.talkCat||'전체',list=searchChars(q,cat);
+  const count=k=>k==='전체'?Object.keys(CHARS).length:Object.values(CHARS).filter(x=>x.cat===k).length;
   const L=`<h1 class="ptitle">문학 속 대화</h1>
-   <div class="sub">이야기 나누고 싶은 인물을 찾아보세요</div>
-   <form data-form="talk-search" role="search" class="row" style="flex-wrap:nowrap"><input type="search" name="q" maxlength="30" value="${esc(q)}" placeholder="인물 · 작품 · 작가 · 고민 (예: 햄릿, 외로움)" aria-label="인물 검색"><button class="btn sm" type="submit">검색</button></form>
-   ${found}
+   <div class="sub">이야기 나누고 싶은 인물을 골라 보세요</div>
+   <form data-form="talk-search" role="search" class="row" style="flex-wrap:nowrap"><input type="search" name="q" maxlength="30" value="${esc(q)}" placeholder="인물 · 작품 · 작가 · 고민 (예: 싯다르타, 외로움)" aria-label="인물 검색"><button class="btn sm" type="submit">검색</button></form>
+   <div class="chiprow" style="margin-top:6px">${TALK_CATS.map(k=>`<button class="tag ${cat===k?'on':''}" data-act="talk-cat" data-v="${k}">${k} ${count(k)}</button>`).join('')}</div>
+   ${q?`<div class="row" style="justify-content:space-between;margin:2px 4px 0"><span class="small">‘${esc(q)}’ 검색 결과 ${list.length}</span><button class="linkbtn" data-act="talk-search" data-v="">지우기</button></div>`:''}
+   <div class="castlist">${list.length?list.map((ch,i)=>`<div class="note click ${c&&c.charId===ch.id?'sel':''}" style="--r:${rot(i+3)};margin:5px 3px;padding:8px 12px" data-act="talk-pick" data-id="${ch.id}"><b class="hand" style="font-size:22px">${esc(ch.name)}</b> <span class="small">『${esc(ch.work)}』 · ${esc(ch.author)}</span> ${ch.pick?'<span class="badge" style="border-style:solid">★ 추천</span>':''}<span class="badge">${ch.lite?'기본 응답':'대화 준비됨'}</span><div class="small" style="color:#4a443d">${esc(ch.cat)} · ${esc(ch.theme||ch.conflict)}</div></div>`).join('')
+     :empty('찾는 인물이 없어요','다른 카테고리나 이름, 작품, 고민으로 다시 찾아보세요.')}</div>
    <h2 class="h3">대화 기록 ${recs.length}</h2>
    ${recs.length?recs.map(r=>`<div class="note kraft click ${c&&c.id===r.id?'sel':''}" style="margin:6px 4px" data-act="talk-open" data-id="${r.id}"><b class="hand" style="font-size:21px">${esc(CHARS[r.charId].name)}</b> <span class="small">${esc(r.date)} · 저장한 답변 ${r.saved.length}${r.vis==='friends'?' · 친구에게 보임':''}</span>${r.note?`<div class="small">“${esc(r.note)}”</div>`:''}</div>`).join(''):'<div class="small" style="margin:4px">저장된 대화가 없어요.</div>'}`;
   let R;
   if(!c){
-    R=`<h2 class="h3" style="margin-top:0">누구와 이야기할까요?</h2>${empty('인물을 검색해 골라 보세요','검색 결과에서 인물을 누르면 대화가 시작돼요.')}
+    R=`<h2 class="h3" style="margin-top:0">누구와 이야기할까요?</h2>${empty('인물을 골라 보세요','왼쪽 목록에서 인물을 누르면 대화가 시작돼요. ★ 싯다르타는 대화가 가장 풍성하게 준비되어 있어요.')}
       <div class="disclaimer">이 대화는 작품과 인물에 대한 해석을 바탕으로 구성한 문학적 상상 대화입니다. 실제 인물의 발언이나 원문 인용이 아닙니다. AI API 없이 미리 준비한 응답으로 작동해요.</div>`;
   }else{
     const ch=CHARS[c.charId], saved=c.id&&S.conversations.find(x=>x.id===c.id);
@@ -815,7 +872,7 @@ VIEWS.talk=function(){
      <div class="small">${esc(ch.trait)}.</div>
      <div class="disclaimer">이 대화는 작품과 인물에 대한 해석을 바탕으로 구성한 문학적 상상 대화입니다. 실제 인물의 발언이나 원문 인용이 아닙니다.</div>
      <div class="chat" id="chatbox">${c.msgs.map((m,i)=>`<div class="msg ${m.who}"><span class="who">${m.who==='me'?esc(S.profile.nick):esc(ch.name)}</span>${nl(m.text)}${m.who==='ch'&&i>0?`<button class="star ${c.saved.includes(i)?'on':''}" data-act="talk-star" data-i="${i}" title="이 답변 저장">${c.saved.includes(i)?'★':'☆'}</button>`:''}</div>`).join('')}</div>
-     <div class="small">물어볼 말</div>
+     ${ch.lite?'<div class="warn">이 인물은 아직 기본 응답만 할 수 있어요. 인물별 대화는 AI 연결 후 열릴 예정이에요.</div>':'<div class="small">물어볼 말</div>'}
      <div class="chiprow">${ch.sc.map((s,i)=>`<button class="tag" data-act="talk-q" data-i="${i}">${esc(s.q)}</button>`).join('')}</div>
      <form data-form="talk-free" class="row" style="margin-top:6px;flex-wrap:nowrap"><input type="text" name="t" maxlength="80" placeholder="직접 물어보기 (예: 외로울 땐 어떻게 해?)" aria-label="직접 입력"><button class="btn sm" type="submit">보내기</button></form>
      <div class="row" style="margin-top:8px"><button class="btn solid sm" data-act="talk-save">${saved?'대화 기록 갱신':'대화 전체 저장'}</button>${saved?`<button class="btn sm" data-act="talk-note">한 줄 감상</button><button class="btn sm" data-act="talk-vis">${saved.vis==='friends'?'나만 보기로':'친구에게 보이기'}</button><button class="btn sm" data-act="talk-del">삭제</button>`:''}<button class="btn sm" data-act="talk-pick" data-id="${ch.id}">처음부터</button></div>
@@ -977,13 +1034,10 @@ function exportText(){
 }
 
 /* ================= 대화 로직 ================= */
-const TALK_HINTS=['어린 왕자','셰익스피어','조선','외로움','자유','사랑'];
-function searchChars(q){
-  const n=s=>String(s||'').replace(/\s/g,'').toLowerCase(),t=n(q);
-  if(!t)return {ready:[],soon:[]};
-  const ready=Object.values(CHARS).filter(ch=>[ch.name,ch.work,ch.author,ch.era,ch.trait,ch.conflict,...ch.sc.map(s=>s.q)].some(x=>n(x).includes(t))||ch.sc.some(s=>s.k.some(k=>t.includes(n(k))||n(k).includes(t))));
-  const soon=Object.values(PERSONAS).filter(p=>!p.chat&&[p.char,p.work,p.author,p.alias,...p.kw].some(x=>n(x).includes(t)));
-  return {ready,soon};
+function searchChars(q,cat){
+  const n=x=>String(x||'').replace(/\s/g,'').toLowerCase(),t=n(q);
+  return Object.values(CHARS).filter(ch=>(!cat||cat==='전체'||ch.cat===cat)&&(!t||[ch.name,ch.work,ch.author,ch.cat,ch.era,ch.trait,ch.conflict,...ch.sc.map(s=>s.q)].some(x=>n(x).includes(t))||ch.sc.some(s=>s.k.some(k=>t.includes(n(k))||n(k).includes(t)))))
+   .sort((a,b)=>(b.pick?2:0)+(b.lite?0:1)-((a.pick?2:0)+(a.lite?0:1)));
 }
 function startChat(id){ui.chat={charId:id,id:null,msgs:[{who:'ch',text:CHARS[id].greet}],saved:[]}}
 function reply(ch,text){
@@ -1037,6 +1091,7 @@ const A={
  'persona-stick'(){S.profile.persona=ui.pending;ui.pending=null;save();render();toast('페르소나를 수첩에 붙였어요')},
  'talk-pick'(e){startChat(e.id);ui.view='talk';ui.page=1;render(true)},
  'talk-search'(e){ui.talkQ=e.v||'';render()},
+ 'talk-cat'(e){ui.talkCat=e.v;render()},
  'talk-open'(e){const r=S.conversations.find(x=>x.id===e.id);ui.chat={charId:r.charId,id:r.id,msgs:r.msgs.slice(),saved:r.saved.slice()};ui.view='talk';ui.page=1;try{history.replaceState(null,'','#talk')}catch(x){}render(true)},
  'talk-q'(e){const ch=CHARS[ui.chat.charId],s=ch.sc[+e.i];ui.chat.msgs.push({who:'me',text:s.q},{who:'ch',text:s.a});if(ui.chat.id)persistChat(),save();render()},
  'talk-star'(e){const c=ui.chat,i=+e.i;const k=c.saved.indexOf(i);if(k>=0)c.saved.splice(k,1);else c.saved.push(i);persistChat();save();render();toast(k>=0?'저장을 해제했어요':'답변을 수첩에 기록했어요')},
