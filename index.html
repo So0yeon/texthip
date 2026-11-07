@@ -83,6 +83,56 @@ a{color:inherit}
 .paper-grid .page{background-image:linear-gradient(rgba(56,52,47,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(56,52,47,.1) 1px,transparent 1px),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .18  0 0 0 .08 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");background-size:26px 26px,26px 26px,auto}
 .rings{position:absolute;left:50%;top:0;bottom:0;width:30px;transform:translateX(-50%);z-index:5;pointer-events:none;
   background:radial-gradient(circle at 50% 50%,#f3efe6 0 5px,#4a443d 5.5px 7px,#bdb29c 7.5px 9px,transparent 9.5px) 0 0/30px 52px repeat-y}
+.bind-twin .rings{width:34px;background:radial-gradient(circle at 30% 50%,#f3efe6 0 3px,#4a443d 3.5px 4.6px,transparent 5px) 0 0/34px 18px repeat-y,radial-gradient(circle at 70% 50%,#f3efe6 0 3px,#4a443d 3.5px 4.6px,transparent 5px) 0 0/34px 18px repeat-y}
+.bind-coil .rings{width:26px;background:repeating-linear-gradient(-58deg,transparent 0 6px,#4a443d 6px 8.5px,#bdb29c 8.5px 10px,transparent 10px 13px)}
+.bind-stitch .rings{width:10px;background:linear-gradient(90deg,transparent 3px,rgba(56,52,47,.18) 3px 7px,transparent 7px),repeating-linear-gradient(to bottom,#8a6a58 0 11px,transparent 11px 20px) 50% 0/2px 100% no-repeat}
+.bind-stitch .rings::before{display:none}
+.bind-none .rings{width:14px;background:linear-gradient(90deg,transparent,rgba(56,52,47,.22) 45%,rgba(56,52,47,.22) 55%,transparent)}
+.bind-none .rings::before{display:none}
+.paper-dot .page{background-image:radial-gradient(rgba(56,52,47,.22) 1.1px,transparent 1.5px);background-size:22px 22px}
+/* 꾸미기 */
+.pin{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#F3EFE6;font-family:var(--body);font-size:12px;font-weight:700;flex:none}
+.where{font-size:12.5px;color:#6a6358;margin:-2px 0 8px 30px}
+.deco-sec{margin-bottom:6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 6px 4px;min-width:64px;background:rgba(255,253,247,.55);border:1.4px solid rgba(56,52,47,.25);border-radius:8px;font-size:12.5px;color:var(--ink);transition:transform .12s,border-color .12s}
+.opt-btn:hover{transform:translateY(-2px);border-color:var(--ink)}
+.opt-btn.on{border:2px solid var(--ink);box-shadow:2px 2px 0 rgba(56,52,47,.35);background:#fffdf7}
+.opt-btn.on span::before{content:"✓ "}
+.sw{display:block;width:34px;height:34px;border-radius:50%;border:1.4px solid rgba(56,52,47,.45)}
+.sw.sq{border-radius:4px;width:40px;height:30px}
+.pat{display:block;width:44px;height:34px;border:1.2px solid rgba(56,52,47,.35);border-radius:3px;background-color:var(--paper)}
+.pat.paper-lined{background-image:repeating-linear-gradient(to bottom,transparent 0 7px,rgba(56,52,47,.3) 7px 8px)}
+.pat.paper-grid{background-image:linear-gradient(rgba(56,52,47,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(56,52,47,.22) 1px,transparent 1px);background-size:8px 8px}
+.pat.paper-dot{background-image:radial-gradient(rgba(56,52,47,.45) 1px,transparent 1.3px);background-size:8px 8px}
+.bnd{display:block;position:relative;width:52px;height:38px;background:var(--paper);border:1.2px solid rgba(56,52,47,.35);border-radius:3px;overflow:hidden}
+.bnd .rings{transform:translateX(-50%) scale(.7);transform-origin:50% 0;height:150%}
+.fonts{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.font-card{text-align:left;padding:8px 10px;background:rgba(255,253,247,.55);border:1.4px solid rgba(56,52,47,.25);border-radius:8px;color:var(--ink)}
+.font-card b{display:block;font-size:22px;font-weight:400;line-height:1.1}
+.font-card span{font-size:16px;color:#5a534a}
+.font-card.on{border:2px solid var(--ink);box-shadow:2px 2px 0 rgba(56,52,47,.35);background:#fffdf7}
+.themes{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.theme{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(255,253,247,.55);border:1.4px solid rgba(56,52,47,.25);border-radius:8px;color:var(--ink);text-align:left}
+.theme b{font-weight:400;font-size:19px}
+.theme.on{border:2px solid var(--ink);background:#fffdf7}
+.tchip{width:34px;height:40px;border-radius:3px 6px 6px 3px;padding:5px 4px 5px 8px;flex:none;box-shadow:inset 3px 0 0 rgba(0,0,0,.15)}
+.tchip i{display:block;width:100%;height:100%;border-radius:2px}
+.mini-wrap{position:relative;margin:14px 6px 8px;padding:26px 54px 26px 4px}
+.mini{display:grid;grid-template-columns:1fr 1fr;position:relative;background:var(--cover);border-radius:6px 10px 10px 6px;padding:9px 9px 9px 11px;box-shadow:0 6px 14px rgba(56,52,47,.25);transition:background .2s}
+.mini-page{position:relative;min-height:150px;padding:14px 14px;background-color:var(--paper);overflow:hidden}
+.mini-page.L{border-radius:4px 0 0 4px}.mini-page.R{border-radius:0 4px 4px 0}
+.mini.paper-lined .mini-page{background-image:repeating-linear-gradient(to bottom,transparent 0 17px,rgba(56,52,47,.16) 17px 18px)}
+.mini.paper-grid .mini-page{background-image:linear-gradient(rgba(56,52,47,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(56,52,47,.12) 1px,transparent 1px);background-size:14px 14px}
+.mini.paper-dot .mini-page{background-image:radial-gradient(rgba(56,52,47,.3) 1px,transparent 1.3px);background-size:12px 12px}
+.mini .rings{display:block;transform:translateX(-50%) scale(.6);transform-origin:50% 0;height:166%}
+.mini-title{font-size:22px;line-height:1.1;margin-bottom:8px}
+.mini-line{font-size:17px;line-height:1.2;color:#4a443d}.mini-line.s{font-size:15px;margin-top:4px}
+.mini-q{font-family:var(--body);font-size:12.5px;line-height:1.6;color:#4a443d}
+.callout{position:absolute;display:flex;align-items:center;gap:4px;font-size:12px;color:#4a443d;background:rgba(255,253,247,.85);padding:1px 6px 1px 2px;border-radius:12px;white-space:nowrap}
+.callout .pin{width:17px;height:17px;font-size:10px}
+.c1{left:0;top:2px}.c2{left:36%;top:2px}.c3{left:40%;bottom:2px}.c4{left:4px;bottom:2px}
+.mini-spine{position:absolute;right:4px;top:18px;width:30px;height:150px;border:1.5px solid var(--ink);border-radius:2px;writing-mode:vertical-rl;font-family:var(--hand);font-size:15px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:2px 2px 0 rgba(56,52,47,.3)}
 .rings::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(56,52,47,.25);transform:translateX(-50%)}
 .tabs{display:flex;flex-direction:column;gap:6px;padding-top:34px;width:66px;flex:none}
 .tab{border:1.5px solid #6e6454;border-left:0;background:#e9e2d2;padding:10px 4px 10px 6px;border-radius:0 9px 9px 0;font-family:var(--hand);font-size:18px;line-height:1.1;text-align:center;word-break:keep-all;
@@ -135,7 +185,6 @@ button.tag.on{background:var(--ink);color:var(--paper)}
 .me-head{display:flex;gap:16px;align-items:center}
 .nick{font-family:var(--hand);font-size:38px;line-height:1}
 .bio{font-family:var(--hand);font-size:22px;color:#5a534a;line-height:1.2;margin-top:4px}
-.stk{position:absolute;pointer-events:none;z-index:2}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .pimg{display:block;flex:none;object-fit:cover;image-rendering:pixelated;border:1.6px solid var(--ink);border-radius:4px;background:#fbf8f0}
 .persona-stamp{border:2px solid var(--ink);padding:8px 12px;display:flex;gap:10px;align-items:center;cursor:pointer;transform:rotate(-1deg);background:#efe7d4;margin:8px 4px;border-radius:3px}
@@ -186,7 +235,7 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 .case .shelf{min-height:178px;margin:0;flex-wrap:nowrap;overflow:hidden}
 .spine::before{content:"";position:absolute;left:3px;right:3px;top:16px;height:5px;border-top:1.3px solid currentColor;border-bottom:1.3px solid currentColor;opacity:.45}
 .spine span{overflow:hidden;max-height:100%}
-.spine.mine{background:var(--ink)!important;color:var(--paper);height:160px;width:52px}
+.spine.mine{height:160px;width:52px;box-shadow:0 0 0 2px var(--ink),3px 3px 0 rgba(56,52,47,.3)}
 .spine.slot{background:transparent!important;border-style:dashed;color:#6a6358;height:140px}
 .spine.slot::before{display:none}
 .spine.new{animation:slidein .6s ease-out}
@@ -232,7 +281,7 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
   .tabs{order:-1}
   .book{flex-direction:column}
   .spread{grid-template-columns:1fr}
-  .rings{display:none}
+  .book>.spread>.rings{display:none}
   .page{display:none;min-height:560px;padding:24px 18px 30px;border-radius:4px!important;box-shadow:none!important}
   .page.on{display:block}
   .pager{display:flex;justify-content:space-between;align-items:center;position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--paper);padding:6px 14px;z-index:30;font-family:var(--hand);font-size:20px}
@@ -250,7 +299,7 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 <div class="wrap">
   <div class="topline">
     <button class="logo" data-act="nav" data-v="home" title="홈으로 돌아가기">READ ME<small>나의 문학 수첩</small></button>
-    <div class="notice">프로토타입 · 서버 없이 이 브라우저에만 저장돼요 · 친구와 문장은 예시 데이터입니다</div>
+    <div class="notice">프로토타입 · 내 기록은 이 브라우저에 저장되고, 우리 책장에 꽂으면 함께 볼 수 있어요 · 친구 수첩은 예시 데이터입니다</div>
   </div>
   <main class="room" id="room" hidden></main>
   <div class="book" id="book">
@@ -286,6 +335,18 @@ const KEY='thu_proto_v2';
 const TOPICS=['위로','용기','관계','자유','성장','고독'];
 const TAGS=['위로','용기','외로움','자유','성장','사랑','관계','고독'];
 
+/* 수첩 꾸미기 옵션 */
+const COVERS={kraft:{name:'크래프트',c:'#D8CBB5'},paper:{name:'미색',c:'#e7e0d0'},rose:{name:'장밋빛',c:'#c99a9a'},olive:{name:'올리브',c:'#8c8a5e',dark:1},plum:{name:'자두',c:'#8a6a78',dark:1},navy:{name:'밤바다',c:'#3e4a5c',dark:1},ink:{name:'먹색',c:'#4a453f',dark:1}};
+const SHEETS={cream:{name:'미색',c:'#F3EFE6'},white:{name:'백색',c:'#FBFAF6'},butter:{name:'버터',c:'#F6EFD2'},pink:{name:'벚꽃',c:'#F7E8E5'},sky:{name:'하늘',c:'#E7EEF2'},mint:{name:'민트',c:'#E6EFE6'}};
+const PAPERS={plain:'무지',lined:'줄 노트',grid:'모눈',dot:'점'};
+const BINDS={ring:{name:'링 스프링',d:'동그란 금속 링'},twin:{name:'트윈 링',d:'두 줄로 촘촘한 링'},coil:{name:'코일 스프링',d:'나선형으로 감긴 스프링'},stitch:{name:'실 제본',d:'실로 꿰맨 양장 느낌'},none:{name:'무선 제본',d:'링 없이 깔끔하게'}};
+const THEMES=[
+ {id:'classic',name:'클래식 수첩',set:{cover:'kraft',sheet:'cream',paper:'lined',bind:'ring',font:'default'}},
+ {id:'night',name:'밤의 독서',set:{cover:'navy',sheet:'butter',paper:'plain',bind:'stitch',font:'becomeone'}},
+ {id:'spring',name:'봄날 편지',set:{cover:'rose',sheet:'pink',paper:'dot',bind:'twin',font:'onhand'}},
+ {id:'study',name:'공부 노트',set:{cover:'olive',sheet:'white',paper:'grid',bind:'coil',font:'danjeong'}}
+];
+function deco(){const st=S.settings;return {cover:COVERS[st.cover]?st.cover:'kraft',sheet:SHEETS[st.sheet]?st.sheet:'cream',paper:PAPERS[st.paper]?st.paper:'plain',bind:BINDS[st.bind]?st.bind:'ring',font:FONTS[st.font]?st.font:'default'}}
 const FONTS={
  default:{name:'교보 손글씨',stack:"'KyoboHandwriting2025lyb','Nanum Pen Script',cursive"},
  danjeong:{name:'단정체',stack:"'KotraHandwritingFont','NostalgicOnHandwriting','OksuniSNostalgicHandwriting','Nanum Pen Script',cursive"},
@@ -622,7 +683,6 @@ const DEMO_FONTS=['onhand','oksooni','becomeone','danjeong'];FRIENDS.forEach((f,
 const SEED_FRIENDS=['f1','f2','f3','f4','f5','f6'];
 const SPINE_COL=['#D8CBB5','#e9e1cf','#c8bba2','#b9c0a4','#d9c2b8','#c9cfd6','#e3d3a8','#cdb9c4'];
 
-const STICKERS=[{id:'star',name:'별표'},{id:'arrow',name:'화살표'},{id:'clip',name:'클립'},{id:'circle',name:'동그라미 낙서'},{id:'tape',name:'마스킹테이프'},{id:'pencil',name:'연필'}];
 
 /* ================= 상태 ================= */
 let mem=null;
@@ -638,12 +698,12 @@ function seed(){
     friends:{added:SEED_FRIENDS.slice()},
     comments:[],
     savedRecs:[],
-    settings:{paper:'plain',cover:'kraft',stickers:['star','clip','tape'],font:'default'}
+    settings:{paper:'plain',cover:'kraft',sheet:'cream',bind:'ring',font:'default'}
   };
   FRIENDS.forEach(f=>f.comments.forEach(c=>st.comments.push({id:uid(),fid:f.id,author:c.author,text:c.text,date:today(),mine:false})));
   return st;
 }
-function valid(s){return s&&typeof s==='object'&&s.profile&&Array.isArray(s.quotes)&&Array.isArray(s.books)&&Array.isArray(s.conversations)&&s.friends&&Array.isArray(s.friends.added)&&Array.isArray(s.comments)&&Array.isArray(s.savedRecs)&&s.settings&&Array.isArray(s.settings.stickers)&&s.meta}
+function valid(s){return s&&typeof s==='object'&&s.profile&&Array.isArray(s.quotes)&&Array.isArray(s.books)&&Array.isArray(s.conversations)&&s.friends&&Array.isArray(s.friends.added)&&Array.isArray(s.comments)&&Array.isArray(s.savedRecs)&&s.settings&&s.meta}
 function load(){
   try{const raw=localStorage.getItem(KEY);if(raw){const s=JSON.parse(raw);if(valid(s)){if(!(s.meta.v>=2)){SEED_FRIENDS.forEach(id=>{if(!s.friends.added.includes(id))s.friends.added.push(id)});s.meta.v=2}return s}}}catch(e){}
   return seed();
@@ -666,18 +726,6 @@ function persona(){return S.profile.persona?PERSONAS[S.profile.persona]:null}
 function fmtDate(d){return d||''}
 function tagsHtml(t,click){return (t||[]).map(x=>click?`<button class="tag" data-act="qtag-go" data-v="${esc(x)}">${esc(x)}</button>`:`<span class="tag">${esc(x)}</span>`).join('')}
 function empty(title,desc,btn){return `<div class="empty"><span class="hand">${esc(title)}</span>${esc(desc)}${btn?`<div style="margin-top:8px">${btn}</div>`:''}</div>`}
-function stickerSvg(id){
-  const st='stroke="#38342F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"';
-  switch(id){
-   case 'star':return `<svg width="46" height="46" viewBox="0 0 46 46"><path ${st} d="M23 5l5 12 13 1-10 8 3 13-11-7-11 7 3-13-10-8 13-1z"/></svg>`;
-   case 'arrow':return `<svg width="80" height="34" viewBox="0 0 80 34"><path ${st} d="M3 24c18-16 42-18 70-6M62 8l12 10-15 6"/></svg>`;
-   case 'clip':return `<svg width="26" height="64" viewBox="0 0 26 64"><path ${st} d="M8 14v34a6 6 0 0 0 12 0V10a9 9 0 0 0-18 0v40a13 13 0 0 0 22 0V20"/></svg>`;
-   case 'circle':return `<svg width="110" height="50" viewBox="0 0 110 50"><path ${st} d="M10 28C6 10 40 4 70 6c28 2 40 14 34 26-6 11-40 14-66 10C16 39 8 34 14 22"/></svg>`;
-   case 'tape':return `<div style="width:84px;height:24px;background:rgba(190,176,148,.8);border:1px solid rgba(120,106,80,.4);clip-path:polygon(0 0,100% 6%,97% 50%,100% 94%,0 100%,3% 50%)"></div>`;
-   case 'pencil':return `<svg width="90" height="22" viewBox="0 0 90 22"><path ${st} d="M3 11l10-7h70v14H13z M13 4v14 M76 4v14"/></svg>`;
-  }return '';
-}
-const STK_POS={star:'right:28px;top:84px;transform:rotate(12deg)',arrow:'left:40%;top:150px;transform:rotate(-8deg)',clip:'right:46px;top:-10px;transform:rotate(6deg)',circle:'left:26px;bottom:18px;transform:rotate(-4deg)',tape:'left:-14px;top:24px;transform:rotate(-40deg)',pencil:'right:18px;bottom:22px;transform:rotate(-12deg)'};
 
 /* ================= 모달 ================= */
 function openModal(html){const m=$('modal');m.innerHTML=`<div class="sheet" role="dialog" aria-modal="true">${html}</div>`;m.hidden=false;const f=m.querySelector('input[type=text],textarea');if(f)f.focus()}
@@ -710,8 +758,7 @@ function recBox(){
 }
 VIEWS.mine=function(){
   const p=persona(), pr=S.profile;
-  const stk=S.settings.stickers.map(id=>`<div class="stk" style="${STK_POS[id]||''}">${stickerSvg(id)}</div>`).join('');
-  const L=`${stk}
+  const L=`
    <div class="me-head">${avatar(pr.avatar)}<div><div class="nick">${esc(pr.nick)}</div><div class="bio">${esc(pr.bio)}</div></div></div>
    <div style="margin-top:6px"><h1 class="ptitle">${esc(pr.coverTitle||'나의 문학 수첩')}</h1></div>
    ${p?`<div class="persona-stamp" data-act="nav" data-v="persona" role="button" tabindex="0">${pimg(p,56)}<div><div class="small">나의 문학 페르소나</div><b>${esc(p.alias)}</b><div class="small">${esc(p.name)} · ${p.kw.slice(0,3).map(esc).join(' · ')}</div></div></div>`
@@ -754,7 +801,7 @@ function spineBtn(f){const h=spineH(f.id);return `<button class="spine ${ui.just
 function shelfRows(items,min){const PER=window.innerWidth<640?5:window.innerWidth<1000?8:11,rows=[];for(let i=0;i<items.length;i+=PER)rows.push(items.slice(i,i+PER));while(rows.length<min)rows.push([]);return `<div class="case">${rows.map(r=>`<div class="shelf">${r.join('')}</div>`).join('')}</div>`}
 function shelfRoom(){
   const pr=S.profile, fr=S.friends.added.map(id=>FRIENDS.find(f=>f.id===id)).filter(Boolean);
-  const me=`<button class="spine mine" data-act="nav" data-v="mine" title="내 수첩 펼치기"><span>${esc(pr.coverTitle||'나의 문학 수첩')}</span></button>`;
+  const me=`<button class="spine mine" style="background:${COVERS[deco().cover].c};color:${COVERS[deco().cover].dark?'#F3EFE6':'#38342F'}" data-act="nav" data-v="mine" title="내 수첩 펼치기"><span>${esc(pr.coverTitle||'나의 문학 수첩')}</span></button>`;
   const shared=SHARED.list, on=S.share&&S.share.on;
   let ours;
   if(SHARED.online){
@@ -770,7 +817,7 @@ function shelfRoom(){
    ${shelfRows((SHARED.online&&on?[]:[me]).concat(fr.map(spineBtn)).concat([`<button class="spine slot" data-act="nav" data-v="friends" title="친구 찾아서 수첩 꽂기"><span>＋ 친구 추가</span></button>`]),1)}`;
   const feed=shared.slice().reverse().concat(fr.slice().reverse()).map(f=>({f,q:f.quotes[f.quotes.length-1]})).filter(x=>x.q).slice(0,12);
   return `<div class="room-head"><h1 class="ptitle">나의 책장</h1>
-    <div class="sub">꺼내 볼 수첩을 눌러 보세요. 검은 수첩이 내 수첩이에요.</div></div>
+    <div class="sub">꺼내 볼 수첩을 눌러 보세요. 굵은 테두리의 책등이 내 수첩이에요.</div></div>
    ${ours}
    ${friendShelf}
    <h2 class="h3">책장 새 소식</h2>
@@ -1036,24 +1083,42 @@ FRIEND_VIEWS.guestbook=function(f){
 };
 
 VIEWS.decorate=function(){
-  const pr=S.profile,st=S.settings;
+  const pr=S.profile,dc=deco(),cv=COVERS[dc.cover],sh=SHEETS[dc.sheet],fn=FONTS[dc.font];
+  const pin=n=>`<span class="pin">${n}</span>`;
   const L=`<h1 class="ptitle">수첩 꾸미기</h1>
+   <div class="sub">고르는 즉시 내 수첩 전체에 적용돼요</div>
+   <div class="mini-wrap" aria-label="미리보기">
+    <div class="mini paper-${dc.paper} bind-${dc.bind}" style="--cover:${cv.c};--paper:${sh.c}">
+      <div class="mini-page L" style="font-family:${fn.stack}"><div class="mini-title">${esc(pr.coverTitle||'나의 문학 수첩')}</div><div class="mini-line">오늘 마음에 남은 문장</div><div class="mini-line s">길들인다는 건 서로에게 시간을 쓰는 일</div></div>
+      <div class="rings"></div>
+      <div class="mini-page R"><div class="mini-q">“문장은 기본 명조로, 손글씨는 메모와 제목에.”</div></div>
+    </div>
+    <span class="callout c1">${pin(1)} 표지</span><span class="callout c2">${pin(2)} 속지</span><span class="callout c3">${pin(4)} 제본</span><span class="callout c4">${pin(5)} 손글씨</span>
+    <div class="mini-spine" style="background:${cv.c};color:${cv.dark?'#F3EFE6':'#38342F'}" title="책장 속 내 수첩 책등"><span>${esc(pr.coverTitle||'나의 문학 수첩')}</span></div>
+   </div>
+   <div class="small" style="margin:2px 4px 0">오른쪽 작은 책등은 <b>책장</b>에 꽂힌 내 수첩 모습이에요.</div>
+   <h2 class="h3">추천 조합</h2>
+   <div class="themes">${THEMES.map(t=>{const on=Object.entries(t.set).every(([k,v])=>dc[k]===v);return `<button class="theme ${on?'on':''}" data-act="deco-theme" data-v="${t.id}" aria-pressed="${on}"><span class="tchip" style="background:${COVERS[t.set.cover].c}"><i style="background:${SHEETS[t.set.sheet].c}"></i></span><b style="font-family:${FONTS[t.set.font].stack}">${esc(t.name)}</b></button>`}).join('')}</div>
+   <h2 class="h3">표지 정보</h2>
    <form data-form="profile">
     <label for="pn">닉네임<span class="req">*</span><span class="opt">실명·학교 등은 적지 마세요</span></label><input type="text" id="pn" name="nick" maxlength="14" required value="${esc(pr.nick)}">
     <label for="pb">한 줄 소개</label><input type="text" id="pb" name="bio" maxlength="40" value="${esc(pr.bio)}">
-    <label for="pc">수첩 표지 제목</label><input type="text" id="pc" name="cover" maxlength="20" value="${esc(pr.coverTitle||'')}">
+    <label for="pc">수첩 이름 <span class="opt">표지와 책등에 적혀요</span></label><input type="text" id="pc" name="cover" maxlength="20" value="${esc(pr.coverTitle||'')}">
     <label>아바타</label><div class="row">${AV.map((_,i)=>`<label class="avopt ${pr.avatar===i?'on':''}" style="margin:0;cursor:pointer"><input class="sr" type="radio" name="av" value="${i}" ${pr.avatar===i?'checked':''}>${avatar(i,'sm')}</label>`).join('')}</div>
-    <div class="row" style="margin-top:10px"><button class="btn solid" type="submit">저장</button></div></form>`;
-  const R=`<h2 class="h3" style="margin-top:0">종이</h2><div class="chiprow">${[['plain','무지'],['lined','줄 노트'],['grid','모눈']].map(([k,n])=>`<button class="tag ${st.paper===k?'on':''}" data-act="paper" data-v="${k}">${n}</button>`).join('')}</div>
-   <h2 class="h3">표지 색</h2><div class="chiprow">${[['kraft','크래프트'],['ink','먹색'],['paper','미색']].map(([k,n])=>`<button class="tag ${st.cover===k?'on':''}" data-act="cover" data-v="${k}">${n}</button>`).join('')}</div>
-   <h2 class="h3">손글씨체</h2><div class="row">${Object.entries(FONTS).map(([k,f])=>`<button class="tag ${(st.font||'default')===k?'on':''}" style="font-family:${f.stack};font-size:21px" data-act="font" data-v="${k}">${esc(f.name)}</button>`).join('')}</div>
-   <h2 class="h3">스티커·낙서 <span class="small" style="font-family:var(--body)">내 수첩 첫 페이지에 붙어요</span></h2>
-   <div class="row">${STICKERS.map(s=>`<button class="note click ${st.stickers.includes(s.id)?'sel':''}" style="margin:6px;padding:8px 10px;min-width:110px;text-align:center;background:#fbf8f0" data-act="sticker" data-id="${s.id}" aria-pressed="${st.stickers.includes(s.id)}">${stickerSvg(s.id)}<div class="small">${esc(s.name)}</div></button>`).join('')}</div>
+    <div class="row" style="margin-top:10px"><button class="btn solid" type="submit">표지 정보 저장</button></div></form>`;
+  const opt=(k,v,on,inner,label)=>`<button class="opt-btn ${on?'on':''}" data-act="deco" data-k="${k}" data-v="${v}" aria-pressed="${on}" title="${esc(label)}">${inner}<span>${esc(label)}</span></button>`;
+  const sec=(n,title,where,body)=>`<section class="deco-sec"><h2 class="h3">${pin(n)} ${title}</h2><div class="where">적용 위치 · ${where}</div>${body}</section>`;
+  const R=`${sec(1,'표지 색','수첩 겉표지와 책장 속 내 책등',`<div class="opts">${Object.entries(COVERS).map(([k,c])=>opt('cover',k,dc.cover===k,`<i class="sw" style="background:${c.c}"></i>`,c.name)).join('')}</div>`)}
+   ${sec(2,'속지 색','모든 페이지의 바탕',`<div class="opts">${Object.entries(SHEETS).map(([k,c])=>opt('sheet',k,dc.sheet===k,`<i class="sw sq" style="background:${c.c}"></i>`,c.name)).join('')}</div>`)}
+   ${sec(3,'속지 무늬','페이지 바탕 무늬',`<div class="opts">${Object.entries(PAPERS).map(([k,n])=>opt('paper',k,dc.paper===k,`<i class="pat paper-${k}" style="--paper:${sh.c}"></i>`,n)).join('')}</div>`)}
+   ${sec(4,'제본 모양','펼친 수첩 가운데 (넓은 화면에서 보여요)',`<div class="opts">${Object.entries(BINDS).map(([k,b])=>opt('bind',k,dc.bind===k,`<i class="bnd bind-${k}" style="--paper:${sh.c}"><b class="rings"></b></i>`,b.name)).join('')}</div>`)}
+   ${sec(5,'손글씨체','제목 · 탭 · 버튼 · 메모',`<div class="fonts">${Object.entries(FONTS).map(([k,f])=>`<button class="font-card ${dc.font===k?'on':''}" data-act="deco" data-k="font" data-v="${k}" aria-pressed="${dc.font===k}"><b style="font-family:${f.stack}">${esc(f.name)}</b><span style="font-family:${f.stack}">오늘의 문장을 적어요</span></button>`).join('')}</div><div class="small" style="margin-top:4px">문장마다 다른 글씨체는 문장을 기록할 때 따로 고를 수 있어요.</div>`)}
+   <div class="row" style="margin-top:10px"><button class="btn sm" data-act="deco-reset">기본 꾸미기로 되돌리기</button></div>
    <h2 class="h3">내 수첩 가져가기</h2>
    <div class="row"><button class="btn sm" data-act="export">수첩 텍스트로 보기·복사</button></div>
    <h2 class="h3">저장과 초기화</h2>
-   <p class="small">모든 기록은 이 브라우저의 로컬 저장소에만 저장돼요. 서버로 전송되지 않으며, 다른 기기와는 동기화되지 않아요.</p>
-   <div class="row"><button class="btn sm" data-act="reset">데모 데이터로 초기화</button></div>`;
+   <p class="small">기록은 이 브라우저에 저장돼요. ‘우리 책장’에 꽂은 경우에만 공개 설정한 내용이 서버에 올라가요.</p>
+   <div class="row"><button class="btn sm" data-act="reset">처음 상태로 초기화</button></div>`;
   return [L,R];
 };
 
@@ -1065,7 +1130,9 @@ function render(turn){
   $('room').hidden=!atShelf;book.hidden=atShelf;$('pager').hidden=atShelf;
   document.documentElement.style.setProperty('--hand',(FONTS[S.settings.font]||FONTS.default).stack);
   if(atShelf){$('room').innerHTML=shelfRoom();return}
-  book.className='book c-'+S.settings.cover+' paper-'+S.settings.paper+(inFriend?' reading-friend':'');
+  const dc=deco();
+  book.className='book'+(COVERS[dc.cover].dark?' c-ink':'')+' paper-'+dc.paper+' bind-'+dc.bind+(inFriend?' reading-friend':'');
+  book.style.setProperty('--cover',COVERS[dc.cover].c);book.style.setProperty('--paper',SHEETS[dc.sheet].c);
   document.documentElement.style.setProperty('--hand',(FONTS[S.settings.font]||FONTS.default).stack);
   if(inFriend){
     $('tabs').innerHTML=FRIEND_TABLIST.map(([k,n])=>`<button class="tab ${ui.fTab===k?'on':''}" data-act="ftab" data-v="${k}" ${ui.fTab===k?'aria-current="page"':''}>${n}</button>`).join('')
@@ -1204,10 +1271,12 @@ const A={
  'friend-take'(e){const f=findFriend(e.f),q=f.quotes[+e.i];if(S.quotes.some(x=>x.from===f.nick&&x.text===q.text))return;
    S.quotes.push({id:uid(),text:q.text,book:q.book,author:q.author,page:'',date:today(),thought:'',tags:q.tags.slice(),vis:'me',from:f.nick,kind:'summary'});save();render();toast('내 수첩에 담았어요')},
  'comment-del'(e){confirmBox('이 댓글을 지울까요?',()=>{S.comments=S.comments.filter(x=>x.id!==e.id);save();render();toast('댓글을 지웠어요')},'지우기')},
+ deco(e){if(!['cover','sheet','paper','bind','font'].includes(e.k))return;S.settings[e.k]=e.v;save();render()},
+ 'deco-theme'(e){const t=THEMES.find(x=>x.id===e.v);if(!t)return;Object.assign(S.settings,t.set);save();render();toast(`‘${t.name}’ 조합을 입혔어요`)},
+ 'deco-reset'(){Object.assign(S.settings,{cover:'kraft',sheet:'cream',paper:'plain',bind:'ring',font:'default'});save();render();toast('기본 꾸미기로 되돌렸어요')},
  paper(e){S.settings.paper=e.v;save();render()},
  cover(e){S.settings.cover=e.v;save();render()},
  font(e){S.settings.font=e.v;save();render()},
- sticker(e){const a=S.settings.stickers,i=a.indexOf(e.id);if(i>=0)a.splice(i,1);else a.push(e.id);save();render()},
  export(){openModal(`<h3>내 수첩 텍스트</h3><textarea class="copybox" readonly>${esc(exportText())}</textarea><div class="row" style="margin-top:10px"><button class="btn solid" data-act="copy-export">복사</button><button class="btn" data-act="close">닫기</button></div>`)},
  'copy-export'(){try{navigator.clipboard.writeText(exportText()).then(()=>toast('복사했어요'),()=>toast('복사에 실패했어요'))}catch(x){toast('복사할 수 없는 환경이에요')}},
  reset(){confirmBox('내가 적은 문장·책·대화·댓글이 모두 사라지고 처음 데모 데이터로 돌아가요.\n정말 초기화할까요?',()=>{if(S.share&&S.share.on)api('/'+S.share.id,{method:'DELETE',body:JSON.stringify({token:S.share.token})}).catch(()=>{});S=seed();S.meta.seen=true;ui.chat=null;ui.qSel=null;ui.bSel=null;ui.fSel=null;ui.inFriend=null;ui.fTab='intro';ui.pending=null;ui.test=null;save();go('home');toast('데모 데이터로 초기화했어요')},'초기화')}
@@ -1217,7 +1286,7 @@ document.addEventListener('click',ev=>{
   const el=ev.target.closest('[data-act]');if(!el)return;
   const fn=A[el.dataset.act];if(!fn)return;
   ev.preventDefault();
-  fn({v:el.dataset.v,id:el.dataset.id,i:el.dataset.i,f:el.dataset.f});
+  fn({v:el.dataset.v,id:el.dataset.id,i:el.dataset.i,f:el.dataset.f,k:el.dataset.k});
 });
 document.addEventListener('keydown',ev=>{
   if(ev.key==='Escape'&&!$('modal').hidden){closeModal();return}
