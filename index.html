@@ -226,9 +226,13 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 .spine:nth-child(2n){height:132px;background:#e9e1cf}.spine:nth-child(3n){height:158px;background:#c8bba2}
 .spine:hover{transform:translateY(-6px)}
 .spine.on{transform:translateY(-12px);background:var(--ink);color:var(--paper)}
-.room{background:var(--paper);border:1.5px solid #8f8470;border-radius:6px;padding:26px 30px 30px;box-shadow:0 10px 22px rgba(56,52,47,.22);min-height:600px}
+.room{color:var(--ink);background-color:var(--paper);border:1.5px solid #8f8470;border-top:10px solid var(--cover,#8f8470);border-radius:6px;padding:26px 30px 30px;box-shadow:0 10px 22px rgba(56,52,47,.22);min-height:600px}
 .room[hidden],.book[hidden],.pager[hidden]{display:none!important}
-.room .case{padding:0 14px 2px}
+.room .case{padding:0 14px 2px;border-color:color-mix(in srgb,var(--cover) 75%,#3a3228);background:linear-gradient(color-mix(in srgb,var(--cover) 22%,#f4ecdc),color-mix(in srgb,var(--cover) 30%,#e6dcc6))}
+.room .shelf{border-bottom-color:color-mix(in srgb,var(--cover) 70%,#3a3228)}
+.room.paper-lined{background-image:repeating-linear-gradient(to bottom,transparent 0 31px,rgba(56,52,47,.12) 31px 32px)}
+.room.paper-grid{background-image:linear-gradient(rgba(56,52,47,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(56,52,47,.08) 1px,transparent 1px);background-size:26px 26px}
+.room.paper-dot{background-image:radial-gradient(rgba(56,52,47,.2) 1.1px,transparent 1.5px);background-size:22px 22px}
 .room .shelf{min-height:184px}
 .live{font-family:var(--body);font-size:12px;color:#7d7a55;vertical-align:middle;margin-left:6px;animation:blink 2s infinite}
 @keyframes blink{50%{opacity:.35}}
@@ -798,7 +802,7 @@ function friendMenu(id){
    ${q?`<div class="note card" style="--r:-.3deg;margin:12px 2px"><span class="tape"></span><div class="qt" style="font-size:15.5px">${qtx(q)}</div><div class="cite">『${esc(q.book)}』</div></div>`:''}
    <div class="small" style="margin-top:6px">바로 펼쳐 보기</div>
    <div class="chiprow">${[['quotes','문장 '+f.quotes.length],['talk','대화 '+f.convs.length],['guestbook','방명록 '+gb]].map(([k,n])=>`<button class="tag" data-act="friend-go" data-id="${id}" data-v="${k}">${n}</button>`).join('')}</div>
-   <div class="row" style="margin-top:12px"><button class="btn solid" data-act="friend-go" data-id="${id}">📖 수첩 펼치기</button></div>
+   <div class="row" style="margin-top:12px"><button class="btn solid" data-act="friend-go" data-id="${id}">수첩 펼치기</button></div>
    ${f.shared&&i<0?`<div class="small" style="margin-top:12px;border-top:1.4px dashed var(--gray);padding-top:10px">우리 책장에 함께 꽂힌 수첩이에요 · ${esc(sinceText(f.createdAt))}</div>`
    :`<div class="row" style="margin-top:12px;justify-content:space-between;align-items:center;border-top:1.4px dashed var(--gray);padding-top:10px">
     <div class="row" style="align-items:center"><span class="small">책장 위치 ${i+1} / ${a.length}</span>
@@ -886,7 +890,7 @@ function shareCard(){
   const on=S.share&&S.share.on;
   if(!SHARED.loaded)return '';
   if(!SHARED.online)return `<div class="note" style="--r:.3deg;margin:10px 4px"><b class="hand" style="font-size:21px">우리 책장</b><div class="small">공유 서버에 연결되면 내 수첩을 모두의 책장에 꽂을 수 있어요.</div></div>`;
-  return on?`<div class="note kraft" style="--r:.3deg;margin:10px 4px"><b class="hand" style="font-size:21px">📚 우리 책장에 꽂혀 있어요</b><div class="small">기록하면 자동으로 반영돼요. 문장은 ‘친구에게 보이기’로 둔 것만, 대화는 친구에게 보이기로 바꾼 것만 공개돼요.</div><div class="row" style="margin-top:6px"><button class="btn sm" data-act="nav" data-v="home">책장에서 보기</button><button class="btn sm" data-act="share-off">책장에서 빼기</button></div></div>`
+  return on?`<div class="note kraft" style="--r:.3deg;margin:10px 4px"><b class="hand" style="font-size:21px">우리 책장에 꽂혀 있어요</b><div class="small">기록하면 자동으로 반영돼요. 문장은 ‘친구에게 보이기’로 둔 것만, 대화는 친구에게 보이기로 바꾼 것만 공개돼요.</div><div class="row" style="margin-top:6px"><button class="btn sm" data-act="nav" data-v="home">책장에서 보기</button><button class="btn sm" data-act="share-off">책장에서 빼기</button></div></div>`
    :`<div class="note card" style="--r:-.3deg;margin:10px 4px"><span class="tape"></span><b class="hand" style="font-size:22px">내 수첩을 우리 책장에 꽂아 볼까요?</b><div class="small">발표장의 모두가 내 수첩을 펼쳐 볼 수 있어요. 닉네임·페르소나와 ‘친구에게 보이기’ 문장·생각만 공개돼요.</div><div class="row" style="margin-top:6px"><button class="btn solid sm" data-act="share-on">우리 책장에 꽂기</button></div></div>`;
 }
 function onboard(){
@@ -934,7 +938,7 @@ VIEWS.persona=function(){
     const n=Object.keys(PERSONAS).length;
     R=!ui.pAll?`<h2 class="h3" style="margin-top:0">문학 페르소나란?</h2>
     <div class="note card" style="--r:.4deg"><span class="tape"></span><p style="margin:0 0 8px">상황형 질문에 답하면, 수첩에 담긴 ${n}가지 문학 속 인물 중 나와 가장 닮은 한 명을 찾아 드려요.</p>
-     <button class="btn" data-act="persona-all" aria-expanded="false">📖 페르소나 설명 보기 (${n}가지)</button></div>`
+     <button class="btn" data-act="persona-all" aria-expanded="false">페르소나 설명 보기 (${n}가지)</button></div>`
     :`<h2 class="h3" style="margin-top:0">수첩에 있는 ${n}가지 이야기 <button class="more" data-act="persona-all" aria-expanded="true">접기 ▲</button></h2>
     ${Object.values(PERSONAS).map((x,i)=>`<div class="note ${p&&p.key===x.key?'kraft':''}" style="--r:${rot(i+2)};margin:7px 4px;display:flex;gap:10px;align-items:center">${pimg(x,48)}<div><b class="hand" style="font-size:23px">${esc(x.alias)}</b> <span class="small">『${esc(x.work)}』 · ${esc(x.char)}</span><div class="small" style="color:#4a443d">${x.kw.map(esc).join(' · ')}</div></div></div>`).join('')}
     <div class="warn">등장인물 설명은 작품을 바탕으로 직접 정리한 소개이며, 인물의 성격을 단정하지 않아요. 같은 인물도 다양하게 해석될 수 있습니다.</div>`;
@@ -1130,9 +1134,9 @@ VIEWS.decorate=function(){
     <div class="row" style="margin-top:10px"><button class="btn solid" type="submit">표지 정보 저장</button></div></form>`;
   const opt=(k,v,on,inner,label)=>`<button class="opt-btn ${on?'on':''}" data-act="deco" data-k="${k}" data-v="${v}" aria-pressed="${on}" title="${esc(label)}">${inner}<span>${esc(label)}</span></button>`;
   const sec=(n,title,where,body)=>`<section class="deco-sec"><h2 class="h3">${pin(n)} ${title}</h2><div class="where">적용 위치 · ${where}</div>${body}</section>`;
-  const R=`${sec(1,'표지 색','수첩 겉표지와 책장 속 내 책등',`<div class="opts">${Object.entries(COVERS).map(([k,c])=>opt('cover',k,dc.cover===k,`<i class="sw" style="background:${c.c}"></i>`,c.name)).join('')}</div>`)}
-   ${sec(2,'속지 색','모든 페이지의 바탕',`<div class="opts">${Object.entries(SHEETS).map(([k,c])=>opt('sheet',k,dc.sheet===k,`<i class="sw sq" style="background:${c.c}"></i>`,c.name)).join('')}</div>`)}
-   ${sec(3,'속지 무늬','페이지 바탕 무늬',`<div class="opts">${Object.entries(PAPERS).map(([k,n])=>opt('paper',k,dc.paper===k,`<i class="pat paper-${k}" style="--paper:${sh.c}"></i>`,n)).join('')}</div>`)}
+  const R=`${sec(1,'표지 색','수첩 겉표지 · 책장 테두리와 선반 · 내 책등',`<div class="opts">${Object.entries(COVERS).map(([k,c])=>opt('cover',k,dc.cover===k,`<i class="sw" style="background:${c.c}"></i>`,c.name)).join('')}</div>`)}
+   ${sec(2,'속지 색','모든 페이지와 책장 화면의 바탕',`<div class="opts">${Object.entries(SHEETS).map(([k,c])=>opt('sheet',k,dc.sheet===k,`<i class="sw sq" style="background:${c.c}"></i>`,c.name)).join('')}</div>`)}
+   ${sec(3,'속지 무늬','페이지와 책장 화면의 바탕 무늬',`<div class="opts">${Object.entries(PAPERS).map(([k,n])=>opt('paper',k,dc.paper===k,`<i class="pat paper-${k}" style="--paper:${sh.c}"></i>`,n)).join('')}</div>`)}
    ${sec(4,'제본 모양','펼친 수첩 가운데 (넓은 화면에서 보여요)',`<div class="opts">${Object.entries(BINDS).map(([k,b])=>opt('bind',k,dc.bind===k,`<i class="bnd bind-${k}" style="--paper:${sh.c}"><b class="rings"></b></i>`,b.name)).join('')}</div>`)}
    ${sec(5,'손글씨체','제목 · 탭 · 버튼 · 메모',`<div class="fonts">${Object.entries(FONTS).map(([k,f])=>`<button class="font-card ${dc.font===k?'on':''}" data-act="deco" data-k="font" data-v="${k}" aria-pressed="${dc.font===k}"><b style="font-family:${f.stack}">${esc(f.name)}</b><span style="font-family:${f.stack}">오늘의 문장을 적어요</span></button>`).join('')}</div><div class="small" style="margin-top:4px">문장마다 다른 글씨체는 문장을 기록할 때 따로 고를 수 있어요.</div>`)}
    <div class="row" style="margin-top:10px"><button class="btn sm" data-act="deco-reset">기본 꾸미기로 되돌리기</button></div>
@@ -1151,7 +1155,7 @@ function render(turn){
   const atShelf=!inFriend&&ui.view==='home';
   $('room').hidden=!atShelf;book.hidden=atShelf;$('pager').hidden=atShelf;
   document.documentElement.style.setProperty('--hand',(FONTS[S.settings.font]||FONTS.default).stack);
-  if(atShelf){$('room').innerHTML=shelfRoom();return}
+  if(atShelf){const rm=$('room'),dc=deco();rm.className='room paper-'+dc.paper;rm.style.setProperty('--paper',SHEETS[dc.sheet].c);rm.style.setProperty('--cover',COVERS[dc.cover].c);rm.innerHTML=shelfRoom();return}
   const dc=deco();
   book.className='book'+(COVERS[dc.cover].dark?' c-ink':'')+' paper-'+dc.paper+' bind-'+dc.bind+(inFriend?' reading-friend':'');
   book.style.setProperty('--cover',COVERS[dc.cover].c);book.style.setProperty('--paper',SHEETS[dc.sheet].c);
