@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TEXT HIP UNIVERSE · 문학 수첩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Nanum+Myeongjo:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3EFE6; --kraft:#D8CBB5; --ink:#38342F; --gray:#8A8379; --olive:#7d7a55; --plum:#8a6a78;
+  --hand:'Nanum Pen Script','Gaegu','Segoe Print','Apple SD Gothic Neo',cursive;
+  --body:'Nanum Myeongjo','Noto Serif KR','Batang','AppleMyungjo',serif;
+  --type:'Special Elite','Courier New',monospace;
+  --cover:#D8CBB5;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:var(--body); color:var(--ink); font-size:16px; line-height:1.7;
+  background-color:#c9bb9f;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .22  0 0 0 0 .19  0 0 0 0 .15  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  min-height:100vh; padding:18px 12px 40px;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+.hand{font-family:var(--hand);font-weight:400;letter-spacing:.01em}
+.type{font-family:var(--type)}
+.sr{position:absolute;left:-9999px}
+
+/* binder */
+.wrap{max-width:1220px;margin:0 auto}
+.topline{display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 8px;gap:10px;flex-wrap:wrap}
+.logo{font-family:var(--type);font-size:20px;letter-spacing:.14em;transform:rotate(-1deg);display:inline-block}
+.logo small{font-family:var(--hand);font-size:20px;letter-spacing:0;margin-left:10px;color:#4a443d}
+.notice{font-size:12.5px;color:#4a443d;font-family:var(--body)}
+.book{display:flex;background:var(--cover);border-radius:8px 14px 14px 8px;padding:14px 0 14px 14px;position:relative;
+  box-shadow:0 2px 0 #b3a68d,0 10px 22px rgba(56,52,47,.28);border:1.5px solid #8f8470}
+.book.c-ink{--cover:#4a453f;color:#F3EFE6}
+.book.c-ink .tab{color:var(--ink)}
+.book.c-paper{--cover:#e7e0d0}
+.spread{flex:1;display:grid;grid-template-columns:1fr 1fr;position:relative;min-width:0;transition:opacity .25s,transform .25s}
+.spread.turn{animation:turn .28s ease}
+@keyframes turn{from{opacity:.2;transform:translateX(10px)}to{opacity:1;transform:none}}
+.page{position:relative;min-height:690px;padding:30px 34px 36px;background:var(--paper);overflow:hidden;min-width:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .18  0 0 0 .08 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>")}
+.page.L{border-radius:6px 0 0 6px;box-shadow:inset -22px 0 24px -22px rgba(56,52,47,.35)}
+.page.R{border-radius:0 6px 6px 0;box-shadow:inset 22px 0 24px -22px rgba(56,52,47,.35)}
+.paper-lined .page{background-image:repeating-linear-gradient(to bottom,transparent 0 31px,rgba(56,52,47,.14) 31px 32px),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .18  0 0 0 .08 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");background-position:0 22px,0 0}
+.paper-grid .page{background-image:linear-gradient(rgba(56,52,47,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(56,52,47,.1) 1px,transparent 1px),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .18  0 0 0 .08 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");background-size:26px 26px,26px 26px,auto}
+.rings{position:absolute;left:50%;top:0;bottom:0;width:30px;transform:translateX(-50%);z-index:5;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,#f3efe6 0 5px,#4a443d 5.5px 7px,#bdb29c 7.5px 9px,transparent 9.5px) 0 0/30px 52px repeat-y}
+.rings::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(56,52,47,.25);transform:translateX(-50%)}
+.tabs{display:flex;flex-direction:column;gap:6px;padding-top:34px;width:66px;flex:none}
+.tab{border:1.5px solid #6e6454;border-left:0;background:#e9e2d2;padding:10px 4px 10px 6px;border-radius:0 9px 9px 0;font-family:var(--hand);font-size:18px;line-height:1.1;text-align:center;word-break:keep-all;
+  box-shadow:1px 1px 0 rgba(56,52,47,.25);transition:transform .15s,margin .15s;margin-left:-2px;color:var(--ink);width:100%}
+.tab:nth-child(2n){background:#dfd5bf}.tab:nth-child(3n){background:#ece6d8}
+.tab:hover{transform:translateX(3px)}
+.tab.on{background:var(--paper);transform:translateX(0);margin-left:-4px;font-weight:700;border-color:var(--ink)}
+.pager{display:none}
+
+/* typography bits */
+h1,h2,h3{font-weight:400;margin:0}
+.ptitle{font-family:var(--hand);font-size:40px;line-height:1.05;display:inline-block;transform:rotate(-1.2deg);margin:0 0 4px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='8' viewBox='0 0 200 8'><path d='M1 5 C 30 1, 60 7, 95 4 S 160 2, 199 5' fill='none' stroke='%2338342F' stroke-width='1.8' stroke-linecap='round'/></svg>") left bottom/100% 8px no-repeat;padding-bottom:7px}
+.sub{font-family:var(--hand);font-size:22px;color:#5d564d;margin:4px 0 12px}
+.h3{font-family:var(--hand);font-size:27px;margin:16px 0 6px;display:flex;align-items:center;gap:8px;line-height:1.1}
+.h3 .more{font-family:var(--body);font-size:12px;margin-left:auto;border:0;background:none;text-decoration:underline;color:var(--gray);padding:0}
+.small{font-size:13px;color:var(--gray)}
+.pen{color:#4b453e}
+.sep{border:0;border-top:1.5px dashed #a89e8b;margin:14px 0}
+
+/* paper bits */
+.note{background:#fbf8f0;border:1px solid #cbbfa8;padding:12px 14px;margin:10px 4px;position:relative;box-shadow:1px 2px 0 rgba(56,52,47,.18),0 6px 8px -6px rgba(56,52,47,.35);transform:rotate(var(--r,0deg))}
+.note.kraft{background:var(--kraft);border-color:#bba98a}
+.note.card{background:#fffdf7;background-image:repeating-linear-gradient(to bottom,transparent 0 27px,rgba(56,52,47,.1) 27px 28px);background-position:0 36px;border-top:3px double #c77;border-top-color:#a8685f}
+.note.torn{clip-path:polygon(0 3%,4% 0,9% 2%,15% 0,22% 3%,30% 0,38% 2%,47% 0,55% 3%,64% 0,72% 2%,81% 0,90% 3%,100% 0,100% 100%,0 100%)}
+.note.click{cursor:pointer;transition:transform .15s}
+.note.click:hover{transform:rotate(0deg) translateY(-2px)}
+.note.sel{outline:2px solid var(--ink);outline-offset:2px}
+.tape{position:absolute;top:-10px;left:50%;width:70px;height:20px;background:rgba(190,176,148,.72);border:1px solid rgba(120,106,80,.35);transform:translateX(-50%) rotate(-3deg);
+  clip-path:polygon(0 0,100% 6%,97% 50%,100% 94%,0 100%,3% 50%)}
+.tape.l{left:24px;transform:rotate(-8deg)}
+.qt{font-family:var(--body);font-size:17px;line-height:1.75}
+.cite{font-size:13px;color:#5f584f;margin-top:6px}
+.tag{display:inline-block;font-family:var(--hand);font-size:18px;border:1.4px solid var(--ink);border-radius:12px 14px 11px 15px;padding:0 9px;margin:0 5px 4px 0;line-height:1.35;background:transparent;color:var(--ink)}
+button.tag.on{background:var(--ink);color:var(--paper)}
+.badge{display:inline-block;font-size:11px;border:1px dashed var(--gray);padding:0 6px;color:#6a6358;margin-left:4px;vertical-align:middle;border-radius:3px;font-family:var(--body)}
+.btn{font-family:var(--hand);font-size:21px;line-height:1.1;background:#efe7d4;border:1.6px solid var(--ink);border-radius:5px 9px 6px 10px/9px 5px 10px 6px;padding:5px 13px 4px;box-shadow:2px 2px 0 rgba(56,52,47,.55);transition:transform .1s,box-shadow .1s;margin:2px 4px 4px 0;color:var(--ink)}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(56,52,47,.55)}
+.btn:active{transform:translate(2px,2px);box-shadow:0 0 0}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.sm{font-size:18px;padding:2px 9px 1px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+.linkbtn{background:none;border:0;padding:0;text-decoration:underline;color:var(--gray);font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.empty{border:2px dashed #a89e8b;padding:18px;text-align:center;color:#6a6358;margin:10px 4px;border-radius:4px}
+.empty .hand{font-size:24px;display:block;margin-bottom:6px}
+.avatar{width:74px;height:74px;border:2px solid var(--ink);border-radius:50% 46% 52% 48%;background:#efe7d4;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:2px 2px 0 rgba(56,52,47,.4)}
+.avatar svg{width:80%;height:80%}
+.avatar.sm{width:44px;height:44px}
+.me-head{display:flex;gap:16px;align-items:center}
+.nick{font-family:var(--hand);font-size:38px;line-height:1}
+.bio{font-family:var(--hand);font-size:22px;color:#5a534a;line-height:1.2;margin-top:4px}
+.stk{position:absolute;pointer-events:none;z-index:2}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.persona-stamp{border:2px solid var(--ink);padding:8px 12px;display:flex;gap:10px;align-items:center;cursor:pointer;transform:rotate(-1deg);background:#efe7d4;margin:8px 4px;border-radius:3px}
+.persona-stamp b{font-family:var(--hand);font-size:26px;font-weight:400}
+
+/* forms / modal */
+label{display:block;font-family:var(--hand);font-size:21px;margin:10px 0 2px}
+label .opt{font-family:var(--body);font-size:12px;color:var(--gray);margin-left:6px}
+label .req{color:#8a4d44;margin-left:3px}
+input[type=text],input[type=date],textarea,select{width:100%;font:inherit;font-size:15.5px;background:rgba(255,253,247,.85);border:1.5px solid var(--ink);border-radius:3px 6px 3px 5px;padding:7px 10px;color:var(--ink)}
+textarea{min-height:84px;resize:vertical;line-height:1.6}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.overlay{position:fixed;inset:0;background:rgba(40,36,30,.55);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:28px 12px;overflow:auto}
+.overlay[hidden]{display:none}
+.sheet{background:var(--paper);border:2px solid var(--ink);max-width:560px;width:100%;padding:22px 24px 20px;box-shadow:6px 6px 0 rgba(0,0,0,.35);position:relative;transform:rotate(-.4deg)}
+.sheet h3{font-family:var(--hand);font-size:34px;line-height:1}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 18px;font-family:var(--hand);font-size:22px;border-radius:4px 10px 5px 9px;z-index:80;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+.toast::before{content:"✓ ";}
+
+/* chat */
+.chat{display:flex;flex-direction:column;gap:10px;margin:8px 0;max-height:370px;overflow:auto;padding:4px 4px 8px}
+.msg{max-width:88%;padding:8px 12px;border:1.4px solid var(--ink);background:#fffdf7;position:relative;font-size:15.5px;line-height:1.65}
+.msg.me{align-self:flex-end;background:var(--kraft);border-radius:10px 3px 10px 10px}
+.msg.ch{align-self:flex-start;border-radius:3px 10px 10px 10px}
+.msg .who{font-family:var(--hand);font-size:17px;color:#6a6358;display:block;line-height:1}
+.star{position:absolute;right:-8px;top:-10px;background:var(--paper);border:1.4px solid var(--ink);border-radius:50%;width:26px;height:26px;line-height:20px;padding:0;font-size:15px}
+.star.on{background:var(--ink);color:var(--paper)}
+.disclaimer{border:1.4px dashed var(--gray);padding:6px 10px;font-size:12.5px;color:#5f584f;margin:8px 0}
+
+/* map */
+.mapbox{border:1.5px solid var(--ink);background:rgba(255,253,247,.5);margin:6px 0;border-radius:3px}
+svg.map text{font-family:var(--hand);fill:var(--ink)}
+svg.map .node{cursor:pointer}
+svg.map .node:hover .shape,svg.map .node.sel .shape{stroke-width:3.2}
+.legend span{margin-right:12px;font-size:13px;color:#5f584f;white-space:nowrap}
+
+/* bookshelf */
+.shelf{display:flex;align-items:flex-end;gap:5px;padding:12px 10px 0;border-bottom:8px solid #8c7e66;min-height:170px;margin:10px 0 4px;flex-wrap:wrap}
+.spine{width:46px;height:150px;border:1.6px solid var(--ink);background:var(--kraft);padding:6px 3px;writing-mode:vertical-rl;font-family:var(--hand);font-size:20px;display:flex;align-items:center;justify-content:center;border-radius:2px;position:relative;line-height:1;color:var(--ink);transition:transform .15s}
+.spine:nth-child(2n){height:132px;background:#e9e1cf}.spine:nth-child(3n){height:158px;background:#c8bba2}
+.spine:hover{transform:translateY(-6px)}
+.spine.on{transform:translateY(-12px);background:var(--ink);color:var(--paper)}
+.coverbook{width:64px;height:88px;border:1.6px solid var(--ink);background:var(--kraft);font-family:var(--hand);font-size:17px;line-height:1.05;padding:6px;display:flex;align-items:flex-end;text-align:left;flex:none;position:relative}
+.coverbook::before{content:"";position:absolute;left:5px;top:0;bottom:0;border-left:1.5px solid rgba(56,52,47,.5)}
+.bk{display:flex;gap:12px;align-items:center;margin:6px 4px}
+.bk .coverbook:nth-child(odd){}
+.statusrow .tag{cursor:pointer}
+
+.kv{font-size:14.5px}
+.kv dt{font-family:var(--hand);font-size:19px;display:inline;margin-right:6px}
+.kv dd{display:inline;margin:0}
+.quiz-opt{display:block;width:100%;text-align:left;margin:7px 0;background:#fffdf7;border:1.5px solid var(--ink);padding:9px 12px;border-radius:3px 8px 4px 7px;font-size:15.5px;line-height:1.55;transition:transform .12s}
+.quiz-opt:hover{transform:translateX(4px);background:var(--kraft)}
+.progress{height:8px;border:1.4px solid var(--ink);margin:6px 0 14px;position:relative;background:#fffdf7}
+.progress i{display:block;height:100%;background:var(--ink)}
+
+/* cover overlay */
+.intro{position:fixed;inset:0;z-index:60;background:#c9bb9f;display:flex;align-items:center;justify-content:center;padding:20px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .22  0 0 0 0 .19  0 0 0 0 .15  0 0 0 .13 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.intro[hidden]{display:none}
+.cover{background:var(--kraft);border:2px solid #6e6454;border-radius:6px 16px 16px 6px;max-width:470px;width:100%;padding:44px 34px 30px 52px;position:relative;box-shadow:0 12px 30px rgba(56,52,47,.4);transform:rotate(-1deg)}
+.cover::before{content:"";position:absolute;left:18px;top:14px;bottom:14px;width:14px;background:radial-gradient(circle,#f3efe6 0 4px,#4a443d 4.5px 6px,transparent 6.5px) 0 0/14px 40px repeat-y}
+.cover .label{background:var(--paper);border:1.5px solid var(--ink);padding:18px 16px 14px;text-align:center;transform:rotate(1.2deg);position:relative}
+.cover h1{font-family:var(--type);font-size:30px;letter-spacing:.1em;line-height:1.15;font-weight:400}
+.cover p{margin:10px 0 0}
+.cover .tagline{font-family:var(--hand);font-size:27px;line-height:1.15}
+
+/* print/export & misc */
+.copybox{width:100%;min-height:150px;font-family:var(--type);font-size:12.5px}
+.avopt{border:1.6px solid transparent;background:none;padding:2px;border-radius:50%}
+.avopt.on{border-color:var(--ink)}
+.chiprow button{cursor:pointer}
+.warn{font-size:13px;border-left:3px solid var(--gray);padding:2px 10px;color:#5a534a;margin:8px 0}
+
+@media (max-width:860px){
+  body{padding:10px 6px 90px}
+  .book{flex-direction:column-reverse;padding:10px 8px;border-radius:8px}
+  .tabs{flex-direction:row;overflow-x:auto;width:auto;padding:0 0 8px;gap:4px;scrollbar-width:thin}
+  .tab{border:1.5px solid #6e6454;border-bottom:0;border-radius:9px 9px 0 0;margin:0;padding:6px 10px;font-size:18px;white-space:nowrap;width:auto;flex:none;box-shadow:none}
+  .tab.on{margin:0}
+  .tabs{order:-1}
+  .book{flex-direction:column}
+  .spread{grid-template-columns:1fr}
+  .rings{display:none}
+  .page{display:none;min-height:560px;padding:24px 18px 30px;border-radius:4px!important;box-shadow:none!important}
+  .page.on{display:block}
+  .pager{display:flex;justify-content:space-between;align-items:center;position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--paper);padding:6px 14px;z-index:30;font-family:var(--hand);font-size:20px}
+  .pager button{background:none;border:1.4px solid var(--paper);color:var(--paper);font-family:var(--hand);font-size:20px;padding:2px 12px;border-radius:4px}
+  .ptitle{font-size:34px}
+  .logo small{display:none}
+  .grid2{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topline">
+    <div class="logo">TEXT HIP UNIVERSE<small>나의 문학 수첩</small></div>
+    <div class="notice">프로토타입 · 서버 없이 이 브라우저에만 저장돼요 · 친구와 문장은 예시 데이터입니다</div>
+  </div>
+  <div class="book" id="book">
+    <div class="spread" id="spread"><div class="rings"></div><div id="pages" style="display:contents"></div></div>
+    <nav class="tabs" id="tabs" aria-label="수첩 목차"></nav>
+  </div>
+</div>
+<div class="pager" id="pager"><button data-act="page" data-v="0">◀ 앞 페이지</button><span id="pgind">1 / 2</span><button data-act="page" data-v="1">뒷 페이지 ▶</button></div>
+<div class="overlay" id="modal" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="intro" id="intro" hidden>
+  <div class="cover">
+    <div class="label">
+      <h1>TEXT<br>HIP<br>UNIVERSE</h1>
+      <p class="tagline">문학으로 연결되는<br>우리의 디지털 수첩</p>
+    </div>
+    <p class="pen" style="margin-top:20px;font-size:14.5px">내 문학 페르소나, 모아 둔 문장, 문학 속 인물과 나눈 대화가 한 권의 수첩에 쌓이고, 친구의 수첩이 내 책장에 꽂힙니다.</p>
+    <p class="small">※ 독서량을 재거나 평가하지 않아요. 이 앱은 해커톤 프로토타입이라 모든 기록은 이 기기의 브라우저에만 저장됩니다.</p>
+    <div class="row" style="margin-top:12px">
+      <button class="btn solid" data-act="open-book">수첩 펼치기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ================= 데이터 ================= */
+const KEY='thu_proto_v1';
+const TOPICS=['위로','용기','관계','자유','성장','고독'];
+const TAGS=['위로','용기','외로움','자유','성장','사랑','관계','고독'];
+
+const AV=[
+ '<circle cx="20" cy="20" r="13" fill="none" stroke="#38342F" stroke-width="1.6"/><circle cx="15.5" cy="18" r="1.4" fill="#38342F"/><circle cx="24.5" cy="18" r="1.4" fill="#38342F"/><path d="M15 25q5 3 10 0" fill="none" stroke="#38342F" stroke-width="1.5" stroke-linecap="round"/>',
+ '<circle cx="20" cy="21" r="12" fill="none" stroke="#38342F" stroke-width="1.6"/><circle cx="15" cy="20" r="4" fill="none" stroke="#38342F" stroke-width="1.4"/><circle cx="25" cy="20" r="4" fill="none" stroke="#38342F" stroke-width="1.4"/><path d="M19 20h2M17 27h6" stroke="#38342F" stroke-width="1.5" stroke-linecap="round"/>',
+ '<circle cx="20" cy="23" r="11" fill="none" stroke="#38342F" stroke-width="1.6"/><path d="M8 17h24M12 17q8-12 16 0" fill="none" stroke="#38342F" stroke-width="1.6"/><circle cx="16" cy="23" r="1.3" fill="#38342F"/><circle cx="24" cy="23" r="1.3" fill="#38342F"/><path d="M17 28q3 2 6 0" fill="none" stroke="#38342F" stroke-width="1.4" stroke-linecap="round"/>',
+ '<path d="M9 16l3-9 7 6M31 16l-3-9-7 6" fill="none" stroke="#38342F" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="22" r="12" fill="none" stroke="#38342F" stroke-width="1.6"/><path d="M15 21v2M25 21v2M18 27q2 2 4 0M7 25h7M26 25h7" stroke="#38342F" stroke-width="1.4" stroke-linecap="round" fill="none"/>',
+ '<path d="M20 6l3.5 8.5 9 .8-6.8 6 2.2 9L20 25l-7.9 5.3 2.2-9-6.8-6 9-.8z" fill="none" stroke="#38342F" stroke-width="1.6" stroke-linejoin="round"/>',
+ '<path d="M26 8a13 13 0 1 0 6 20A11 11 0 0 1 26 8z" fill="none" stroke="#38342F" stroke-width="1.7" stroke-linejoin="round"/><circle cx="29" cy="12" r="1.2" fill="#38342F"/><circle cx="12" cy="9" r="1" fill="#38342F"/>'
+];
+function avatar(i,cls){return `<div class="avatar ${cls||''}"><svg viewBox="0 0 40 40" aria-hidden="true">${AV[i%AV.length]}</svg></div>`}
+
+const PERSONAS={
+ LP:{key:'LP',name:'별을 바라보는 길들이는 사람',alias:'어린 왕자형',char:'어린 왕자',work:'어린 왕자',author:'생텍쥐페리',chat:'prince',
+  kw:['관계','순수함','책임','돌봄'],
+  why:'소중한 사람에게 시간을 쓰는 일을 가장 중요하게 여기고, 눈에 보이지 않는 마음의 결을 오래 들여다보는 쪽에 가깝습니다.',
+  intro:'작은 별을 떠나 여러 별을 여행하는 어린 왕자가 여우와 장미를 통해 관계와 책임의 의미를 배우는 이야기입니다. (직접 쓴 소개)'},
+ HG:{key:'HG',name:'규칙 밖에서 길을 찾는 사람',alias:'홍길동형',char:'홍길동',work:'홍길동전',author:'허균',chat:'gildong',
+  kw:['자유','정의','저항','연대'],
+  why:'부당하다고 느끼는 일 앞에서 가만히 있기 어렵고, 정해진 틀 바깥에서 나만의 길을 만들고 싶어 하는 경향이 보입니다.',
+  intro:'신분 제도 때문에 뜻을 펴지 못하던 길동이 집을 떠나 의적의 우두머리가 되고, 끝내 자신의 나라를 세우는 고전소설입니다. (직접 쓴 소개)'},
+ CH:{key:'CH',name:'약속을 지키는 단단한 사람',alias:'춘향형',char:'춘향',work:'춘향전',author:'작자 미상',chat:'chunhyang',
+  kw:['신념','존엄','사랑','끈기'],
+  why:'한번 마음에 담은 가치를 쉽게 꺾지 않고, 누가 뭐라 해도 나의 존엄을 지키려는 단단함이 두드러집니다.',
+  intro:'권력 앞에서도 사랑의 약속과 자신의 존엄을 지켜 내는 춘향의 이야기로, 판소리계 소설의 대표작입니다. (직접 쓴 소개)'},
+ HM:{key:'HM',name:'오래 생각하는 밤의 사람',alias:'햄릿형',char:'햄릿',work:'햄릿',author:'윌리엄 셰익스피어',chat:'hamlet',
+  kw:['사유','망설임','진실','고독'],
+  why:'행동하기 전에 질문을 거듭 던지고, 겉으로 드러난 것보다 숨겨진 진실을 알고 싶어 하는 사람에 가깝습니다.',
+  intro:'아버지의 죽음 뒤 숨겨진 진실을 마주한 덴마크 왕자가 복수와 삶의 의미 사이에서 고뇌하는 비극입니다. (직접 쓴 소개)'},
+ EB:{key:'EB',name:'다시 보는 눈을 가진 사람',alias:'엘리자베스형',char:'엘리자베스 베넷',work:'오만과 편견',author:'제인 오스틴',chat:null,
+  kw:['관찰','자존','성찰','유머'],
+  why:'재치 있게 사람을 살피면서도, 내 편견을 되돌아볼 줄 아는 유연함이 매력으로 보입니다.',
+  intro:'첫인상과 편견이 어떻게 사람을 오해하게 하는지, 엘리자베스와 다아시의 관계로 그려 낸 소설입니다. (직접 쓴 소개)'},
+ AL:{key:'AL',name:'토끼굴로 먼저 뛰어드는 사람',alias:'앨리스형',char:'앨리스',work:'이상한 나라의 앨리스',author:'루이스 캐럴',chat:null,
+  kw:['호기심','상상','질문','모험'],
+  why:'낯선 곳에 들어서면 겁보다 궁금함이 먼저 올라오고, 엉뚱한 질문에서 이야기를 시작하는 편입니다.',
+  intro:'토끼를 따라 굴속으로 떨어진 앨리스가 말도 안 되는 규칙의 세계를 헤매는 환상 동화입니다. (직접 쓴 소개)'}
+};
+const QUIZ=[
+ {q:'갑자기 하루가 통째로 비었어요. 나는…',o:[['오래 연락 못 한 사람에게 안부를 보낸다',{LP:2}],['안 가 본 골목으로 무작정 걷는다',{AL:2,HG:1}],['방에 앉아 머릿속을 천천히 정리한다',{HM:2}]]},
+ {q:'눈앞에서 부당한 일이 벌어졌어요.',o:[['바로 나서서 따져 묻는다',{HG:2}],['조용하지만 끝까지 내 입장을 지킨다',{CH:2}],['상황부터 살피고 가장 효과적인 말을 고른다',{EB:2,HM:1}]]},
+ {q:'친구가 고민을 털어놓을 때 나는…',o:[['아무 말 없이 곁에 오래 앉아 있는다',{LP:2,CH:1}],['사실을 짚어 가며 같이 해결 방법을 찾는다',{EB:2}],['엉뚱한 이야기로 분위기를 한번 바꿔 본다',{AL:2}]]},
+ {q:'중요한 선택을 앞두고 있어요.',o:[['몇 번이고 되짚어 보며 마지막까지 고민한다',{HM:2}],['마음이 정해지면 밀고 나간다',{CH:2,HG:1}],['정해진 선택지 밖에서 제3의 길을 찾는다',{HG:2,AL:1}]]},
+ {q:'첫인상 때문에 오해를 받았어요.',o:[['시간이 지나 내 행동으로 보여 주면 된다',{CH:2}],['혹시 나도 누군가를 그렇게 본 적 없나 돌아본다',{EB:2}],['크게 신경 쓰지 않고 하던 일을 한다',{AL:2,LP:1}]]},
+ {q:'가장 좋아하는 장소는?',o:[['별이 잘 보이는 조용한 옥상',{LP:2}],['오래된 도서관의 구석 자리',{HM:2,EB:1}],['사람들로 북적이는 장터',{HG:2,AL:1}]]},
+ {q:'소중한 것을 지키는 방법은?',o:[['매일 조금씩 돌보는 작은 습관',{LP:2}],['한 번 한 약속을 끝까지 지키는 것',{CH:2}],['위협이 오면 맞서 싸우는 것',{HG:2}]]},
+ {q:'낯선 세계에 들어섰을 때 나는…',o:[['호기심이 이끄는 대로 들어가 본다',{AL:2}],['우선 관찰하고 기록해 둔다',{HM:2}],['처음 만난 사람에게 말을 걸어 본다',{EB:2,LP:1}]]},
+ {q:'가장 듣고 싶은 말은?',o:[['"네 덕분에 이 시간이 특별해졌어."',{LP:2}],['"너는 너대로 충분히 당당해."',{CH:1,EB:2}],['"네가 틀린 게 아니야."',{HG:2,HM:1}]]},
+ {q:'밤에 잠이 오지 않을 때는?',o:[['질문이 꼬리에 꼬리를 문다',{HM:2}],['머릿속으로 이야기 하나를 지어 낸다',{AL:2}],['내일 할 일 한 가지를 정하고 눕는다',{EB:1,HG:1,CH:1}]]}
+];
+
+const RECS=[
+ {id:'r1',topic:'관계',text:'길들인다는 건 서로에게 시간을 쓰는 일이고, 그래서 한 송이 장미가 세상에 단 하나뿐인 장미가 된다.',book:'어린 왕자',author:'생텍쥐페리',ctx:'여우가 어린 왕자에게 관계의 의미를 알려 주는 장면을 요약했어요.'},
+ {id:'r2',topic:'위로',text:'어딘가에 보이지 않는 꽃 한 송이가 있어서, 밤하늘의 별들은 더 아름답게 느껴진다.',book:'어린 왕자',author:'생텍쥐페리',ctx:'장미를 두고 온 어린 왕자의 마음을 해석한 문장이에요.'},
+ {id:'r3',topic:'자유',text:'아버지를 아버지라 부르지 못하는 설움 앞에서, 길동은 이름 붙지 않은 자유를 찾아 집을 나선다.',book:'홍길동전',author:'허균',ctx:'길동이 집을 떠나는 대목의 줄거리를 한 문장으로 옮겼어요.'},
+ {id:'r4',topic:'용기',text:'권력이 마음을 꺾으려 해도, 춘향은 사랑의 약속을 지키는 쪽을 선택한다.',book:'춘향전',author:'작자 미상',ctx:'변 사또의 수청 요구를 거절하는 장면을 요약했어요.'},
+ {id:'r5',topic:'고독',text:'삶의 의미를 되묻는 햄릿의 독백은, 행동하기 전에 오래 머무는 사람의 고독을 보여 준다.',book:'햄릿',author:'윌리엄 셰익스피어',ctx:'유명한 독백을 인용하지 않고 의미만 풀어 쓴 해석이에요.'},
+ {id:'r6',topic:'성장',text:'엘리자베스는 첫인상만으로 사람을 판단했던 자신을 돌아보며 한 걸음 자란다.',book:'오만과 편견',author:'제인 오스틴',ctx:'편지를 읽고 생각이 달라지는 대목을 해석했어요.'},
+ {id:'r7',topic:'자유',text:'토끼굴로 뛰어든 앨리스는 어른들의 규칙이 통하지 않는 곳에서도 질문을 멈추지 않는다.',book:'이상한 나라의 앨리스',author:'루이스 캐럴',ctx:'작품의 첫 모험을 요약했어요.'},
+ {id:'r8',topic:'고독',text:'벌레로 변한 그레고르를 가족이 점점 낯설어하는 모습은, 쓸모로만 평가받는 사람의 외로움을 떠올리게 한다.',book:'변신',author:'프란츠 카프카',ctx:'작품 속 가족의 변화를 해석한 문장이에요.'},
+ {id:'r9',topic:'성장',text:'어른들은 숫자로 친구를 소개하지만, 어린 왕자는 그 친구의 목소리와 좋아하는 놀이가 궁금하다.',book:'어린 왕자',author:'생텍쥐페리',ctx:'어른과 아이의 시선 차이를 정리했어요.'},
+ {id:'r10',topic:'용기',text:'풍차를 거인이라 믿는 돈키호테의 엉뚱함은, 비웃음 속에서도 꿈을 놓지 않는 용기로 읽힐 수 있다.',book:'돈키호테',author:'미겔 데 세르반테스',ctx:'가장 유명한 모험을 현대적으로 해석했어요.'},
+ {id:'r11',topic:'위로',text:'여우의 작별 인사는 헤어짐이 슬픔만 남기는 것이 아니라, 밀밭의 색깔처럼 기억을 남긴다고 말한다.',book:'어린 왕자',author:'생텍쥐페리',ctx:'여우와 어린 왕자의 이별 장면을 풀어 썼어요.'},
+ {id:'r12',topic:'관계',text:'다아시의 서툰 고백이 거절당한 뒤에야, 두 사람은 서로를 제대로 보기 시작한다.',book:'오만과 편견',author:'제인 오스틴',ctx:'관계가 바뀌는 전환점을 요약했어요.'}
+];
+
+const CHARS={
+ prince:{id:'prince',name:'어린 왕자',work:'어린 왕자',author:'생텍쥐페리',era:'20세기 프랑스 동화',trait:'호기심 많고 솔직하며 한 번 마음 준 존재를 끝까지 책임지려 한다',conflict:'두고 온 장미에 대한 그리움과 책임',
+  greet:'안녕! 나는 작은 별에서 온 어린 왕자야. 오늘은 어떤 별에서 왔니?',
+  sc:[
+   {q:'관계는 어떻게 만들어져?',k:['관계','친구','사이','만들'],a:'여우가 알려 줬어. 서로 길들이려면 참을성이 필요하대. 처음엔 멀리 앉아 있다가, 날마다 조금씩 가까이 앉는 거야.'},
+   {q:'소중한 걸 어떻게 알아봐?',k:['소중','중요','보이','마음'],a:'눈으로는 잘 안 보여. 장미가 다른 장미와 똑같아 보여도, 내가 물을 주고 바람막이를 세워 준 건 그 장미뿐이었거든.'},
+   {q:'외로울 땐 어떻게 해?',k:['외로','쓸쓸','혼자','고독'],a:'나는 해 지는 걸 보러 의자를 옮겨. 마흔세 번도 봤어. 슬플 땐 노을이 더 잘 보이거든. 그리고 누군가를 떠올려.'},
+   {q:'어른들은 왜 숫자만 말해?',k:['어른','숫자','돈','바쁘'],a:'어른들은 새 친구 얘기를 하면 "나이가 몇이니, 형제는 몇이니" 하고 물어. 목소리가 어떤지는 안 물어보고. 조금 이상해.'},
+   {q:'책임진다는 건 뭐야?',k:['책임','약속','돌','지키'],a:'길들인 것에는 영원히 책임이 있대. 그래서 나는 내 장미한테 돌아가야 해. 장미는 생각보다 약하고, 가시 네 개밖에 없거든.'},
+   {q:'헤어지는 건 슬프지 않아?',k:['이별','헤어','슬프','작별'],a:'슬퍼. 그래도 밀밭을 보면 여우가 생각나. 헤어져도 남는 게 있다는 걸 알게 되면, 조금은 괜찮아져.'}
+  ]},
+ gildong:{id:'gildong',name:'홍길동',work:'홍길동전',author:'허균',era:'조선 시대 고전소설',trait:'재주가 뛰어나고 의리가 깊으며 불의를 보면 참지 못한다',conflict:'신분 차별과 가족 안에서의 소외',
+  greet:'나는 홍길동이다. 이름 하나 제대로 불리지 못했던 사람이지. 무엇이 궁금하냐?',
+  sc:[
+   {q:'왜 집을 떠났어?',k:['떠','집','왜','가출'],a:'재주가 있어도 서자라는 이유로 아버지를 아버지라 부르지 못했다. 그 집에 남아서는 나도, 나를 아끼는 사람도 숨이 막힐 것 같았다.'},
+   {q:'불공평한 일엔 어떻게 맞서?',k:['불공평','정의','불의','맞서','차별'],a:'혼자 화내는 것으로는 부족하다. 같은 억울함을 가진 이들과 뜻을 모으고, 무엇이 잘못인지 분명히 말해야 한다.'},
+   {q:'자유란 뭘까?',k:['자유','구속','틀','규칙'],a:'자유는 규칙을 모두 없애는 게 아니라, 이름과 자리를 내가 정할 수 있는 것이라고 생각한다. 남이 붙여 준 이름에서 벗어나는 일이다.'},
+   {q:'의적은 옳은 일일까?',k:['의적','도둑','옳','훔'],a:'쉽게 답할 수 없는 질문이다. 나는 탐관오리의 재물을 나눴지만, 법을 어긴 것도 사실이다. 그래서 늘 스스로에게 되묻는다.'},
+   {q:'어디서 힘을 얻어?',k:['힘','용기','어떻게','버티'],a:'함께한 사람들에게서다. 혼자였다면 이미 포기했을 것이다. 나를 믿어 준 사람들 덕분에 나는 끝까지 갈 수 있었다.'},
+   {q:'어떤 나라를 꿈꿔?',k:['나라','이상','꿈','율도'],a:'태어난 처지로 사람을 가르지 않는 곳이다. 각자 가진 재주를 펼칠 수 있고, 서로의 이름을 제대로 불러 주는 곳.'}
+  ]},
+ chunhyang:{id:'chunhyang',name:'춘향',work:'춘향전',author:'작자 미상',era:'조선 후기 판소리계 소설',trait:'다정하지만 자신의 신념 앞에서는 한 발도 물러서지 않는다',conflict:'권력의 압박과 사랑의 약속',
+  greet:'어서 오세요. 저는 춘향이라 합니다. 편하게 물어보셔요.',
+  sc:[
+   {q:'왜 끝까지 거절했어요?',k:['거절','왜','수청','버텼'],a:'제 마음은 힘으로 가져갈 수 있는 물건이 아니니까요. 한번 한 약속을 저버리면, 저는 저 자신을 잃어버릴 것 같았습니다.'},
+   {q:'존엄이란 뭘까요?',k:['존엄','자존','품위','나답'],a:'신분이 뭐든, 내 몸과 마음의 주인은 나라는 믿음이에요. 누가 저를 낮춰 불러도 제 값어치는 변하지 않아요.'},
+   {q:'두렵지 않았어요?',k:['두렵','무섭','겁','두려'],a:'무서웠지요. 옥에 갇혀 밤새 울기도 했고요. 하지만 두려움과 포기는 다른 것이라고 스스로에게 말해 주었어요.'},
+   {q:'사랑은 어떤 거라고 생각해요?',k:['사랑','연애','님','이도령'],a:'서로를 높여 주는 믿음이라고 생각해요. 좋을 때만 곁에 있는 게 아니라, 어려울 때 약속을 기억해 주는 것이요.'},
+   {q:'지치면 어떻게 버텨요?',k:['지치','버티','힘들','포기'],a:'오늘 하루만 지키자, 하고 생각했어요. 먼 훗날이 아니라 오늘 밤 한 번의 선택에만 집중하면 조금 덜 무겁더라고요.'},
+   {q:'신념을 지키는 게 어려울 땐?',k:['신념','어렵','선택','흔들'],a:'혼자라고 느껴질 때가 제일 흔들려요. 그럴수록 월매 어머니나 방자처럼 곁을 지켜 준 얼굴들을 떠올려요.'}
+  ]},
+ hamlet:{id:'hamlet',name:'햄릿',work:'햄릿',author:'윌리엄 셰익스피어',era:'17세기 초 영국 비극',trait:'생각이 깊고 말이 날카로우며 확신 전에는 쉽게 움직이지 않는다',conflict:'복수와 망설임, 진실을 알고 싶은 마음',
+  greet:'……왔는가. 나는 덴마크의 왕자 햄릿이다. 오늘 밤은 질문이 많아서 잠이 오지 않는군.',
+  sc:[
+   {q:'왜 그렇게 망설여요?',k:['망설','주저','왜','행동'],a:'한번 저지른 일은 되돌릴 수 없으니까. 내가 본 것이 진실인지 확인하기 전에 칼을 뽑는 건, 또 다른 비극을 만들 뿐이라 생각했다.'},
+   {q:'진실은 어떻게 알아내요?',k:['진실','거짓','확인','알아'],a:'나는 극을 올려 사람들의 표정을 보았다. 말은 꾸밀 수 있어도 얼굴은 때로 먼저 대답한다. 증거는 차분히 모아야 한다.'},
+   {q:'외로울 땐 뭘 해요?',k:['외로','고독','혼자','쓸쓸'],a:'나는 쓴다, 그리고 말한다. 독백이란 결국 나 자신에게 던지는 질문이다. 그러다 보면 내 마음이 어디에 있는지 조금씩 보인다.'},
+   {q:'삶의 의미가 뭘까요?',k:['삶','의미','죽음','살아'],a:'답을 안다고 하면 거짓말이겠지. 다만 질문을 멈추지 않는 것, 그 자체가 살아 있다는 증거 아닐까 하고 생각한다.'},
+   {q:'복수는 옳은 일일까요?',k:['복수','원수','분노','옳'],a:'분노는 나를 움직이게 하지만, 방향을 잃으면 주변 사람들까지 다치게 한다. 나는 그 무게를 끝내 다 짊어지지 못했다.'},
+   {q:'친구에겐 뭘 바라요?',k:['친구','호레이쇼','우정','믿'],a:'호레이쇼 같은 친구다. 운이 좋을 때나 나쁠 때나 같은 얼굴을 하고 있는 사람. 그런 이가 한 명이라도 있다면 충분하다.'}
+  ]}
+};
+const FALLBACK={
+ prince:['음, 그건 어른들이 묻는 질문 같지만 재미있다! 그럼 너는 어떻게 생각해?','나는 아직 잘 모르겠어. 하지만 그 이야기를 들으니 별 하나가 더 반짝이는 것 같아.','그건 눈으로 보기보다 마음으로 보아야 할 것 같아. 네 마음은 뭐라고 하니?'],
+ gildong:['쉽게 답할 수 없는 물음이구나. 네가 겪은 일에 비추어 말해 주겠느냐?','나는 내 처지에서만 말할 수 있다. 너는 어떻게 생각하느냐?','그 이야기는 조금 더 듣고 싶구나. 어떤 장면을 떠올리고 있느냐?'],
+ chunhyang:['그 이야기에는 정답이 없을 것 같아요. 당신은 어떻게 느끼시나요?','제가 아는 만큼만 말씀드릴게요. 먼저 당신의 생각을 들려주시겠어요?','조금 더 자세히 말씀해 주시면 같이 생각해 볼게요.'],
+ hamlet:['흠, 그건 한 줄로 답할 수 없다. 너는 어떤 쪽에 마음이 기우는가?','질문에 질문으로 답해서 미안하지만, 너는 왜 그것이 궁금한가?','그 물음 속에는 네 이야기가 있는 것 같군. 계속해 보게.']
+};
+
+const FRIENDS=[
+ {id:'f1',nick:'밤하늘서점',bio:'별 보는 날엔 책도 한 권 같이 펼쳐요',avatar:4,persona:'LP',
+  quotes:[
+   {id:'f1q1',text:'헤어져도 남는 게 있다는 걸 알게 되면 이별도 조금은 견딜 만해진다.',book:'어린 왕자',author:'생텍쥐페리',tags:['위로','관계'],thought:'작년 이사한 친구가 생각나서 골랐어요.'},
+   {id:'f1q2',text:'바쁜 어른들은 별이 몇 개인지만 세고, 별이 왜 빛나는지는 묻지 않는다.',book:'어린 왕자',author:'생텍쥐페리',tags:['성장'],thought:'요즘 나는 별을 세고 있나, 보고 있나.'}],
+  books:[{title:'어린 왕자',author:'생텍쥐페리',status:'읽음'},{title:'변신',author:'프란츠 카프카',status:'읽고 싶은 책'},{title:'오만과 편견',author:'제인 오스틴',status:'읽는 중'}],
+  convs:[{charId:'prince',note:'여우의 대답이 오래 남는다.',lines:[{who:'me',text:'소중한 걸 어떻게 알아봐?'},{who:'ch',text:CHARS.prince.sc[1].a}]}],
+  comments:[{author:'느린우체통',text:'이 문장 읽고 한참 창밖을 봤어요.'}]},
+ {id:'f2',nick:'새벽국수',bio:'규칙은 일단 의심하고 보는 편',avatar:2,persona:'HG',
+  quotes:[
+   {id:'f2q1',text:'이름이 불리지 않는 사람에게도 이야기는 있고, 그 이야기를 들어 주는 것이 정의의 시작일지 모른다.',book:'홍길동전',author:'허균',tags:['자유','용기'],thought:'정의는 거창한 말보다 듣는 일에서 시작한다고 생각해요.'},
+   {id:'f2q2',text:'풍차를 향해 달려가는 모습을 비웃기는 쉽지만, 달려가 보는 일은 어렵다.',book:'돈키호테',author:'미겔 데 세르반테스',tags:['용기'],thought:'엉뚱한 사람이 좋아요.'},
+   {id:'f2q3',text:'토끼굴 아래에서도 앨리스는 먼저 질문부터 던진다.',book:'이상한 나라의 앨리스',author:'루이스 캐럴',tags:['자유','성장'],thought:'질문하는 사람이 되고 싶어요.'}],
+  books:[{title:'홍길동전',author:'허균',status:'읽음'},{title:'돈키호테',author:'미겔 데 세르반테스',status:'읽는 중'},{title:'이상한 나라의 앨리스',author:'루이스 캐럴',status:'읽음'}],
+  convs:[{charId:'gildong',note:'의적 이야기에서 한참 생각했다.',lines:[{who:'me',text:'의적은 옳은 일일까?'},{who:'ch',text:CHARS.gildong.sc[3].a}]}],
+  comments:[{author:'귤껍질',text:'세 번째 문장 저도 담아 갈게요!'}]},
+ {id:'f3',nick:'느린우체통',bio:'편지처럼 천천히 읽고 천천히 답해요',avatar:0,persona:'CH',
+  quotes:[
+   {id:'f3q1',text:'마음은 힘으로 가져갈 수 있는 물건이 아니라서, 춘향은 거절하는 일에도 품위를 잃지 않는다.',book:'춘향전',author:'작자 미상',tags:['용기','사랑'],thought:'거절도 하나의 용기라는 걸 배웠어요.'},
+   {id:'f3q2',text:'엘리자베스가 편지를 다시 읽는 장면에서, 생각을 바꾸는 일도 용기라는 걸 느낀다.',book:'오만과 편견',author:'제인 오스틴',tags:['성장'],thought:'나도 틀렸다고 말하는 연습 중.'}],
+  books:[{title:'춘향전',author:'작자 미상',status:'읽음'},{title:'오만과 편견',author:'제인 오스틴',status:'읽음'},{title:'햄릿',author:'윌리엄 셰익스피어',status:'읽고 싶은 책'}],
+  convs:[{charId:'chunhyang',note:'존엄에 대한 대답이 좋았다.',lines:[{who:'me',text:'존엄이란 뭘까요?'},{who:'ch',text:CHARS.chunhyang.sc[1].a}]}],
+  comments:[{author:'밤하늘서점',text:'거절도 용기라는 말이 마음에 남아요.'}]},
+ {id:'f4',nick:'귤껍질',bio:'생각이 많아서 밤이 길어요',avatar:5,persona:'HM',
+  quotes:[
+   {id:'f4q1',text:'햄릿이 오래 망설이는 이유는 겁이 많아서가 아니라, 틀린 확신이 더 무섭기 때문이라고 읽었다.',book:'햄릿',author:'윌리엄 셰익스피어',tags:['고독','성장'],thought:'망설임도 신중함이라고 믿고 싶어요.'},
+   {id:'f4q2',text:'가족에게 낯선 존재가 되어 가는 그레고르를 보며, 쓸모를 묻지 않는 사랑에 대해 생각했다.',book:'변신',author:'프란츠 카프카',tags:['외로움'],thought:'조금 아픈 책이었어요.'}],
+  books:[{title:'햄릿',author:'윌리엄 셰익스피어',status:'읽는 중'},{title:'변신',author:'프란츠 카프카',status:'읽음'},{title:'어린 왕자',author:'생텍쥐페리',status:'읽음'}],
+  convs:[{charId:'hamlet',note:'질문을 멈추지 않는 것이 살아 있는 증거라는 말.',lines:[{who:'me',text:'삶의 의미가 뭘까요?'},{who:'ch',text:CHARS.hamlet.sc[3].a}]}],
+  comments:[{author:'새벽국수',text:'밤샘 독서 클럽 하자!'}]}
+];
+
+const STICKERS=[{id:'star',name:'별표'},{id:'arrow',name:'화살표'},{id:'clip',name:'클립'},{id:'circle',name:'동그라미 낙서'},{id:'tape',name:'마스킹테이프'},{id:'pencil',name:'연필'}];
+
+/* ================= 상태 ================= */
+let mem=null;
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3)}
+function seed(){
+  const st={
+    meta:{seen:false,v:1},
+    profile:{nick:'나의수첩',bio:'오늘 마음에 남은 문장을 적어 둡니다',avatar:0,persona:'LP',coverTitle:'나의 문학 수첩'},
+    quotes:[
+      {id:uid(),text:'길들인다는 건 서로에게 시간을 쓰는 일.',book:'어린 왕자',author:'생텍쥐페리',page:'',date:today(),thought:'요즘 나는 누구에게 시간을 쓰고 있을까.',tags:['관계','위로'],vis:'friends',kind:'summary'},
+      {id:uid(),text:'신분 때문에 이름을 부르지 못하는 설움, 그게 길동이 떠난 이유.',book:'홍길동전',author:'허균',page:'',date:today(),thought:'이름을 불러 준다는 것의 무게.',tags:['자유','외로움'],vis:'me',kind:'summary'},
+      {id:uid(),text:'오래 망설이는 사람은 겁쟁이가 아니라, 틀린 확신을 더 무서워하는 사람일지도.',book:'햄릿',author:'윌리엄 셰익스피어',page:'',date:today(),thought:'',tags:['고독','성장'],vis:'friends',kind:'summary'}
+    ],
+    books:[
+      {id:uid(),title:'어린 왕자',author:'생텍쥐페리',status:'읽음',review:'다시 읽을 때마다 마음에 남는 문장이 달라진다.',keywords:'관계, 책임'},
+      {id:uid(),title:'홍길동전',author:'허균',status:'읽는 중',review:'',keywords:'자유, 신분'},
+      {id:uid(),title:'춘향전',author:'작자 미상',status:'읽고 싶은 책',review:'',keywords:''},
+      {id:uid(),title:'오만과 편견',author:'제인 오스틴',status:'읽고 싶은 책',review:'',keywords:''}
+    ],
+    conversations:[
+      {id:uid(),charId:'prince',date:today(),msgs:[{who:'ch',text:CHARS.prince.greet},{who:'me',text:CHARS.prince.sc[0].q},{who:'ch',text:CHARS.prince.sc[0].a}],saved:[2],note:'참을성이 관계의 시작이라는 말.',vis:'me'}
+    ],
+    friends:{added:['f1','f2']},
+    comments:[],
+    savedRecs:[],
+    settings:{paper:'plain',cover:'kraft',stickers:['star','clip','tape']}
+  };
+  FRIENDS.forEach(f=>f.comments.forEach(c=>st.comments.push({id:uid(),fid:f.id,author:c.author,text:c.text,date:today(),mine:false})));
+  return st;
+}
+function valid(s){return s&&typeof s==='object'&&s.profile&&Array.isArray(s.quotes)&&Array.isArray(s.books)&&Array.isArray(s.conversations)&&s.friends&&Array.isArray(s.friends.added)&&Array.isArray(s.comments)&&Array.isArray(s.savedRecs)&&s.settings&&Array.isArray(s.settings.stickers)&&s.meta}
+function load(){
+  try{const raw=localStorage.getItem(KEY);if(raw){const s=JSON.parse(raw);if(valid(s))return s}}catch(e){}
+  return seed();
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){mem=S}}
+let S=load();
+
+const ui={view:'home',page:0,qTag:null,qSel:null,bStatus:'all',bSel:null,chat:null,fSel:null,mapSel:null,test:null,pending:null,recTopic:null,recIdx:Math.floor(Date.now()/86400000)%RECS.length};
+
+/* ================= 유틸 ================= */
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nl=s=>esc(s).replace(/\n/g,'<br>');
+const $=id=>document.getElementById(id);
+function rot(i){return ((i*37)%7-3)*0.5+'deg'}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),1900)}
+function persona(){return S.profile.persona?PERSONAS[S.profile.persona]:null}
+function fmtDate(d){return d||''}
+function tagsHtml(t){return (t||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}
+function empty(title,desc,btn){return `<div class="empty"><span class="hand">${esc(title)}</span>${esc(desc)}${btn?`<div style="margin-top:8px">${btn}</div>`:''}</div>`}
+function stickerSvg(id){
+  const st='stroke="#38342F" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+  switch(id){
+   case 'star':return `<svg width="46" height="46" viewBox="0 0 46 46"><path ${st} d="M23 5l5 12 13 1-10 8 3 13-11-7-11 7 3-13-10-8 13-1z"/></svg>`;
+   case 'arrow':return `<svg width="80" height="34" viewBox="0 0 80 34"><path ${st} d="M3 24c18-16 42-18 70-6M62 8l12 10-15 6"/></svg>`;
+   case 'clip':return `<svg width="26" height="64" viewBox="0 0 26 64"><path ${st} d="M8 14v34a6 6 0 0 0 12 0V10a9 9 0 0 0-18 0v40a13 13 0 0 0 22 0V20"/></svg>`;
+   case 'circle':return `<svg width="110" height="50" viewBox="0 0 110 50"><path ${st} d="M10 28C6 10 40 4 70 6c28 2 40 14 34 26-6 11-40 14-66 10C16 39 8 34 14 22"/></svg>`;
+   case 'tape':return `<div style="width:84px;height:24px;background:rgba(190,176,148,.8);border:1px solid rgba(120,106,80,.4);clip-path:polygon(0 0,100% 6%,97% 50%,100% 94%,0 100%,3% 50%)"></div>`;
+   case 'pencil':return `<svg width="90" height="22" viewBox="0 0 90 22"><path ${st} d="M3 11l10-7h70v14H13z M13 4v14 M76 4v14"/></svg>`;
+  }return '';
+}
+const STK_POS={star:'right:28px;top:84px;transform:rotate(12deg)',arrow:'left:40%;top:150px;transform:rotate(-8deg)',clip:'right:46px;top:-10px;transform:rotate(6deg)',circle:'left:26px;bottom:18px;transform:rotate(-4deg)',tape:'left:-14px;top:24px;transform:rotate(-40deg)',pencil:'right:18px;bottom:22px;transform:rotate(-12deg)'};
+
+/* ================= 모달 ================= */
+function openModal(html){const m=$('modal');m.innerHTML=`<div class="sheet" role="dialog" aria-modal="true">${html}</div>`;m.hidden=false;const f=m.querySelector('input[type=text],textarea');if(f)f.focus()}
+function closeModal(){$('modal').hidden=true;$('modal').innerHTML=''}
+function confirmBox(msg,onYes,yesLabel){
+  openModal(`<h3>잠깐, 확인해 주세요</h3><p>${nl(msg)}</p><div class="row" style="margin-top:14px"><button class="btn solid" id="cf-yes">${esc(yesLabel||'네, 진행할게요')}</button><button class="btn" data-act="close">취소</button></div>`);
+  $('cf-yes').onclick=()=>{closeModal();onYes()};
+}
+
+/* ================= 뷰 ================= */
+const VIEWS={};
+const TABLIST=[['home','내 수첩'],['persona','페르소나'],['quotes','문장'],['books','책장'],['talk','대화'],['map','지도'],['friends','친구'],['decorate','꾸미기']];
+
+function curRec(){
+  const list=ui.recTopic?RECS.filter(r=>r.topic===ui.recTopic):RECS;
+  return list[((ui.recIdx%list.length)+list.length)%list.length];
+}
+function recBox(){
+  const r=curRec(), saved=S.savedRecs.includes(r.id);
+  return `<div class="note card torn" style="--r:-.6deg"><span class="tape"></span>
+   <div class="small">오늘의 문장 · ${esc(r.topic)} <span class="badge">직접 쓴 요약·해석 · 데모</span></div>
+   <div class="qt" style="margin-top:6px">${esc(r.text)}</div>
+   <div class="cite">『${esc(r.book)}』 · ${esc(r.author)}<br>${esc(r.ctx)}</div>
+   <div class="row" style="margin-top:8px">
+     <button class="btn sm solid" data-act="rec-save" ${saved?'disabled':''}>${saved?'담았어요':'내 수첩에 담기'}</button>
+     <button class="btn sm" data-act="rec-next">다른 문장 보기</button></div>
+   <div class="chiprow" style="margin-top:4px"><span class="small">주제: </span>
+     <button class="tag ${!ui.recTopic?'on':''}" data-act="rec-topic" data-v="">전체</button>${TOPICS.map(t=>`<button class="tag ${ui.recTopic===t?'on':''}" data-act="rec-topic" data-v="${t}">${t}</button>`).join('')}</div>
+   <div class="small" style="margin-top:4px">원문 인용이 아니라 작품 내용을 바탕으로 직접 쓴 문장입니다.</div></div>`;
+}
+VIEWS.home=function(){
+  const p=persona(), pr=S.profile;
+  const stk=S.settings.stickers.map(id=>`<div class="stk" style="${STK_POS[id]||''}">${stickerSvg(id)}</div>`).join('');
+  const L=`${stk}
+   <div class="me-head">${avatar(pr.avatar)}<div><div class="nick">${esc(pr.nick)}</div><div class="bio">${esc(pr.bio)}</div></div></div>
+   <div style="margin-top:6px"><h1 class="ptitle">${esc(pr.coverTitle||'나의 문학 수첩')}</h1></div>
+   ${p?`<div class="persona-stamp" data-act="nav" data-v="persona" role="button" tabindex="0"><span style="font-size:26px">✎</span><div><div class="small">나의 문학 페르소나</div><b>${esc(p.alias)}</b><div class="small">${esc(p.name)} · ${p.kw.slice(0,3).map(esc).join(' · ')}</div></div></div>`
+     :empty('아직 페르소나가 없어요','10개의 질문으로 나와 닮은 문학 속 인물을 찾아보세요.',`<button class="btn" data-act="nav" data-v="persona">페르소나 찾기</button>`)}
+   ${recBox()}`;
+  const rq=[...S.quotes].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,3);
+  const rb=S.books.slice(-3).reverse();
+  const rc=S.conversations[S.conversations.length-1];
+  const R=`<h2 class="h3">최근 모은 문장 <button class="more" data-act="nav" data-v="quotes">문장 수집함 →</button></h2>
+   ${rq.length?rq.map((q,i)=>`<div class="note click" style="--r:${rot(i)}" data-act="quote-open" data-id="${q.id}"><span class="tape l"></span><div class="qt">${esc(q.text)}</div><div class="cite">『${esc(q.book)}』${q.author?' · '+esc(q.author):''}</div></div>`).join(''):empty('문장이 아직 없어요','마음에 든 문장 하나로 수첩을 시작해 보세요.',`<button class="btn" data-act="quote-new">첫 문장 적기</button>`)}
+   <h2 class="h3">나의 책장 <button class="more" data-act="nav" data-v="books">전체 보기 →</button></h2>
+   ${rb.length?`<div class="row" style="align-items:flex-end">${rb.map(b=>`<div data-act="book-open" data-id="${b.id}" style="cursor:pointer;width:84px"><div class="coverbook" style="width:78px">${esc(b.title)}</div><div class="small">${esc(b.status)}</div></div>`).join('')}</div>`:empty('책장이 비었어요','읽은 책, 읽고 싶은 책을 적어 보세요.',`<button class="btn" data-act="book-new">책 추가</button>`)}
+   <h2 class="h3">최근 인물 대화 <button class="more" data-act="nav" data-v="talk">대화 →</button></h2>
+   ${rc?`<div class="note click kraft" data-act="talk-open" data-id="${rc.id}" style="--r:.6deg"><b class="hand" style="font-size:22px">${esc(CHARS[rc.charId].name)}</b> <span class="small">${esc(rc.date)}</span><div class="small" style="margin-top:2px">${esc((rc.msgs.filter(m=>m.who==='ch').slice(-1)[0]||{}).text||'').slice(0,60)}…</div></div>`:empty('대화 기록이 없어요','문학 속 인물과 이야기해 보세요.',`<button class="btn" data-act="nav" data-v="talk">인물 만나기</button>`)}
+   <h2 class="h3">친구 수첩 책장</h2>
+   <div class="shelf">${S.friends.added.map(id=>{const f=FRIENDS.find(x=>x.id===id);return `<button class="spine" data-act="friend-go" data-id="${id}" title="${esc(f.nick)}의 수첩">${esc(f.nick)}</button>`}).join('')||'<span class="small">아직 꽂힌 수첩이 없어요</span>'}
+   <button class="spine" style="background:transparent;border-style:dashed" data-act="nav" data-v="friends">＋</button></div>`;
+  return [L,R];
+};
+
+VIEWS.persona=function(){
+  const p=persona(); const pend=ui.pending?PERSONAS[ui.pending]:null; const show=pend||p;
+  let L;
+  if(show){
+    L=`<h1 class="ptitle">${pend?'테스트 결과':'나의 문학 페르소나'}</h1>
+    <div class="note card" style="--r:-.4deg"><span class="tape"></span>
+      <div class="small">${esc(show.alias)}</div><div class="hand" style="font-size:34px;line-height:1.1">${esc(show.name)}</div>
+      <div style="margin:6px 0">${show.kw.map(k=>`<span class="tag">${esc(k)}</span>`).join('')}</div>
+      <dl class="kv"><dt>닮은 인물</dt><dd>${esc(show.char)}</dd><br><dt>작품</dt><dd>『${esc(show.work)}』 · ${esc(show.author)}</dd></dl>
+      <p><b class="hand" style="font-size:20px">나와 닮은 이유</b><br>${esc(show.why)}</p>
+      <p class="small">${esc(show.intro)}</p></div>
+    <div class="row" style="margin-top:8px">
+      ${pend?`<button class="btn solid" data-act="persona-stick">내 수첩에 붙이기</button>`:''}
+      <button class="btn" data-act="persona-start">${show?'다시 검사하기':'검사하기'}</button>
+      ${show.chat?`<button class="btn" data-act="talk-pick" data-id="${show.chat}">${esc(show.char)}와 대화하기</button>`:`<button class="btn" disabled title="이 인물의 대화 시나리오는 아직 준비 중입니다">대화 준비 중</button>`}
+    </div>
+    <div class="warn">이 테스트는 심리검사가 아닌 <b>문학적 취향을 탐색하는 놀이형 테스트</b>입니다. 작품에 근거한 해석이며 결과는 언제든 다시 바꿀 수 있어요.</div>`;
+  }else{
+    L=`<h1 class="ptitle">문학 페르소나</h1>${empty('나는 어떤 이야기의 사람일까?','상황형 질문 10개로 나와 닮은 문학 속 인물을 찾아봅니다.',`<button class="btn solid" data-act="persona-start">테스트 시작</button>`)}`;
+  }
+  let R;
+  if(ui.test){
+    const t=ui.test,q=QUIZ[t.i];
+    R=`<div class="small">문항 ${t.i+1} / ${QUIZ.length}</div><div class="progress"><i style="width:${(t.i)/QUIZ.length*100}%"></i></div>
+    <h2 class="hand" style="font-size:30px;line-height:1.2;margin-bottom:10px">${esc(q.q)}</h2>
+    ${q.o.map((o,i)=>`<button class="quiz-opt" data-act="persona-ans" data-i="${i}">${esc(o[0])}</button>`).join('')}
+    <div class="row" style="margin-top:12px"><button class="linkbtn" data-act="persona-cancel">그만하기</button>${t.i>0?'<button class="linkbtn" data-act="persona-back" style="margin-left:12px">이전 질문</button>':''}</div>`;
+  }else{
+    R=`<h2 class="h3" style="margin-top:0">수첩에 있는 여섯 가지 이야기</h2>
+    ${Object.values(PERSONAS).map((x,i)=>`<div class="note ${p&&p.key===x.key?'kraft':''}" style="--r:${rot(i+2)};margin:7px 4px"><b class="hand" style="font-size:23px">${esc(x.alias)}</b> <span class="small">『${esc(x.work)}』 · ${esc(x.char)}</span><div class="small" style="color:#4a443d">${x.kw.map(esc).join(' · ')}</div></div>`).join('')}
+    <div class="warn">등장인물 설명은 작품을 바탕으로 직접 정리한 소개이며, 인물의 성격을 단정하지 않아요. 같은 인물도 다양하게 해석될 수 있습니다.</div>`;
+  }
+  return [L,R];
+};
+
+function filteredQuotes(){
+  let q=[...S.quotes].sort((a,b)=>(b.date||'').localeCompare(a.date||'')||0);
+  if(ui.qTag)q=q.filter(x=>(x.tags||[]).includes(ui.qTag));
+  return q;
+}
+VIEWS.quotes=function(){
+  const q=filteredQuotes();
+  const L=`<h1 class="ptitle">문장 수집함</h1>
+   <div class="row" style="margin:4px 0 8px"><button class="btn solid" data-act="quote-new">＋ 문장 적기</button></div>
+   <div class="chiprow"><button class="tag ${!ui.qTag?'on':''}" data-act="qtag" data-v="">전체 ${S.quotes.length}</button>${TAGS.map(t=>`<button class="tag ${ui.qTag===t?'on':''}" data-act="qtag" data-v="${t}">${t}</button>`).join('')}</div>
+   ${q.length?q.map((x,i)=>`<div class="note ${i%3==1?'kraft':'card'} click ${ui.qSel===x.id?'sel':''}" style="--r:${rot(i)}" data-act="quote-sel" data-id="${x.id}"><span class="tape ${i%2?'l':''}"></span>
+     <div class="qt">${esc(x.text)}</div><div class="cite">『${esc(x.book)}』${x.author?' · '+esc(x.author):''}${x.from?` · <span class="badge">${esc(x.from)}의 수첩에서</span>`:''}</div><div style="margin-top:4px">${tagsHtml(x.tags)}${x.vis==='friends'?'<span class="badge">친구에게 보임</span>':''}</div></div>`).join('')
+    :empty(ui.qTag?'이 태그의 문장이 없어요':'문장이 아직 없어요','읽다가 마음에 든 문장을 적어 보세요.',`<button class="btn" data-act="quote-new">문장 적기</button>`)}`;
+  const s=S.quotes.find(x=>x.id===ui.qSel);
+  const R=s?`<h2 class="h3" style="margin-top:0">문장 자세히</h2>
+    <div class="note card" style="--r:.3deg;padding:18px 18px 14px"><span class="tape"></span>
+     <div class="qt" style="font-size:20px">${nl(s.text)}</div>
+     <div class="cite">『${esc(s.book)}』${s.author?' · '+esc(s.author):''}${s.page?' · '+esc(s.page):''}</div>
+     <div class="small">발견한 날 ${esc(s.date)} ${s.kind==='summary'?'<span class="badge">요약·데모</span>':''}</div>
+     <div style="margin:6px 0">${tagsHtml(s.tags)}</div>
+     ${s.thought?`<div class="hand" style="font-size:23px;line-height:1.25;border-left:3px solid var(--ink);padding-left:10px;margin-top:8px">${nl(s.thought)}</div>`:'<div class="small">아직 나의 생각이 없어요. 수정해서 한 줄 남겨 보세요.</div>'}
+     <div class="small" style="margin-top:6px">공개 범위: <b>${s.vis==='friends'?'친구에게 보이기':'나만 보기'}</b> <button class="linkbtn" data-act="quote-vis" data-id="${s.id}">바꾸기</button></div></div>
+    <div class="row" style="margin-top:6px"><button class="btn sm" data-act="quote-edit" data-id="${s.id}">수정</button><button class="btn sm" data-act="quote-card" data-id="${s.id}">문장 카드 미리보기</button><button class="btn sm" data-act="quote-del" data-id="${s.id}">삭제</button></div>
+    <div class="warn">공개 범위는 화면 표시용이에요. 프로토타입이라 실제로 외부에 공개되지 않아요.</div>`
+   :`<h2 class="h3" style="margin-top:0">오늘의 문장</h2>${recBox()}<div class="small" style="margin:10px 4px">왼쪽에서 문장을 고르면 이곳에 자세히 보여요.</div>`;
+  return [L,R];
+};
+
+const STATUSES=['읽고 싶은 책','읽는 중','읽음'];
+VIEWS.books=function(){
+  let b=S.books; if(ui.bStatus!=='all')b=b.filter(x=>x.status===ui.bStatus);
+  const L=`<h1 class="ptitle">나의 책장</h1>
+   <div class="row" style="margin:4px 0 6px"><button class="btn solid" data-act="book-new">＋ 책 추가</button></div>
+   <div class="chiprow"><button class="tag ${ui.bStatus==='all'?'on':''}" data-act="bstat" data-v="all">전체 ${S.books.length}</button>${STATUSES.map(s=>`<button class="tag ${ui.bStatus===s?'on':''}" data-act="bstat" data-v="${s}">${s} ${S.books.filter(x=>x.status===s).length}</button>`).join('')}</div>
+   ${b.length?b.map((x,i)=>`<div class="bk note click ${ui.bSel===x.id?'sel':''}" style="--r:${rot(i+1)}" data-act="book-sel" data-id="${x.id}"><div class="coverbook">${esc(x.title)}</div><div><b>${esc(x.title)}</b><div class="small">${esc(x.author||'작가 미상')} · ${esc(x.status)}</div>${x.keywords?`<div>${x.keywords.split(',').map(k=>k.trim()).filter(Boolean).map(k=>`<span class="tag">${esc(k)}</span>`).join('')}</div>`:''}</div></div>`).join(''):empty('여기엔 책이 없어요','책을 추가하면 문학 지도에도 노드가 생겨요.',`<button class="btn" data-act="book-new">책 추가</button>`)}`;
+  const s=S.books.find(x=>x.id===ui.bSel);
+  let R;
+  if(s){
+    const qs=S.quotes.filter(q=>q.book.trim()===s.title.trim());
+    const cs=S.conversations.filter(c=>CHARS[c.charId].work===s.title);
+    R=`<h2 class="h3" style="margin-top:0">『${esc(s.title)}』</h2>
+     <div class="bk"><div class="coverbook" style="width:84px;height:116px;font-size:20px">${esc(s.title)}</div><div><div>${esc(s.author||'작가 미상')}</div><div class="small">상태: <b>${esc(s.status)}</b></div><div style="margin-top:6px"><button class="btn sm" data-act="book-edit" data-id="${s.id}">수정</button><button class="btn sm" data-act="book-del" data-id="${s.id}">삭제</button></div></div></div>
+     ${s.review?`<div class="hand" style="font-size:23px;line-height:1.25;border-left:3px solid var(--ink);padding-left:10px;margin:6px 4px">${nl(s.review)}</div>`:'<div class="small" style="margin:4px">짧은 감상이 없어요. 수정에서 적어 보세요.</div>'}
+     <h3 class="h3">이 책에서 모은 문장 ${qs.length}</h3>
+     ${qs.length?qs.map(q=>`<div class="note click" data-act="quote-open" data-id="${q.id}"><div class="qt" style="font-size:15.5px">${esc(q.text)}</div></div>`).join(''):`<div class="small" style="margin:4px">아직 없어요. <button class="linkbtn" data-act="quote-new-book" data-id="${s.id}">이 책의 문장 적기</button></div>`}
+     <h3 class="h3">관련 대화 ${cs.length}</h3>
+     ${cs.length?cs.map(c=>`<div class="note click kraft" data-act="talk-open" data-id="${c.id}"><b class="hand" style="font-size:20px">${esc(CHARS[c.charId].name)}</b> <span class="small">${esc(c.date)}</span></div>`).join(''):'<div class="small" style="margin:4px">이 작품의 인물과 나눈 대화가 없어요.</div>'}`;
+  }else{
+    R=`<h2 class="h3" style="margin-top:0">책 한 권을 골라 보세요</h2>${empty('책을 선택하면','이곳에 감상, 관련 문장, 대화 기록이 모여요.')}
+    <div class="small" style="margin:8px 4px">표지는 외부 이미지 없이 제목으로 만든 기본 표지예요.</div>`;
+  }
+  return [L,R];
+};
+
+VIEWS.talk=function(){
+  const c=ui.chat;
+  const recs=[...S.conversations].reverse();
+  const L=`<h1 class="ptitle">문학 속 대화</h1>
+   <div class="sub">대화할 인물을 골라 보세요</div>
+   ${Object.values(CHARS).map((ch,i)=>`<div class="note click ${c&&c.charId===ch.id?'sel':''}" style="--r:${rot(i+3)}" data-act="talk-pick" data-id="${ch.id}"><b class="hand" style="font-size:25px">${esc(ch.name)}</b> <span class="small">『${esc(ch.work)}』 · ${esc(ch.author)}</span><div class="small" style="color:#4a443d">${esc(ch.era)} · ${esc(ch.conflict)}</div></div>`).join('')}
+   <h2 class="h3">대화 기록 ${recs.length}</h2>
+   ${recs.length?recs.map(r=>`<div class="note kraft click ${c&&c.id===r.id?'sel':''}" style="margin:6px 4px" data-act="talk-open" data-id="${r.id}"><b class="hand" style="font-size:21px">${esc(CHARS[r.charId].name)}</b> <span class="small">${esc(r.date)} · 저장한 답변 ${r.saved.length}${r.vis==='friends'?' · 친구에게 보임':''}</span>${r.note?`<div class="small">“${esc(r.note)}”</div>`:''}</div>`).join(''):'<div class="small" style="margin:4px">저장된 대화가 없어요.</div>'}`;
+  let R;
+  if(!c){
+    R=`<h2 class="h3" style="margin-top:0">누구와 이야기할까요?</h2>${empty('인물을 고르면 대화가 시작돼요','선택형 질문을 누르거나 직접 입력해 보세요.')}
+      <div class="disclaimer">이 대화는 작품과 인물에 대한 해석을 바탕으로 구성한 문학적 상상 대화입니다. 실제 인물의 발언이나 원문 인용이 아닙니다. AI API 없이 미리 준비한 응답으로 작동해요.</div>`;
+  }else{
+    const ch=CHARS[c.charId], saved=c.id&&S.conversations.find(x=>x.id===c.id);
+    R=`<div class="row" style="justify-content:space-between"><h2 class="ptitle" style="font-size:32px">${esc(ch.name)}</h2><span class="small">『${esc(ch.work)}』</span></div>
+     <div class="small">${esc(ch.trait)}.</div>
+     <div class="disclaimer">이 대화는 작품과 인물에 대한 해석을 바탕으로 구성한 문학적 상상 대화입니다. 실제 인물의 발언이나 원문 인용이 아닙니다.</div>
+     <div class="chat" id="chatbox">${c.msgs.map((m,i)=>`<div class="msg ${m.who}"><span class="who">${m.who==='me'?esc(S.profile.nick):esc(ch.name)}</span>${nl(m.text)}${m.who==='ch'&&i>0?`<button class="star ${c.saved.includes(i)?'on':''}" data-act="talk-star" data-i="${i}" title="이 답변 저장">${c.saved.includes(i)?'★':'☆'}</button>`:''}</div>`).join('')}</div>
+     <div class="small">물어볼 말</div>
+     <div class="chiprow">${ch.sc.map((s,i)=>`<button class="tag" data-act="talk-q" data-i="${i}">${esc(s.q)}</button>`).join('')}</div>
+     <form data-form="talk-free" class="row" style="margin-top:6px;flex-wrap:nowrap"><input type="text" name="t" maxlength="80" placeholder="직접 물어보기 (예: 외로울 땐 어떻게 해?)" aria-label="직접 입력"><button class="btn sm" type="submit">보내기</button></form>
+     <div class="row" style="margin-top:8px"><button class="btn solid sm" data-act="talk-save">${saved?'대화 기록 갱신':'대화 전체 저장'}</button>${saved?`<button class="btn sm" data-act="talk-note">한 줄 감상</button><button class="btn sm" data-act="talk-vis">${saved.vis==='friends'?'나만 보기로':'친구에게 보이기'}</button><button class="btn sm" data-act="talk-del">삭제</button>`:''}<button class="btn sm" data-act="talk-pick" data-id="${ch.id}">처음부터</button></div>
+     ${saved&&saved.note?`<div class="hand" style="font-size:22px;border-left:3px solid var(--ink);padding-left:10px;margin-top:6px">${esc(saved.note)}</div>`:''}
+     <div class="small" style="margin-top:6px">☆를 누르면 마음에 든 답변이 수첩에 기록돼요.</div>`;
+  }
+  return [L,R];
+};
+
+/* 지도 */
+function buildMap(){
+  const nodes=[],edges=[];const p=persona();
+  const C={id:'me',type:'persona',label:p?p.alias:S.profile.nick,x:300,y:260,r:44};nodes.push(C);
+  const ring1=[];
+  S.books.forEach(b=>ring1.push({id:'b'+b.id,type:'book',label:b.title,ref:b}));
+  const chars=new Set(S.conversations.map(c=>c.charId));if(p&&p.chat)chars.add(p.chat);
+  chars.forEach(id=>ring1.push({id:'c'+id,type:'char',label:CHARS[id].name,ref:CHARS[id]}));
+  const ring2=[];
+  S.quotes.forEach(q=>ring2.push({id:'q'+q.id,type:'quote',label:q.text.length>11?q.text.slice(0,11)+'…':q.text,ref:q}));
+  const tc={};S.quotes.forEach(q=>(q.tags||[]).forEach(t=>tc[t]=(tc[t]||0)+1));
+  Object.keys(tc).sort((a,b)=>tc[b]-tc[a]).slice(0,5).forEach(t=>ring2.push({id:'t'+t,type:'tag',label:'#'+t,ref:t}));
+  const place=(arr,rx,ry,off)=>arr.forEach((n,i)=>{const a=off+i/arr.length*Math.PI*2;n.x=300+Math.cos(a)*rx;n.y=260+Math.sin(a)*ry;nodes.push(n)});
+  place(ring1,150,115,-Math.PI/2);
+  place(ring2,250,210,-Math.PI/2+.25);
+  const get=id=>nodes.find(n=>n.id===id);
+  ring1.forEach(n=>edges.push([ 'me',n.id,n.type==='char'?'닮은/대화':'수집' ]));
+  S.quotes.forEach(q=>{const b=S.books.find(x=>x.title.trim()===q.book.trim());if(b)edges.push(['b'+b.id,'q'+q.id]);else edges.push(['me','q'+q.id]);
+    (q.tags||[]).forEach(t=>{if(get('t'+t))edges.push(['q'+q.id,'t'+t])})});
+  chars.forEach(id=>{const b=S.books.find(x=>x.title===CHARS[id].work);if(b)edges.push(['b'+b.id,'c'+id])});
+  return {nodes,edges,get};
+}
+const NCOL={persona:'#38342F',book:'#D8CBB5',char:'#efe7d4',quote:'#fffdf7',tag:'#F3EFE6'};
+VIEWS.map=function(){
+  const m=buildMap();
+  let svg=`<svg class="map" viewBox="0 0 600 520" width="100%" role="img" aria-label="나의 문학 지도">`;
+  m.edges.forEach(([a,b])=>{const A=m.get(a),B=m.get(b);if(!A||!B)return;const mx=(A.x+B.x)/2+((A.y-B.y)%17)*0.6,my=(A.y+B.y)/2+((B.x-A.x)%13)*0.6;
+    svg+=`<path d="M${A.x} ${A.y}Q${mx} ${my} ${B.x} ${B.y}" fill="none" stroke="#8A8379" stroke-width="1.4" stroke-dasharray="${B.type==='tag'?'2 5':'6 4'}"/>`});
+  m.nodes.forEach(n=>{
+    const sel=ui.mapSel===n.id, fill=NCOL[n.type], tc=n.type==='persona'?'#F3EFE6':'#38342F';
+    const lab=n.label.length>9?n.label.slice(0,9)+'…':n.label;
+    svg+=`<g class="node ${sel?'sel':''}" data-act="map-sel" data-id="${n.id}" tabindex="0" role="button" aria-label="${esc(n.label)}">`;
+    if(n.type==='persona')svg+=`<circle class="shape" cx="${n.x}" cy="${n.y}" r="44" fill="${fill}" stroke="#38342F" stroke-width="${sel?3.2:2}"/><text x="${n.x}" y="${n.y-2}" text-anchor="middle" font-size="19" style="fill:#F3EFE6">${esc(lab.slice(0,5))}</text><text x="${n.x}" y="${n.y+17}" text-anchor="middle" font-size="16" style="fill:#F3EFE6">${esc(lab.slice(5))||'나'}</text>`;
+    else if(n.type==='book')svg+=`<rect class="shape" x="${n.x-34}" y="${n.y-22}" width="68" height="44" fill="${fill}" stroke="#38342F" stroke-width="2" transform="rotate(${(n.x%5)-2} ${n.x} ${n.y})"/><text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-size="17">${esc(lab)}</text>`;
+    else if(n.type==='char')svg+=`<ellipse class="shape" cx="${n.x}" cy="${n.y}" rx="38" ry="22" fill="${fill}" stroke="#38342F" stroke-width="2"/><text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-size="18">${esc(lab)}</text>`;
+    else if(n.type==='quote')svg+=`<rect class="shape" x="${n.x-38}" y="${n.y-16}" width="76" height="32" fill="${fill}" stroke="#8A8379" stroke-width="1.6" transform="rotate(${(n.y%7)-3} ${n.x} ${n.y})"/><text x="${n.x}" y="${n.y+4}" text-anchor="middle" font-size="14">${esc(lab)}</text>`;
+    else svg+=`<text class="shape" x="${n.x}" y="${n.y+5}" text-anchor="middle" font-size="19" style="text-decoration:underline">${esc(lab)}</text>`;
+    svg+='</g>';
+  });
+  svg+='</svg>';
+  const L=`<h1 class="ptitle">나의 문학 지도</h1><div class="sub">기록할수록 연결이 늘어나요</div>
+   <div class="mapbox">${svg}</div>
+   <div class="legend"><span>● 나의 페르소나</span><span>▭ 책</span><span>⬭ 문학 인물</span><span>▱ 문장</span><span>#태그</span></div>`;
+  const n=ui.mapSel&&m.get(ui.mapSel);
+  let R=`<h2 class="h3" style="margin-top:0">노드를 눌러 보세요</h2>`;
+  if(!n){R+=empty('지도 속 이름 하나를 골라 보세요','연결선은 책 · 문장 · 인물 · 태그 사이의 관계를 보여 줘요.')+`<div class="small" style="margin:8px 4px">노드 ${m.nodes.length}개 · 연결 ${m.edges.length}개. 책이나 문장을 추가하면 이곳에 바로 나타나요.</div><div class="row"><button class="btn sm" data-act="book-new">책 추가</button><button class="btn sm" data-act="quote-new">문장 적기</button></div>`}
+  else if(n.type==='persona'){const p=persona();R+=p?`<div class="note card"><b class="hand" style="font-size:28px">${esc(p.name)}</b><div>${p.kw.map(k=>`<span class="tag">${esc(k)}</span>`).join('')}</div><p class="small">${esc(p.why)}</p></div><button class="btn sm" data-act="nav" data-v="persona">페르소나 보기</button>`:empty('페르소나가 없어요','테스트로 찾아보세요.',`<button class="btn" data-act="nav" data-v="persona">찾기</button>`)}
+  else if(n.type==='book'){const b=n.ref;R+=`<div class="note card"><b class="hand" style="font-size:28px">『${esc(b.title)}』</b><div class="small">${esc(b.author)} · ${esc(b.status)}</div>${b.review?`<p>${esc(b.review)}</p>`:''}</div><div class="row"><button class="btn sm" data-act="book-open" data-id="${b.id}">책장에서 보기</button></div>`}
+  else if(n.type==='char'){const c=n.ref;R+=`<div class="note card"><b class="hand" style="font-size:28px">${esc(c.name)}</b><div class="small">『${esc(c.work)}』 · ${esc(c.era)}</div><p>${esc(c.trait)}.</p><div class="small">주요 갈등: ${esc(c.conflict)}</div></div><div class="row"><button class="btn sm" data-act="talk-pick" data-id="${c.id}">대화하기</button></div>`}
+  else if(n.type==='quote'){const q=n.ref;R+=`<div class="note card"><div class="qt">${esc(q.text)}</div><div class="cite">『${esc(q.book)}』 · ${esc(q.author)}</div>${tagsHtml(q.tags)}</div><div class="row"><button class="btn sm" data-act="quote-open" data-id="${q.id}">문장 수집함에서 보기</button></div>`}
+  else{const t=n.ref,qs=S.quotes.filter(q=>(q.tags||[]).includes(t));R+=`<div class="note card"><b class="hand" style="font-size:28px">#${esc(t)}</b><div class="small">이 마음과 이어진 문장 ${qs.length}개</div>${qs.map(q=>`<div class="small" style="margin-top:4px">· ${esc(q.text)}</div>`).join('')}</div><div class="row"><button class="btn sm" data-act="qtag-go" data-v="${esc(t)}">이 태그로 모아 보기</button></div>`}
+  return [L,R];
+};
+
+/* 친구 */
+function friendNotebook(f){
+  const cm=S.comments.filter(c=>c.fid===f.id);
+  const added=S.friends.added.includes(f.id);
+  const pr=PERSONAS[f.persona];
+  return `<div class="me-head">${avatar(f.avatar,'')}<div><div class="nick" style="font-size:34px">${esc(f.nick)}</div><div class="bio" style="font-size:20px">${esc(f.bio)}</div></div></div>
+   <div class="row" style="margin-top:6px"><span class="tag">${esc(pr.alias)}</span><span class="small">${pr.kw.slice(0,3).map(esc).join(' · ')}</span><span class="badge">데모 친구</span>
+    ${added?`<button class="btn sm" data-act="friend-del" data-id="${f.id}">책장에서 빼기</button>`:`<button class="btn sm solid" data-act="friend-add" data-id="${f.id}">내 책장에 꽂기</button>`}</div>
+   <h3 class="h3">공개한 문장</h3>
+   ${f.quotes.map((q,i)=>{const have=S.quotes.some(x=>x.from===f.nick&&x.text===q.text);return `<div class="note card" style="--r:${rot(i+f.avatar)}"><span class="tape l"></span><div class="qt">${esc(q.text)}</div><div class="cite">『${esc(q.book)}』 · ${esc(q.author)}</div>${tagsHtml(q.tags)}${q.thought?`<div class="hand" style="font-size:20px;line-height:1.2">${esc(q.thought)}</div>`:''}<div class="row" style="margin-top:4px"><button class="btn sm" data-act="friend-take" data-f="${f.id}" data-i="${i}" ${have?'disabled':''}>${have?'담았어요':'내 수첩에 담기'}</button></div></div>`}).join('')}
+   <h3 class="h3">책장</h3><div class="row">${f.books.map(b=>`<div style="width:78px"><div class="coverbook" style="width:72px;height:96px;font-size:16px">${esc(b.title)}</div><div class="small">${esc(b.status)}</div></div>`).join('')}</div>
+   <h3 class="h3">공개한 대화</h3>
+   ${f.convs.map(c=>`<div class="note kraft"><b class="hand" style="font-size:20px">${esc(CHARS[c.charId].name)}와의 대화</b>${c.lines.map(l=>`<div class="small" style="color:#38342F;margin-top:3px"><b>${l.who==='me'?esc(f.nick):esc(CHARS[c.charId].name)}</b> ${esc(l.text)}</div>`).join('')}<div class="hand" style="font-size:19px">“${esc(c.note)}”</div></div>`).join('')}
+   <h3 class="h3">방명록 ${cm.length}</h3>
+   ${cm.length?cm.map(c=>`<div class="note" style="margin:6px 4px;padding:8px 12px"><b class="hand" style="font-size:19px">${esc(c.author)}</b> <span class="small">${esc(c.date)}</span><div>${esc(c.text)}</div><button class="linkbtn" data-act="comment-del" data-id="${c.id}">삭제</button></div>`).join(''):'<div class="small" style="margin:4px">첫 댓글을 남겨 보세요.</div>'}
+   <form data-form="comment" data-f="${f.id}"><label for="cm" style="margin-top:6px">댓글 남기기<span class="opt">120자 이내</span></label><textarea id="cm" name="t" maxlength="120" style="min-height:62px" placeholder="따뜻한 한마디를 남겨 보세요"></textarea><div class="row" style="margin-top:4px"><button class="btn sm solid" type="submit">붙이기</button><span class="small">댓글은 이 브라우저에만 저장돼요</span></div></form>`;
+}
+VIEWS.friends=function(){
+  const add=S.friends.added.map(id=>FRIENDS.find(f=>f.id===id));
+  const rest=FRIENDS.filter(f=>!S.friends.added.includes(f.id));
+  const L=`<h1 class="ptitle">친구 수첩</h1><div class="sub">내 책장에 꽂힌 수첩들</div>
+   <div class="shelf">${add.map(f=>`<button class="spine ${ui.fSel===f.id?'on':''}" data-act="friend-sel" data-id="${f.id}" title="${esc(f.nick)}">${esc(f.nick)}</button>`).join('')||'<span class="small" style="padding-bottom:12px">책장이 비어 있어요</span>'}</div>
+   <div class="small">책등을 누르면 친구의 수첩이 펼쳐져요.</div>
+   <h2 class="h3">책장에 꽂을 수첩 둘러보기</h2>
+   ${rest.length?rest.map((f,i)=>`<div class="note click" style="--r:${rot(i)}" data-act="friend-sel" data-id="${f.id}"><div class="row">${avatar(f.avatar,'sm')}<div><b class="hand" style="font-size:22px">${esc(f.nick)}</b><div class="small">${esc(f.bio)}</div></div></div></div>`).join(''):'<div class="small" style="margin:4px">모든 데모 친구를 꽂았어요.</div>'}
+   <div class="warn">실제 친구 검색·초대는 아직 지원하지 않아요. 여기 있는 친구와 그들의 문장은 <b>프로토타입 예시 데이터</b>이고, 내가 남긴 댓글은 이 기기에서만 보여요.</div>`;
+  const f=FRIENDS.find(x=>x.id===ui.fSel);
+  const R=f?friendNotebook(f):`<h2 class="h3" style="margin-top:0">수첩을 펼쳐 보세요</h2>${empty('친구의 책등을 누르면','문장, 책장, 대화, 방명록을 구경하고 댓글을 남길 수 있어요.')}`;
+  return [L,R];
+};
+
+VIEWS.decorate=function(){
+  const pr=S.profile,st=S.settings;
+  const L=`<h1 class="ptitle">수첩 꾸미기</h1>
+   <form data-form="profile">
+    <label for="pn">닉네임<span class="req">*</span><span class="opt">실명·학교 등은 적지 마세요</span></label><input type="text" id="pn" name="nick" maxlength="14" required value="${esc(pr.nick)}">
+    <label for="pb">한 줄 소개</label><input type="text" id="pb" name="bio" maxlength="40" value="${esc(pr.bio)}">
+    <label for="pc">수첩 표지 제목</label><input type="text" id="pc" name="cover" maxlength="20" value="${esc(pr.coverTitle||'')}">
+    <label>아바타</label><div class="row">${AV.map((_,i)=>`<label class="avopt ${pr.avatar===i?'on':''}" style="margin:0;cursor:pointer"><input class="sr" type="radio" name="av" value="${i}" ${pr.avatar===i?'checked':''}>${avatar(i,'sm')}</label>`).join('')}</div>
+    <div class="row" style="margin-top:10px"><button class="btn solid" type="submit">저장</button></div></form>`;
+  const R=`<h2 class="h3" style="margin-top:0">종이</h2><div class="chiprow">${[['plain','무지'],['lined','줄 노트'],['grid','모눈']].map(([k,n])=>`<button class="tag ${st.paper===k?'on':''}" data-act="paper" data-v="${k}">${n}</button>`).join('')}</div>
+   <h2 class="h3">표지 색</h2><div class="chiprow">${[['kraft','크래프트'],['ink','먹색'],['paper','미색']].map(([k,n])=>`<button class="tag ${st.cover===k?'on':''}" data-act="cover" data-v="${k}">${n}</button>`).join('')}</div>
+   <h2 class="h3">스티커·낙서 <span class="small" style="font-family:var(--body)">내 수첩 첫 페이지에 붙어요</span></h2>
+   <div class="row">${STICKERS.map(s=>`<button class="note click ${st.stickers.includes(s.id)?'sel':''}" style="margin:6px;padding:8px 10px;min-width:110px;text-align:center;background:#fbf8f0" data-act="sticker" data-id="${s.id}" aria-pressed="${st.stickers.includes(s.id)}">${stickerSvg(s.id)}<div class="small">${esc(s.name)}</div></button>`).join('')}</div>
+   <h2 class="h3">내 수첩 가져가기</h2>
+   <div class="row"><button class="btn sm" data-act="export">수첩 텍스트로 보기·복사</button></div>
+   <h2 class="h3">저장과 초기화</h2>
+   <p class="small">모든 기록은 이 브라우저의 로컬 저장소에만 저장돼요. 서버로 전송되지 않으며, 다른 기기와는 동기화되지 않아요.</p>
+   <div class="row"><button class="btn sm" data-act="reset">데모 데이터로 초기화</button></div>`;
+  return [L,R];
+};
+
+/* ================= 렌더 ================= */
+function render(turn){
+  const book=$('book');
+  book.className='book c-'+S.settings.cover+' paper-'+S.settings.paper;
+  $('tabs').innerHTML=TABLIST.map(([k,n])=>`<button class="tab ${ui.view===k?'on':''}" data-act="nav" data-v="${k}" ${ui.view===k?'aria-current="page"':''}>${n}</button>`).join('');
+  const [L,R]=VIEWS[ui.view]();
+  $('pages').innerHTML=`<section class="page L ${ui.page===0?'on':''}" aria-label="앞 페이지">${L}</section><section class="page R ${ui.page===1?'on':''}" aria-label="뒷 페이지">${R}</section>`;
+  $('pgind').textContent=(ui.page+1)+' / 2';
+  const sp=$('spread');
+  if(turn){sp.classList.remove('turn');void sp.offsetWidth;sp.classList.add('turn')}
+  const cb=$('chatbox');if(cb)cb.scrollTop=cb.scrollHeight;
+}
+function go(v,page){ui.view=v;ui.page=page||0;try{history.replaceState(null,'','#'+v)}catch(e){}render(true);window.scrollTo({top:0})}
+
+/* ================= 폼 모달 ================= */
+function quoteForm(q,preBook){
+  q=q||{};const tags=q.tags||[];
+  openModal(`<h3>${q.id?'문장 고치기':'문장 적기'}</h3>
+  <form data-form="quote" data-id="${q.id||''}">
+   <label for="qx">문장<span class="req">*</span></label><textarea id="qx" name="text" required maxlength="300">${esc(q.text||'')}</textarea>
+   <label for="qb">책 제목<span class="req">*</span></label><input type="text" id="qb" name="book" required maxlength="40" value="${esc(q.book||preBook||'')}" list="booklist"><datalist id="booklist">${S.books.map(b=>`<option value="${esc(b.title)}">`).join('')}</datalist>
+   <div class="grid2"><div><label for="qa">작가<span class="opt">선택</span></label><input type="text" id="qa" name="author" maxlength="30" value="${esc(q.author||'')}"></div>
+   <div><label for="qp">페이지·위치<span class="opt">선택</span></label><input type="text" id="qp" name="page" maxlength="20" value="${esc(q.page||'')}"></div></div>
+   <div class="grid2"><div><label for="qd">발견한 날</label><input type="date" id="qd" name="date" value="${esc(q.date||today())}"></div>
+   <div><label for="qv">공개 범위</label><select id="qv" name="vis"><option value="me" ${q.vis!=='friends'?'selected':''}>나만 보기</option><option value="friends" ${q.vis==='friends'?'selected':''}>친구에게 보이기</option></select></div></div>
+   <label for="qt">나의 생각·감상<span class="opt">선택</span></label><textarea id="qt" name="thought" maxlength="300" style="min-height:64px">${esc(q.thought||'')}</textarea>
+   <label>감정 태그</label><div class="chiprow">${TAGS.map(t=>`<label style="display:inline;margin:0"><input class="sr" type="checkbox" name="tag" value="${t}" ${tags.includes(t)?'checked':''}><span class="tag tgl" style="cursor:pointer">${t}</span></label>`).join('')}</div>
+   <div class="small" style="margin-top:6px">※ 저작권이 있는 책의 긴 문장은 짧게, 또는 내 말로 요약해서 적어 주세요.</div>
+   <div class="row" style="margin-top:12px"><button class="btn solid" type="submit">${q.id?'저장':'수첩에 붙이기'}</button><button class="btn" type="button" data-act="close">취소</button></div></form>`);
+  syncTgl();
+}
+function syncTgl(){document.querySelectorAll('#modal input[type=checkbox]').forEach(c=>{const t=c.nextElementSibling;if(t)t.classList.toggle('on',c.checked)})}
+function bookForm(b,pre){
+  b=b||{};
+  openModal(`<h3>${b.id?'책 고치기':'책 추가'}</h3>
+  <form data-form="book" data-id="${b.id||''}">
+   <label for="bt">제목<span class="req">*</span></label><input type="text" id="bt" name="title" required maxlength="40" value="${esc(b.title||'')}">
+   <label for="ba">작가<span class="opt">선택</span></label><input type="text" id="ba" name="author" maxlength="30" value="${esc(b.author||'')}">
+   <label for="bs">상태</label><select id="bs" name="status">${STATUSES.map(s=>`<option ${((b.status||'읽고 싶은 책')===s)?'selected':''}>${s}</option>`).join('')}</select>
+   <label for="br">짧은 감상<span class="opt">선택</span></label><textarea id="br" name="review" maxlength="200" style="min-height:64px">${esc(b.review||'')}</textarea>
+   <label for="bk">나에게 남은 키워드<span class="opt">선택 · 쉼표로 구분</span></label><input type="text" id="bk" name="keywords" maxlength="40" value="${esc(b.keywords||'')}">
+   <div class="small" style="margin-top:6px">표지는 제목으로 만든 기본 표지가 붙어요.</div>
+   <div class="row" style="margin-top:12px"><button class="btn solid" type="submit">${b.id?'저장':'책장에 꽂기'}</button><button class="btn" type="button" data-act="close">취소</button></div></form>`);
+}
+function exportText(){
+  const p=persona();
+  let t=`[${S.profile.coverTitle}] ${S.profile.nick} — ${S.profile.bio}\n`;
+  if(p)t+=`페르소나: ${p.alias} (${p.name})\n`;
+  t+=`\n# 문장 ${S.quotes.length}\n`+S.quotes.map(q=>`- ${q.text} — 『${q.book}』${q.author?' '+q.author:''}${q.thought?'\n  생각: '+q.thought:''}`).join('\n');
+  t+=`\n\n# 책장 ${S.books.length}\n`+S.books.map(b=>`- 『${b.title}』 ${b.author||''} (${b.status})`).join('\n');
+  t+=`\n\n# 대화 ${S.conversations.length}\n`+S.conversations.map(c=>`- ${CHARS[c.charId].name} (${c.date})${c.note?' “'+c.note+'”':''}`).join('\n');
+  return t;
+}
+
+/* ================= 대화 로직 ================= */
+function startChat(id){ui.chat={charId:id,id:null,msgs:[{who:'ch',text:CHARS[id].greet}],saved:[]}}
+function reply(ch,text){
+  const t=text.replace(/\s/g,'');let best=null,sc=0;
+  ch.sc.forEach(s=>{let n=0;s.k.forEach(k=>{if(t.includes(k))n++});if(n>sc){sc=n;best=s}});
+  if(best)return best.a;
+  const fb=FALLBACK[ch.id];return fb[(ui.chat.msgs.length>>1)%fb.length];
+}
+function persistChat(){
+  const c=ui.chat;if(!c)return;
+  if(c.id){const r=S.conversations.find(x=>x.id===c.id);if(r){r.msgs=c.msgs.slice();r.saved=c.saved.slice();return}}
+  c.id=uid();S.conversations.push({id:c.id,charId:c.charId,date:today(),msgs:c.msgs.slice(),saved:c.saved.slice(),note:'',vis:'me'});
+}
+
+/* ================= 이벤트 ================= */
+const A={
+ nav(e){go(e.v)},
+ close(){closeModal()},
+ 'open-book'(){S.meta.seen=true;save();$('intro').hidden=true},
+ page(e){ui.page=+e.v;render(true);window.scrollTo({top:0})},
+ 'rec-topic'(e){ui.recTopic=e.v||null;ui.recIdx=0;render()},
+ 'rec-next'(){ui.recIdx++;render()},
+ 'rec-save'(){const r=curRec();if(S.savedRecs.includes(r.id))return;S.savedRecs.push(r.id);S.quotes.push({id:uid(),text:r.text,book:r.book,author:r.author,page:'',date:today(),thought:'',tags:[r.topic].filter(t=>TAGS.includes(t)),vis:'me',kind:'summary'});save();render();toast('문장 수집함에 담았어요')},
+ 'quote-new'(){quoteForm()},
+ 'quote-new-book'(e){const b=S.books.find(x=>x.id===e.id);quoteForm(null,b&&b.title)},
+ 'quote-edit'(e){quoteForm(S.quotes.find(x=>x.id===e.id))},
+ 'quote-sel'(e){ui.qSel=e.id;ui.page=1;render(true)},
+ 'quote-open'(e){ui.qSel=e.id;ui.qTag=null;go('quotes',1)},
+ 'quote-del'(e){confirmBox('이 문장을 수첩에서 지울까요? 되돌릴 수 없어요.',()=>{S.quotes=S.quotes.filter(x=>x.id!==e.id);S.savedRecs=S.savedRecs;ui.qSel=null;save();render();toast('문장을 지웠어요')},'지우기')},
+ 'quote-vis'(e){const q=S.quotes.find(x=>x.id===e.id);q.vis=q.vis==='friends'?'me':'friends';save();render();toast(q.vis==='friends'?'친구에게 보이도록 바꿨어요':'나만 보도록 바꿨어요')},
+ 'quote-card'(e){const q=S.quotes.find(x=>x.id===e.id);
+   openModal(`<h3>문장 카드</h3><div class="note card" style="padding:20px;margin:14px 0"><span class="tape"></span><div class="qt" style="font-size:20px">${nl(q.text)}</div><div class="cite">『${esc(q.book)}』${q.author?' · '+esc(q.author):''}</div><div class="hand" style="text-align:right;font-size:20px;margin-top:8px">— ${esc(S.profile.nick)}의 수첩</div></div><div class="row"><button class="btn solid" data-act="copy-card" data-id="${q.id}">텍스트 복사</button><button class="btn" data-act="close">닫기</button></div>`)},
+ 'copy-card'(e){const q=S.quotes.find(x=>x.id===e.id);const t=`“${q.text}”\n— 『${q.book}』${q.author?' '+q.author:''}\n(${S.profile.nick}의 TEXT HIP UNIVERSE 수첩)`;
+   try{navigator.clipboard.writeText(t).then(()=>toast('복사했어요'),()=>toast('복사에 실패했어요'))}catch(x){toast('복사할 수 없는 환경이에요')}},
+ qtag(e){ui.qTag=e.v||null;render()},
+ 'qtag-go'(e){ui.qTag=e.v;ui.qSel=null;go('quotes')},
+ 'book-new'(){bookForm()},
+ 'book-edit'(e){bookForm(S.books.find(x=>x.id===e.id))},
+ 'book-sel'(e){ui.bSel=e.id;ui.page=1;render(true)},
+ 'book-open'(e){ui.bSel=e.id;ui.bStatus='all';go('books',1)},
+ 'book-del'(e){confirmBox('이 책을 책장에서 뺄까요? 모아 둔 문장은 그대로 남아요.',()=>{S.books=S.books.filter(x=>x.id!==e.id);ui.bSel=null;save();render();toast('책을 뺐어요')},'빼기')},
+ bstat(e){ui.bStatus=e.v;render()},
+ 'persona-start'(){ui.test={i:0,ans:[]};ui.pending=null;ui.page=1;render(true)},
+ 'persona-cancel'(){ui.test=null;render()},
+ 'persona-back'(){const t=ui.test;if(t.i>0){t.i--;t.ans.pop();render()}},
+ 'persona-ans'(e){const t=ui.test;t.ans.push(+e.i);t.i++;
+   if(t.i>=QUIZ.length){const sc={LP:0,HG:0,CH:0,HM:0,EB:0,AL:0};t.ans.forEach((a,qi)=>{const w=QUIZ[qi].o[a][1];for(const k in w)sc[k]+=w[k]});
+     let best='LP';Object.keys(sc).forEach(k=>{if(sc[k]>sc[best])best=k});ui.pending=best;ui.test=null;ui.page=0;render(true);toast('결과가 나왔어요')}
+   else render()},
+ 'persona-stick'(){S.profile.persona=ui.pending;ui.pending=null;save();render();toast('페르소나를 수첩에 붙였어요')},
+ 'talk-pick'(e){startChat(e.id);ui.view='talk';ui.page=1;render(true)},
+ 'talk-open'(e){const r=S.conversations.find(x=>x.id===e.id);ui.chat={charId:r.charId,id:r.id,msgs:r.msgs.slice(),saved:r.saved.slice()};ui.view='talk';ui.page=1;try{history.replaceState(null,'','#talk')}catch(x){}render(true)},
+ 'talk-q'(e){const ch=CHARS[ui.chat.charId],s=ch.sc[+e.i];ui.chat.msgs.push({who:'me',text:s.q},{who:'ch',text:s.a});if(ui.chat.id)persistChat(),save();render()},
+ 'talk-star'(e){const c=ui.chat,i=+e.i;const k=c.saved.indexOf(i);if(k>=0)c.saved.splice(k,1);else c.saved.push(i);persistChat();save();render();toast(k>=0?'저장을 해제했어요':'답변을 수첩에 기록했어요')},
+ 'talk-save'(){const had=!!ui.chat.id;persistChat();save();render();toast(had?'대화 기록을 갱신했어요':'대화를 수첩에 저장했어요')},
+ 'talk-note'(){const r=S.conversations.find(x=>x.id===ui.chat.id);openModal(`<h3>한 줄 감상</h3><form data-form="talk-note"><label for="tn">이 대화에서 남기고 싶은 한 줄</label><input type="text" id="tn" name="t" maxlength="60" value="${esc(r.note||'')}"><div class="row" style="margin-top:12px"><button class="btn solid" type="submit">저장</button><button class="btn" type="button" data-act="close">취소</button></div></form>`)},
+ 'talk-vis'(){const r=S.conversations.find(x=>x.id===ui.chat.id);r.vis=r.vis==='friends'?'me':'friends';save();render();toast(r.vis==='friends'?'친구에게 보이도록 바꿨어요':'나만 보도록 바꿨어요')},
+ 'talk-del'(){const id=ui.chat.id;confirmBox('이 대화 기록을 지울까요?',()=>{S.conversations=S.conversations.filter(x=>x.id!==id);ui.chat=null;ui.page=0;save();render();toast('대화 기록을 지웠어요')},'지우기')},
+ 'map-sel'(e){ui.mapSel=e.id;ui.page=1;render()},
+ 'friend-sel'(e){ui.fSel=e.id;ui.page=1;render(true)},
+ 'friend-go'(e){ui.fSel=e.id;go('friends',1)},
+ 'friend-add'(e){if(!S.friends.added.includes(e.id))S.friends.added.push(e.id);save();render();toast('내 책장에 수첩을 꽂았어요')},
+ 'friend-del'(e){const f=FRIENDS.find(x=>x.id===e.id);confirmBox(`${f.nick}의 수첩을 내 책장에서 뺄까요? 남긴 댓글은 그대로예요.`,()=>{S.friends.added=S.friends.added.filter(x=>x!==e.id);save();render();toast('책장에서 뺐어요')},'빼기')},
+ 'friend-take'(e){const f=FRIENDS.find(x=>x.id===e.f),q=f.quotes[+e.i];if(S.quotes.some(x=>x.from===f.nick&&x.text===q.text))return;
+   S.quotes.push({id:uid(),text:q.text,book:q.book,author:q.author,page:'',date:today(),thought:'',tags:q.tags.slice(),vis:'me',from:f.nick,kind:'summary'});save();render();toast('내 수첩에 담았어요')},
+ 'comment-del'(e){confirmBox('이 댓글을 지울까요?',()=>{S.comments=S.comments.filter(x=>x.id!==e.id);save();render();toast('댓글을 지웠어요')},'지우기')},
+ paper(e){S.settings.paper=e.v;save();render()},
+ cover(e){S.settings.cover=e.v;save();render()},
+ sticker(e){const a=S.settings.stickers,i=a.indexOf(e.id);if(i>=0)a.splice(i,1);else a.push(e.id);save();render()},
+ export(){openModal(`<h3>내 수첩 텍스트</h3><textarea class="copybox" readonly>${esc(exportText())}</textarea><div class="row" style="margin-top:10px"><button class="btn solid" data-act="copy-export">복사</button><button class="btn" data-act="close">닫기</button></div>`)},
+ 'copy-export'(){try{navigator.clipboard.writeText(exportText()).then(()=>toast('복사했어요'),()=>toast('복사에 실패했어요'))}catch(x){toast('복사할 수 없는 환경이에요')}},
+ reset(){confirmBox('내가 적은 문장·책·대화·댓글이 모두 사라지고 처음 데모 데이터로 돌아가요.\n정말 초기화할까요?',()=>{S=seed();S.meta.seen=true;ui.chat=null;ui.qSel=null;ui.bSel=null;ui.fSel=null;ui.mapSel=null;ui.pending=null;ui.test=null;save();go('home');toast('데모 데이터로 초기화했어요')},'초기화')}
+};
+document.addEventListener('click',ev=>{
+  const el=ev.target.closest('[data-act]');if(!el)return;
+  const fn=A[el.dataset.act];if(!fn)return;
+  ev.preventDefault();
+  fn({v:el.dataset.v,id:el.dataset.id,i:el.dataset.i,f:el.dataset.f});
+});
+document.addEventListener('keydown',ev=>{
+  if(ev.key==='Escape'&&!$('modal').hidden){closeModal();return}
+  if((ev.key==='Enter'||ev.key===' ')&&ev.target.matches('[role=button][data-act]')){ev.preventDefault();ev.target.click()}
+});
+document.addEventListener('change',ev=>{
+  if(ev.target.matches('#modal input[type=checkbox]'))syncTgl();
+  if(ev.target.name==='av'){document.querySelectorAll('.avopt').forEach(l=>l.classList.toggle('on',l.contains(ev.target)&&ev.target.checked))}
+});
+$('modal').addEventListener('mousedown',ev=>{if(ev.target.id==='modal')closeModal()});
+document.addEventListener('submit',ev=>{
+  const f=ev.target.closest('form[data-form]');if(!f)return;ev.preventDefault();
+  const d=new FormData(f),k=f.dataset.form;
+  if(k==='quote'){
+    const text=(d.get('text')||'').trim(),book=(d.get('book')||'').trim();
+    if(!text||!book){toast('문장과 책 제목은 꼭 필요해요');return}
+    const obj={text,book,author:(d.get('author')||'').trim(),page:(d.get('page')||'').trim(),date:d.get('date')||today(),thought:(d.get('thought')||'').trim(),vis:d.get('vis')==='friends'?'friends':'me',tags:d.getAll('tag')};
+    const id=f.dataset.id;
+    if(id){const q=S.quotes.find(x=>x.id===id);const kind=q.kind;Object.assign(q,obj);q.kind=kind;ui.qSel=id}
+    else{obj.id=uid();S.quotes.push(obj);ui.qSel=obj.id;ui.qTag=null}
+    save();closeModal();ui.page=ui.view==='quotes'?ui.page:ui.page;render();toast(id?'문장을 고쳤어요':'문장을 수첩에 붙였어요');
+  }else if(k==='book'){
+    const title=(d.get('title')||'').trim();if(!title){toast('책 제목은 꼭 필요해요');return}
+    const obj={title,author:(d.get('author')||'').trim(),status:d.get('status'),review:(d.get('review')||'').trim(),keywords:(d.get('keywords')||'').trim()};
+    const id=f.dataset.id;
+    if(id){Object.assign(S.books.find(x=>x.id===id),obj);ui.bSel=id}else{obj.id=uid();S.books.push(obj);ui.bSel=obj.id}
+    save();closeModal();render();toast(id?'책을 고쳤어요':'책장에 꽂았어요');
+  }else if(k==='talk-free'){
+    const t=(d.get('t')||'').trim();if(!t)return;
+    const ch=CHARS[ui.chat.charId];ui.chat.msgs.push({who:'me',text:t},{who:'ch',text:reply(ch,t)});
+    if(ui.chat.id){persistChat();save()}render();
+  }else if(k==='talk-note'){
+    const r=S.conversations.find(x=>x.id===ui.chat.id);r.note=(d.get('t')||'').trim();save();closeModal();render();toast('한 줄 감상을 남겼어요');
+  }else if(k==='comment'){
+    const t=(d.get('t')||'').trim();if(!t){toast('댓글 내용을 적어 주세요');return}
+    S.comments.push({id:uid(),fid:f.dataset.f,author:S.profile.nick,text:t,date:today(),mine:true});save();render();toast('댓글을 붙였어요');
+  }else if(k==='profile'){
+    const nick=(d.get('nick')||'').trim();if(!nick){toast('닉네임을 적어 주세요');return}
+    S.profile.nick=nick;S.profile.bio=(d.get('bio')||'').trim();S.profile.coverTitle=(d.get('cover')||'').trim()||'나의 문학 수첩';S.profile.avatar=+(d.get('av')||0);
+    save();render();toast('수첩 표지를 저장했어요');
+  }
+});
+
+/* ================= 시작 ================= */
+(function init(){
+  const h=(location.hash||'').replace('#','');
+  if(VIEWS[h])ui.view=h;
+  if(!S.meta.seen)$('intro').hidden=false;
+  window.addEventListener('hashchange',()=>{const v=(location.hash||'').replace('#','');if(VIEWS[v]&&v!==ui.view){ui.view=v;ui.page=0;render(true)}});
+  render();
+})();
+</script>
+</body>
+</html>
